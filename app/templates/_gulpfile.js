@@ -1,6 +1,5 @@
 var http = require('http');
 var gulp = require('gulp');
-/*var browserify = require('gulp-browserify');*/
 var concat = require('gulp-concat');
 var sass = require('gulp-ruby-sass');
 var bourbon = require('node-bourbon').includePaths;
@@ -26,11 +25,10 @@ var paths = {
     destJS: 'dist/assets/js',
     destCSS: 'dist/assets/css',
     destImg: 'dist/assets/img'
-};
+  };
 
-gulp.task('scripts', function() {
+gulp.task('scripts', function () {
     return gulp.src([paths.js])
-        /*.pipe(browserify())*/
         .pipe(concat('dest.js'))
         .pipe(gulp.dest(paths.destJS))
         .pipe(refresh(lrserver));
@@ -39,27 +37,27 @@ gulp.task('scripts', function() {
 gulp.task('styles', function () {
     return gulp.src(paths.sass)
         .pipe(sass({
-            loadPath: ['styles'].concat(bourbon)
+        loadPath: ['styles'].concat(bourbon)
         }
         ))
         .pipe(gulp.dest(paths.destCSS))
         .pipe(refresh(lrserver));
 });
 
-gulp.task('serve', function() {
+gulp.task('serve', function () {
   http.createServer(ecstatic({ root: __dirname + '/' + paths.dest })).listen(serverport);
   require('opn')('http://localhost:' + serverport);
   lrserver.listen(livereloadport);
 });
 
-gulp.task('html', function() {
+gulp.task('html', function () {
     return gulp.src(paths.html)
         .pipe(embedlr())
         .pipe(gulp.dest(paths.dest))
         .pipe(refresh(lrserver));
 });
 
-gulp.task('images', function() {
+gulp.task('images', function () {
     return gulp.src(paths.img)
         .pipe(imagemin({optimizationLevel: 5}))
         .pipe(gulp.dest(paths.destImg))
