@@ -42,10 +42,11 @@ var GulpJackGenerator = yeoman.generators.Base.extend({
     this.mkdir(appDir + '/assets');
     this.directory('html', appDir);
     this.directory('js', appDir + '/assets/js');
-    this.directory('scss', appDir + '/assets/scss');
+    this.directory('sass', appDir + '/assets/sass');
 
     this.copy('_package.json', 'package.json');
     this.copy('_bower.json', 'bower.json');
+    this.copy('_gulpfile.js', 'gulpfile.js');
   },
 
   projectfiles: function () {
