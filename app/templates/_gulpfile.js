@@ -3,6 +3,7 @@ var gulp = require('gulp');
 var concat = require('gulp-concat');
 var sass = require('gulp-ruby-sass');
 var bourbon = require('node-bourbon').includePaths;
+var clean = require('gulp-clean');
 var refresh = require('gulp-livereload');
 var lr = require('tiny-lr');
 var lrserver = lr();
@@ -25,7 +26,7 @@ var paths = {
     destJS: 'dist/assets/js',
     destCSS: 'dist/assets/css',
     destImg: 'dist/assets/img'
-  };
+};
 
 gulp.task('scripts', function () {
     return gulp.src([paths.js])
@@ -38,16 +39,20 @@ gulp.task('styles', function () {
     return gulp.src(paths.sass)
         .pipe(sass({
         loadPath: ['styles'].concat(bourbon)
-        }
-        ))
-        .pipe(gulp.dest(paths.destCSS))
-        .pipe(refresh(lrserver));
+    }
+    ))
+    .pipe(gulp.dest(paths.destCSS))
+    .pipe(refresh(lrserver));
+});
+
+gulp.task('clean', function () {
+    return gulp.src(['.tmp', paths.dest], { read: false }).pipe(gulp.clean());
 });
 
 gulp.task('serve', function () {
-  http.createServer(ecstatic({ root: __dirname + '/' + paths.dest })).listen(serverport);
-  require('opn')('http://localhost:' + serverport);
-  lrserver.listen(livereloadport);
+    http.createServer(ecstatic({ root: __dirname + '/' + paths.dest })).listen(serverport);
+    require('opn')('http://localhost:' + serverport);
+    lrserver.listen(livereloadport);
 });
 
 gulp.task('html', function () {
