@@ -28,6 +28,15 @@ var paths = {
     destImg: 'dist/assets/img'
 };
 
+var jsDepsToMove = [
+    './bower_components/jquery-legacy/jquery.min.js'
+];
+
+var cssDepsToMove = [
+    './bower_components/normalize.css/normalize.css',
+    './bower_components/susy/sass/**/*'
+];
+
 gulp.task('scripts', function () {
     return gulp.src([paths.js])
         .pipe(concat('dest.js'))
@@ -46,7 +55,21 @@ gulp.task('styles', function () {
 });
 
 gulp.task('clean', function () {
-    return gulp.src(['.tmp', paths.dest], { read: false }).pipe(gulp.clean());
+    return gulp.src(['.tmp', paths.dest], { read: false }).pipe(clean());
+});
+
+gulp.task('moveJs', function () {
+    gulp.src(jsDepsToMove)
+    .pipe(gulp.dest(paths.destJS + '/libs'));
+});
+
+gulp.task('moveCss', function () {
+    gulp.src(cssDepsToMove)
+    .pipe(gulp.dest(paths.destCSS + '/libs'));
+});
+
+gulp.task('move', [], function () {
+    gulp.start('moveJs', 'moveCss');
 });
 
 gulp.task('serve', function () {
@@ -76,4 +99,8 @@ gulp.task('watch', function () {
     gulp.watch(paths.img, ['images']);
 });
 
-gulp.task('default', ['clean', 'scripts', 'styles', 'html', 'images', 'serve', 'watch']);
+gulp.task('build', ['move', 'scripts', 'styles', 'html', 'images', 'serve', 'watch']);
+
+gulp.task('default', ['clean'], function () {
+    gulp.start('build');
+});
