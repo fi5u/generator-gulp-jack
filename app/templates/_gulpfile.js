@@ -76,4 +76,4 @@ gulp.task('watch', function () {
     gulp.watch(paths.img, ['images']);
 });
 
-gulp.task('default', ['scripts', 'styles', 'html', 'images', 'serve', 'watch']);
+gulp.task('default', ['clean', 'scripts', 'styles', 'html', 'images', 'serve', 'watch']);
