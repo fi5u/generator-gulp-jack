@@ -29,7 +29,8 @@ var paths = {
 };
 
 var jsDepsToMove = [
-    './bower_components/jquery-legacy/jquery.min.js'
+    './bower_components/jquery-legacy/jquery.min.js',
+    './bower_components/modernizr/modernizr.js'
 ];
 
 var cssDepsToMove = [
