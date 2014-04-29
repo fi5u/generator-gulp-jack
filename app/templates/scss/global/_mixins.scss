@@ -1,0 +1,49 @@
+@mixin px-rem($prop, $val...) {
+    $n: length($val);
+    $i: 1;
+
+    $px-list: ();
+    $rem-list: ();
+
+    @while $i <= $n {
+        $px-list: append($px-list, fix8_unit_to_px(nth($val, $i)));
+        $rem-list: append($rem-list, fix8_unit_to_rem(nth($val, $i)));
+        $i: $i + 1;
+    }
+
+    #{$prop}: $px-list;
+    #{$prop}: $rem-list;
+}
+
+@mixin font-size($size: 1, $line: $line-h-multiplier) {
+    //usage @ include font-size(2, 3) or without vars = 1rem font-size and $line-h-multiplier line-height
+    //usage or just with one value for the line height to be automatically applied
+
+    font-size     : ($size * $unit-default) + px;
+    line-height   : ($line * $unit-default) + px;
+    font-size     : $size + rem;
+    line-height   : $line + rem;
+}
+
+@mixin margin-bottom($margin: $line-h-multiplier) {
+    margin-bottom: $margin * $unit-default + px;
+    margin-bottom: $margin + rem;
+}
+
+@mixin bgsize($type: cover) {
+    background-size: $type;
+    // Ensure 'backgroundsize.min.htc' is a sibling of the page displaying this selector
+    -ms-behavior: url(backgroundsize.min.htc);
+}
+
+@mixin rotate($deg) {
+    -ms-transform:rotate($deg+deg);
+    -webkit-transform:rotate($deg+deg);
+    transform:rotate($deg+deg);
+}
+
+@mixin opacity($opacity) {
+    opacity: $opacity;
+    $opacity-ie: $opacity * 100;
+    filter: alpha(opacity=$opacity-ie); //IE8
+}
