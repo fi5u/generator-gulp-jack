@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "dependencies": {
      "jquery-legacy": "jquery#1.10.x",
-     "normalize.css": "latest"
+     "normalize.css": "latest",
+     "susy": "latest"
   }
 }
 
