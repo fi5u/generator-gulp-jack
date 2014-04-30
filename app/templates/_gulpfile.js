@@ -73,6 +73,11 @@ gulp.task('move', [], function () {
     gulp.start('moveJs', 'moveCss');
 });
 
+gulp.task('rename', ['move'], function () {
+    return gulp.src([paths.destCSS + '/libs/normalize.css'])
+    .pipe(gulp.dest(paths.destCSS + '/libs/_normalize.scss'));
+});
+
 gulp.task('serve', function () {
     http.createServer(ecstatic({ root: __dirname + '/' + paths.dest })).listen(serverport);
     require('opn')('http://localhost:' + serverport);
@@ -100,7 +105,7 @@ gulp.task('watch', function () {
     gulp.watch(paths.img, ['images']);
 });
 
-gulp.task('build', ['move', 'scripts', 'styles', 'html', 'images', 'serve', 'watch']);
+gulp.task('build', ['rename', 'scripts', 'styles', 'html', 'images', 'serve', 'watch']);
 
 gulp.task('default', ['clean'], function () {
     gulp.start('build');
