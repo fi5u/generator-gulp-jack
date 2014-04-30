@@ -5,6 +5,7 @@ var sass = require('gulp-ruby-sass');
 var bourbon = require('node-bourbon').includePaths;
 var clean = require('gulp-clean');
 var refresh = require('gulp-livereload');
+var rename = require('gulp-rename');
 var lr = require('tiny-lr');
 var lrserver = lr();
 var minifyCSS = require('gulp-minify-css');
@@ -34,7 +35,6 @@ var jsDepsToMove = [
 ];
 
 var cssDepsToMove = [
-    './bower_components/normalize.css/normalize.css',
     './bower_components/susy/sass/**/*'
 ];
 
@@ -64,18 +64,19 @@ gulp.task('moveJs', function () {
     .pipe(gulp.dest(paths.destJS + '/libs'));
 });
 
+gulp.task('cssToSass', ['move'], function () {
+    gulp.src('./bower_components/normalize.css/normalize.css')
+    .pipe(rename('_normalize.scss'))
+    .pipe(gulp.dest('./bower_components/normalize.css'));
+});
+
 gulp.task('moveCss', function () {
     gulp.src(cssDepsToMove)
     .pipe(gulp.dest(paths.destCSS + '/libs'));
 });
 
 gulp.task('move', [], function () {
-    gulp.start('moveJs', 'moveCss');
-});
-
-gulp.task('rename', ['move'], function () {
-    return gulp.src([paths.destCSS + '/libs/normalize.css'])
-    .pipe(gulp.dest(paths.destCSS + '/libs/_normalize.scss'));
+    gulp.start('moveJs', /*'moveCss',*/ 'cssToSass');
 });
 
 gulp.task('serve', function () {
@@ -105,7 +106,7 @@ gulp.task('watch', function () {
     gulp.watch(paths.img, ['images']);
 });
 
-gulp.task('build', ['rename', 'scripts', 'styles', 'html', 'images', 'serve', 'watch']);
+gulp.task('build', ['cssToSass', 'scripts', 'styles', 'html', 'images', 'serve', 'watch']);
 
 gulp.task('default', ['clean'], function () {
     gulp.start('build');
