@@ -1,16 +1,14 @@
 .main-page {
+    @include container;
+
     min-height: 100%;
     margin-bottom: -$footer-h;
-    <% if (cssFramework !== 'noFramework') { %>
-    @include container;
-    <% } %>
+
     position: relative;
     right: 0;
     background: #fff;
-    <% if (cssFramework !== 'noFramework') { %>
     @include transition(all $nav-trans-dur);
     @include transition-timing-function($nav-trans-ease);
-    <% } %>
 
     &:after {
         content: "";

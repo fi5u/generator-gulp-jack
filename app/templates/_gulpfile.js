@@ -21,12 +21,12 @@ var paths = {
     html: 'app/**/*.html',
     assets: 'app/assets',
     sass: 'app/assets/sass/**/*.scss',
-    js: 'app/assets/js/**/*.js',
-    img: 'app/assets/img/**',
+    js: 'app/assets/js/*.js',
+    img: 'app/assets/images/**',
     dest: 'dist',
     destJS: 'dist/assets/js',
     destCSS: 'dist/assets/css',
-    destImg: 'dist/assets/img'
+    destImg: 'dist/assets/images'
 };
 
 var jsDepsToMove = [
@@ -34,13 +34,9 @@ var jsDepsToMove = [
     './bower_components/modernizr/modernizr.js'
 ];
 
-var cssDepsToMove = [
-    './bower_components/susy/sass/**/*'
-];
-
 gulp.task('scripts', function () {
     return gulp.src([paths.js])
-        .pipe(concat('dest.js'))
+        .pipe(concat('script.js'))
         .pipe(gulp.dest(paths.destJS))
         .pipe(refresh(lrserver));
 });
@@ -48,7 +44,7 @@ gulp.task('scripts', function () {
 gulp.task('styles', function () {
     return gulp.src(paths.sass)
         .pipe(sass({
-        loadPath: ['styles'].concat(bourbon)
+        loadPath: require('node-bourbon').includePaths
     }
     ))
     .pipe(gulp.dest(paths.destCSS))
@@ -70,13 +66,8 @@ gulp.task('cssToSass', ['move'], function () {
     .pipe(gulp.dest('./bower_components/normalize.css'));
 });
 
-gulp.task('moveCss', function () {
-    gulp.src(cssDepsToMove)
-    .pipe(gulp.dest(paths.destCSS + '/libs'));
-});
-
 gulp.task('move', [], function () {
-    gulp.start('moveJs', /*'moveCss',*/ 'cssToSass');
+    gulp.start('moveJs');
 });
 
 gulp.task('serve', function () {

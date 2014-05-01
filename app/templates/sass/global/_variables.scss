@@ -10,25 +10,16 @@ $font-size-m: 0.875; // 14px @ 16px
 $font-size-s: 0.75; // 12px @ 16px
 $font-size-xs: 0.625; // 10px @ 16px
 
-<% if (cssFramework === 'bourbonNeat') { %>$size-padding: $gutter;<% } else if (cssFramework === 'compassSusy') { %>$size-padding: $gutter-width;<% } else { %>$size-padding: $unit-default-px;<% } %>
-$size-padding-l: $size-padding * 2;
-$size-padding-s: $size-padding / 2;
-
 $offcanvas-nav-w: 70%;
 $footer-h: 200px;
 
-<% if (cssFramework === 'bourbonNeat') { %>/* grid */
-$grid-columns: 12;
-$column: 4.375em; // 70px @ 16px
-$gutter: 1.875em; // 30px @ 16px
-$max-width: 73.125em; // 1170px @ 16px
-$grid-padding: 10px;
-<% } %><% if (cssFramework === 'compassSusy') { %>/* grid */
+
+/* grid */
 $total-columns: 12;
 $column-width: 4.375em; // 70px @ 16px
 $gutter-width: 1.875em; // 30px @ 16px
 $grid-padding: 10px;
-<% } %>
+
 
 /* breakpoints */
 $break-xs: 20em; // 320px @ 16px
@@ -39,7 +30,7 @@ $nav-break: $break-m;
 
 
 /* colors */
-$col1: tomato;
+$col1: #d24;
 
 $nav-col: $col1;
 $highlight-col: lighten($col1, 10%);
@@ -61,12 +52,9 @@ $nav-trans-dur: 1s;
 $nav-trans-ease: cubic-bezier(x1, y1, x2, y2);
 
 
-/* misc */<% if (cssFramework === 'compassSusy') { %>
-$legacy-support-for-ie: false;
-$legacy-support-for-ie6 : $legacy-support-for-ie;
-$legacy-support-for-ie7 : $legacy-support-for-ie;<% } %>
+/* misc */
 $sub-menu-indent: 10px;
-<% if (wordpress === true) { %>$img-dir: "assets/img";<% } else { %>$img-dir: "../img";<% } %>
+$img-dir: "../img";
 
 // Use: @media #{$hidpi} { ... }
 $hidpi: "screen and (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi)";
