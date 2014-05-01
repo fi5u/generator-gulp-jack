@@ -1,6 +1,7 @@
 var http = require('http');
 var gulp = require('gulp');
 var concat = require('gulp-concat');
+var uglify = require('gulp-uglify');
 var sass = require('gulp-ruby-sass');
 var bourbon = require('node-bourbon').includePaths;
 var clean = require('gulp-clean');
@@ -22,6 +23,7 @@ var paths = {
     assets: 'app/assets',
     sass: 'app/assets/sass/**/*.scss',
     js: 'app/assets/js/*.js',
+    jsVendor: 'app/assets/js/vendor/*.js',
     img: 'app/assets/images/**',
     dest: 'dist',
     destJS: 'dist/assets/js',
@@ -34,7 +36,15 @@ var jsDepsToMove = [
     './bower_components/modernizr/modernizr.js'
 ];
 
-gulp.task('scripts', function () {
+gulp.task('vendorScripts', function () {
+    return gulp.src([paths.jsVendor])
+        .pipe(concat('vendor.js'))
+        .pipe(uglify())
+        .pipe(gulp.dest(paths.destJS))
+        .pipe(refresh(lrserver));
+});
+
+gulp.task('scripts', ['vendorScripts'], function () {
     return gulp.src([paths.js])
         .pipe(concat('script.js'))
         .pipe(gulp.dest(paths.destJS))
