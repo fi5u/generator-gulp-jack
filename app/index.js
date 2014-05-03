@@ -6,14 +6,37 @@ var chalk = require('chalk');
 var appDir = 'app';
 var destDir = 'dist';
 
-
 var GulpJackGenerator = yeoman.generators.Base.extend({
     init: function () {
         this.pkg = require('../package.json');
 
         this.on('end', function () {
+            var self = this;
             if (!this.options['skip-install']) {
-                this.installDependencies();
+                this.installDependencies({
+                    callback: function () {
+                        function performReplacement(regex, replacement, paths, include) {
+                            var replace = require('replace');
+
+                            console.log('Replacing ' + regex + ' for ' + replacement);
+                            replace({
+                                regex: regex,
+                                replacement: replacement,
+                                paths: paths,
+                                include: include,
+                                recursive: true,
+                                count: true
+                            });
+                        }
+                        if (self.wordpress) {
+                            performReplacement('Text Domain: _s', 'Text Domain: ' + self._.slugify(self.siteName), [appDir], '*.scss');
+                            performReplacement("'_s'", "'" + self._.slugify(self.siteName) + "'", [appDir]);
+                            performReplacement('_s_', self._.slugify(self.siteName) + '_', [appDir]);
+                            performReplacement(' _s', ' ' + self._.slugify(self.siteName).charAt(0).toUpperCase() + self._.slugify(self.siteName).slice(1), [appDir]);
+                            performReplacement('_s-', self._.slugify(self.siteName) + '-', [appDir]);
+                        }
+                    }
+                });
             }
         });
     },
