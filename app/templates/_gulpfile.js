@@ -1,18 +1,20 @@
 var gulp = require('gulp'),
-    http = require('http'),
-    concat = require('gulp-concat'),
-    uglify = require('gulp-uglify'),
+    clean = require('gulp-clean'),
     sass = require('gulp-ruby-sass'),
     bourbon = require('node-bourbon').includePaths,
-    clean = require('gulp-clean'),
     refresh = require('gulp-livereload'),
     rename = require('gulp-rename'),
     minifyCSS = require('gulp-minify-css'),
     imagemin = require('gulp-imagemin'),
+    http = require('http'),
     lr = require('tiny-lr'),
     lrserver = lr(),
     embedlr = require('gulp-embedlr'),
     ecstatic = require('ecstatic');
+<% if (!wordpress) { %>
+var uglify = require('gulp-uglify'),
+    concat = require('gulp-concat');
+<% } %>
 
 var livereloadport = 35729,
     serverport = 5001;
@@ -51,14 +53,6 @@ var jsDepsToMove = [
     './bower_components/modernizr/modernizr.js'
 ];
 
-gulp.task('vendorScripts', function () {
-    return gulp.src([paths.jsVendor])
-        .pipe(concat('vendor.js'))
-        .pipe(uglify())
-        .pipe(gulp.dest(paths.destJS))
-        .pipe(refresh(lrserver));
-});
-
 <% if (wordpress) { %>
 gulp.task('scripts', function () {
     return gulp.src([paths.js])
@@ -67,6 +61,14 @@ gulp.task('scripts', function () {
 });
 <% } %>
 <% if (!wordpress) { %>
+gulp.task('vendorScripts', function () {
+    return gulp.src([paths.jsVendor])
+        .pipe(concat('vendor.js'))
+        .pipe(uglify())
+        .pipe(gulp.dest(paths.destJS))
+        .pipe(refresh(lrserver));
+});
+
 gulp.task('scripts', ['vendorScripts'], function () {
     return gulp.src([paths.js])
         .pipe(concat('script.js'))
@@ -100,7 +102,7 @@ gulp.task('cssToSass', <% if (!wordpress) { %>['move'], <% } %>function () {
     .pipe(gulp.dest('./bower_components/normalize.css'));
 });
 
-gulp.task('move', [], function () {
+gulp.task('move', function () {
     gulp.start('moveJs');
 });
 
