@@ -31,7 +31,7 @@ var GulpJackGenerator = yeoman.generators.Base.extend({
                         if (self.wordpress) {
                             performReplacement('Text Domain: _s', 'Text Domain: ' + self._.slugify(self.siteName), [appDir], '*.scss');
                             performReplacement("'_s'", "'" + self._.slugify(self.siteName) + "'", [appDir]);
-                            performReplacement('_s_', self._.slugify(self.siteName) + '_', [appDir]);
+                            performReplacement('_s_', self._.slugify(self.siteName).replace('-','_') + '_', [appDir]);
                             performReplacement(' _s', ' ' + self._.slugify(self.siteName).charAt(0).toUpperCase() + self._.slugify(self.siteName).slice(1), [appDir]);
                             performReplacement('_s-', self._.slugify(self.siteName) + '-', [appDir]);
                         }
@@ -58,6 +58,13 @@ var GulpJackGenerator = yeoman.generators.Base.extend({
             name: 'wordpress',
             message: 'Is this site going to be running on WordPress?',
             default: false
+        }, {
+            name: 'localUrl',
+            message: 'What is the local site URL?',
+            default: 'http://localhost',
+            when: function (props) {
+                return props.wordpress;
+            }
         }, {
             name: 'dbName',
             message: 'What is the database name?',
@@ -98,6 +105,7 @@ var GulpJackGenerator = yeoman.generators.Base.extend({
         this.prompt(prompts, function (props) {
             this.siteName = props.siteName;
             this.wordpress = props.wordpress;
+            this.localUrl = props.localUrl;
             this.dbName = props.dbName;
             this.dbUsername = props.dbUsername;
             this.dbPassword = props.dbPassword;

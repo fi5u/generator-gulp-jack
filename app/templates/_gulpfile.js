@@ -108,6 +108,8 @@ gulp.task('serve', function () {
     http.createServer(ecstatic({ root: __dirname + '/' + paths.dest })).listen(serverport);
     <% if (!wordpress) { %>
     require('opn')('http://localhost:' + serverport);
+    <% } else { %>
+    require('opn')('<%= localUrl %>');
     <% } %>
     lrserver.listen(livereloadport);
 });
