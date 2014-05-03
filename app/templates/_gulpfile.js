@@ -96,12 +96,6 @@ gulp.task('moveJs', function () {
     .pipe(gulp.dest(paths.destJS + '/libs'));
 });
 
-gulp.task('cssToSass', <% if (!wordpress) { %>['move'], <% } %>function () {
-    gulp.src('./bower_components/normalize.css/normalize.css')
-    .pipe(rename('_normalize.scss'))
-    .pipe(gulp.dest('./bower_components/normalize.css'));
-});
-
 gulp.task('move', function () {
     gulp.start('moveJs');
 });
@@ -150,10 +144,10 @@ gulp.task('watch', function () {
 });
 
 <% if (wordpress) { %>
-gulp.task('build', ['cssToSass', 'scripts', 'styles', 'php', 'images', 'serve', 'watch']);
+gulp.task('build', ['move', 'scripts', 'styles', 'php', 'images', 'serve', 'watch']);
 <% } %>
 <% if (!wordpress) { %>
-gulp.task('build', ['cssToSass', 'scripts', 'styles', 'html', 'images', 'serve', 'watch']);
+gulp.task('build', ['move', 'scripts', 'styles', 'html', 'images', 'serve', 'watch']);
 <% } %>
 
 gulp.task('default', ['clean'], function () {

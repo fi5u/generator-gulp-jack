@@ -35,6 +35,9 @@ var util = require('util'),
                             performReplacement(' _s', ' ' + self._.slugify(self.siteName).charAt(0).toUpperCase() + self._.slugify(self.siteName).slice(1), [appDir]);
                             performReplacement('_s-', self._.slugify(self.siteName) + '-', [appDir]);
                         }
+                        var fs = require('fs'),
+                            projectDir = process.cwd();
+                        fs.rename(projectDir + '/bower_components/normalize.css/normalize.css', projectDir + '/bower_components/normalize.css/_normalize.scss');
                     }
                 });
             }
