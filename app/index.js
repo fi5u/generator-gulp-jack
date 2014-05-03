@@ -58,7 +58,8 @@ var util = require('util'),
     },
 
     askFor: function () {
-        var done = this.async();
+        var done = this.async(),
+            self = this;
 
         // have Yeoman greet the user
         this.log(this.yeoman);
@@ -77,14 +78,18 @@ var util = require('util'),
         }, {
             name: 'localUrl',
             message: 'What is the local site URL?',
-            default: 'http://localhost',
+            default: function (props) {
+                return 'http://dev.' + self._.slugify(props.siteName);
+            },
             when: function (props) {
                 return props.wordpress;
             }
         }, {
             name: 'dbName',
             message: 'What is the database name?',
-            default: 'wordpress',
+            default: function (props) {
+                return self._.slugify(props.siteName);
+            },
             when: function (props) {
                 return props.wordpress;
             }
