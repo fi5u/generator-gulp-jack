@@ -28,16 +28,29 @@ var util = require('util'),
                                 count: true
                             });
                         }
+
+                        var fs = require('fs'),
+                            projectDir = process.cwd();
+
+                        fs.rename(projectDir + '/bower_components/normalize.css/normalize.css', projectDir + '/bower_components/normalize.css/_normalize.scss', function (err) {
+                            if (err) throw err;
+                        });
+
                         if (self.wordpress) {
                             performReplacement('Text Domain: _s', 'Text Domain: ' + self._.slugify(self.siteName), [appDir], '*.scss');
                             performReplacement("'_s'", "'" + self._.slugify(self.siteName) + "'", [appDir]);
                             performReplacement('_s_', self._.slugify(self.siteName).replace('-','_') + '_', [appDir]);
                             performReplacement(' _s', ' ' + self._.slugify(self.siteName).charAt(0).toUpperCase() + self._.slugify(self.siteName).slice(1), [appDir]);
                             performReplacement('_s-', self._.slugify(self.siteName) + '-', [appDir]);
+
+                            fs.rename(projectDir + '/bower_components/modernizr/modernizr.js', projectDir + '/' + appDir + '/js/libs/modernizr.js', function (err) {
+                                if (err) throw err;
+                            });
+                        } else {
+                            fs.rename(projectDir + '/bower_components/jquery-legacy/jquery.min.js', projectDir + '/' + appDir + '/assets/js/libs/jquery.min.js', function (err) {
+                                if (err) throw err;
+                            });
                         }
-                        var fs = require('fs'),
-                            projectDir = process.cwd();
-                        fs.rename(projectDir + '/bower_components/normalize.css/normalize.css', projectDir + '/bower_components/normalize.css/_normalize.scss');
                     }
                 });
             }
@@ -126,12 +139,14 @@ var util = require('util'),
             this.copy('wordpress/_wp-config.php', destDir + '/wp-config.php');
             this.mkdir(destDir + '/wp-content/themes/' + this._.slugify(this.siteName));
             this.mkdir(appDir + '/images');
+            this.mkdir(appDir + '/js/libs');
             this.directory('wordpress/theme', appDir);
             this.directory('sass', appDir + '/sass');
         } else {
             this.mkdir(appDir + '/assets');
             this.mkdir(appDir + '/assets/images');
             this.mkdir(appDir + '/assets/js/vendor');
+            this.mkdir(appDir + '/assets/js/libs');
 
             this.directory('html', appDir);
             this.directory('js', appDir + '/assets/js');

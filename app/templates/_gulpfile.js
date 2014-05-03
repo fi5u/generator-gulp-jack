@@ -2,13 +2,12 @@ var gulp = require('gulp'),
     clean = require('gulp-clean'),
     sass = require('gulp-ruby-sass'),
     bourbon = require('node-bourbon').includePaths,
-    refresh = require('gulp-livereload'),
-    rename = require('gulp-rename'),
     minifyCSS = require('gulp-minify-css'),
     imagemin = require('gulp-imagemin'),
     http = require('http'),
     lr = require('tiny-lr'),
     lrserver = lr(),
+    refresh = require('gulp-livereload'),
     embedlr = require('gulp-embedlr'),
     ecstatic = require('ecstatic');
 <% if (!wordpress) { %>
@@ -48,11 +47,6 @@ var paths = {
 };
 <% } %>
 
-var jsDepsToMove = [
-    './bower_components/jquery-legacy/jquery.min.js',
-    './bower_components/modernizr/modernizr.js'
-];
-
 <% if (wordpress) { %>
 gulp.task('scripts', function () {
     return gulp.src([paths.js])
@@ -89,15 +83,6 @@ gulp.task('styles', function () {
 
 gulp.task('clean', function () {
     return gulp.src(['.tmp', paths.dest], { read: false }).pipe(clean());
-});
-
-gulp.task('moveJs', function () {
-    gulp.src(jsDepsToMove)
-    .pipe(gulp.dest(paths.destJS + '/libs'));
-});
-
-gulp.task('move', function () {
-    gulp.start('moveJs');
 });
 
 gulp.task('serve', function () {
@@ -144,10 +129,10 @@ gulp.task('watch', function () {
 });
 
 <% if (wordpress) { %>
-gulp.task('build', ['move', 'scripts', 'styles', 'php', 'images', 'serve', 'watch']);
+gulp.task('build', ['scripts', 'styles', 'php', 'images', 'serve', 'watch']);
 <% } %>
 <% if (!wordpress) { %>
-gulp.task('build', ['move', 'scripts', 'styles', 'html', 'images', 'serve', 'watch']);
+gulp.task('build', ['scripts', 'styles', 'html', 'images', 'serve', 'watch']);
 <% } %>
 
 gulp.task('default', ['clean'], function () {
