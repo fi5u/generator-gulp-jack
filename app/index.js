@@ -1,12 +1,12 @@
 'use strict';
-var util = require('util');
-var path = require('path');
-var yeoman = require('yeoman-generator');
-var chalk = require('chalk');
-var appDir = 'app';
-var destDir = 'dist';
+var util = require('util'),
+    path = require('path'),
+    yeoman = require('yeoman-generator'),
+    chalk = require('chalk'),
+    appDir = 'app',
+    destDir = 'dist',
 
-var GulpJackGenerator = yeoman.generators.Base.extend({
+    GulpJackGenerator = yeoman.generators.Base.extend({
     init: function () {
         this.pkg = require('../package.json');
 
