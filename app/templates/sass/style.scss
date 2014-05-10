@@ -12,8 +12,8 @@ Text Domain: _s
 Domain Path: /languages/
 Tags:
 */
-
-
+<% } %>
+<% if (jekyll || wordpress) { %>
 @import "../../bower_components/normalize.css/_normalize";
 @import "../../bower_components/susy/sass/_susy";
 <% } else { %>

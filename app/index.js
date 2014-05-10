@@ -76,6 +76,14 @@ var util = require('util'),
             message: 'Is this site going to be running on WordPress?',
             default: false
         }, {
+            type: 'confirm',
+            name: 'jekyll',
+            message: 'Would you like to use Jekyll templating?',
+            default: false,
+            when: function (props) {
+                return !props.wordpress;
+            }
+        }, {
             name: 'localUrl',
             message: 'What is the local site URL?',
             default: function (props) {
@@ -125,6 +133,7 @@ var util = require('util'),
 
         this.prompt(prompts, function (props) {
             this.siteName = props.siteName;
+            this.jekyll = props.jekyll;
             this.wordpress = props.wordpress;
             this.localUrl = props.localUrl;
             this.dbName = props.dbName;
@@ -148,19 +157,26 @@ var util = require('util'),
             this.directory('wordpress/theme', appDir);
             this.directory('sass', appDir + '/sass');
         } else {
+            if(this.jekyll) {
+                appDir = './';
+                this.directory('jekyll', './');
+                this.mkdir( '_data');
+            } else {
+                this.directory('html', appDir);
+            }
+
             this.mkdir(appDir + '/assets');
             this.mkdir(appDir + '/assets/images');
             this.mkdir(appDir + '/assets/js/vendor');
             this.mkdir(appDir + '/assets/js/libs');
 
-            this.directory('html', appDir);
             this.directory('js', appDir + '/assets/js');
             this.directory('sass', appDir + '/assets/sass');
         }
 
         this.copy('_package.json', 'package.json');
         this.copy('_bower.json', 'bower.json');
-        this.copy('_gulpfile.js', 'gulpfile.js');
+        this.template('_gulpfile.js', 'gulpfile.js');
     },
 
     projectfiles: function () {
