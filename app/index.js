@@ -47,6 +47,10 @@ var util = require('util'),
                                 if (err) throw err;
                             });
                         } else {
+                            fs.rename(projectDir + '/bower_components/modernizr/modernizr.js', projectDir + '/' + appDir + '/assets/js/libs/modernizr.js', function (err) {
+                                if (err) throw err;
+                            });
+
                             fs.rename(projectDir + '/bower_components/jquery-legacy/jquery.min.js', projectDir + '/' + appDir + '/assets/js/libs/jquery.min.js', function (err) {
                                 if (err) throw err;
                             });

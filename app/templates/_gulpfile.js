@@ -102,7 +102,8 @@ gulp.task('php', function () {
     return gulp.src(paths.html)
         .pipe(embedlr())
         .pipe(gulp.dest(paths.dest))
-        .pipe(refresh(lrserver));<% } /* end not wp && not jekyll */ %><% } /* end not wp */ %>
+        .pipe(refresh(lrserver));
+});<% } /* end not wp && not jekyll */ %><% } /* end not wp */ %>
 
 
 gulp.task('images', function () {
