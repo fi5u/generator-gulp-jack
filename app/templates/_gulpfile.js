@@ -110,7 +110,7 @@ gulp.task('php', function () {
         .pipe(gulp.dest(paths.dest))
         .pipe(refresh(lrserver));
 });<% } /* end is wp */ else { /* not wp */ %><% if (!jekyll) { /* not wp && not jekyll */ %>gulp.task('html', function () {
-    return gulp.src(paths.html)
+    return gulp.src([paths.html, '!' + paths.app + '/assets/sass/**/*.html'])
         .pipe(embedlr())
         .pipe(gulp.dest(paths.dest))
         .pipe(refresh(lrserver));
