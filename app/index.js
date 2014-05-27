@@ -88,6 +88,11 @@ var util = require('util'),
                 return !props.wordpress;
             }
         }, {
+            type: 'confirm',
+            name: 'docssa',
+            message: 'Would you like to use DoCSSa CSS architecture?',
+            default: false
+        }, {
             name: 'localUrl',
             message: 'What is the local site URL?',
             default: function (props) {
@@ -139,6 +144,7 @@ var util = require('util'),
             this.siteName = props.siteName;
             this.jekyll = props.jekyll;
             this.wordpress = props.wordpress;
+            this.docssa = props.docssa;
             this.localUrl = props.localUrl;
             this.dbName = props.dbName;
             this.dbUsername = props.dbUsername;
@@ -159,7 +165,12 @@ var util = require('util'),
             this.mkdir(appDir + '/images');
             this.mkdir(appDir + '/js/libs');
             this.directory('wordpress/theme', appDir);
-            this.directory('sass', appDir + '/sass');
+
+            if (this.docssa) {
+                this.directory('docssa', appDir + '/sass');
+            } else {
+                this.directory('sass', appDir + '/sass');
+            }
         } else {
             if(this.jekyll) {
                 appDir = './';
@@ -175,7 +186,12 @@ var util = require('util'),
             this.mkdir(appDir + '/assets/js/libs');
 
             this.directory('js', appDir + '/assets/js');
-            this.directory('sass', appDir + '/assets/sass');
+
+            if (this.docssa) {
+                this.directory('docssa', appDir + '/assets/sass');
+            } else {
+                this.directory('sass', appDir + '/assets/sass');
+            }
         }
 
         this.copy('_package.json', 'package.json');

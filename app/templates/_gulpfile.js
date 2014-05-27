@@ -24,30 +24,36 @@ var paths = {<% if (!wordpress) { %><% if (jekyll) { %>
     html: appRoute + '/index.html',
     assets: appRoute + '/assets',
     sass: appRoute + '/assets/sass/**/*.scss',
+    jsAll: appRoute + '/assets/js/**/*.js',
     js: appRoute + '/assets/js/*.js',
     jsVendor: appRoute + '/assets/js/vendor/*.js',
     img: appRoute + '/assets/images/**',
     dest: destRoute,
     destJS: destRoute + '/assets/js',
+    destJSLib: destRoute + '/assets/js/lib',
     destCSS: destRoute + '/assets/css',
     destImg: destRoute + '/assets/images'<% /* end not wp && is jekyll */ } else { /* not wp &&  not jekyll */ %>
     app: appRoute,
     html: appRoute + '/**/*.html',
     assets: appRoute + '/assets',
     sass: appRoute + '/assets/sass/**/*.scss',
+    jsAll: appRoute + '/assets/js/**/*.js',
     js: appRoute + '/assets/js/*.js',
     jsVendor: appRoute + '/assets/js/vendor/*.js',
     img: appRoute + '/assets/images/**',
     dest: destRoute,
     destJS: destRoute + '/assets/js',
+    destJSLib: destRoute + '/assets/js/lib',
     destCSS: destRoute + '/assets/css',
     destImg: destRoute + '/assets/images'<% } /* end not wp && not jekyll */ %><% } else { /* is wp */ %>
     php: appRoute + '/**/*.php',
     sass: appRoute + '/sass/**/*.scss',
+    jsAll: appRoute + '/js/**/*.js',
     js: appRoute + '/js/**/*.js',
     img: appRoute + '/images/**',
     dest: destRoute + '/wp-content/themes/<%= _.slugify(siteName) %>',
     destJS: destRoute + '/wp-content/themes/<%= _.slugify(siteName) %>/js',
+    destJSLib: destRoute + '/wp-content/themes/<%= _.slugify(siteName) %>/js/lib',
     destCSS: destRoute + '/wp-content/themes/<%= _.slugify(siteName) %>',
     destImg: destRoute + '/wp-content/themes/<%= _.slugify(siteName) %>/images'<% } /* end is wp */ %>
 };
@@ -57,12 +63,17 @@ var paths = {<% if (!wordpress) { %><% if (jekyll) { %>
     return gulp.src([paths.jsVendor])
         .pipe(concat('vendor.js'))
         .pipe(uglify())
-        .pipe(gulp.dest(paths.destJS))
-        .pipe(refresh(lrserver));
+        .pipe(gulp.dest(paths.destJS));
 });<% } %>
 
 
-gulp.task('scripts', <% if (!wordpress) { %>['vendorScripts'], <% } %>function () {
+gulp.task('libScripts', function () {
+    return gulp.src([paths.jsLib])
+        .pipe(gulp.dest(paths.destJSLib));
+});
+
+
+gulp.task('scripts', [<% if (!wordpress) { %>'vendorScripts', <% } %>'libScripts'], function () {
     return gulp.src([paths.js])<% if (!wordpress) { %>
         .pipe(concat('script.js'))<% } %>
         .pipe(gulp.dest(paths.destJS))
@@ -88,7 +99,7 @@ gulp.task('styles', function () {
 
 <% } /* end not jekyll */ %>gulp.task('serve', function () {
     http.createServer(ecstatic({ root: __dirname + '/' + paths.dest })).listen(serverport);<% if (!wordpress) { %>
-    require('opn')('http://localhost:' + serverport);<% } /* end not wp */ else { /* is wp */ %>require('opn')('<%= localUrl %>');<% } /* end is wp */ %>
+    require('opn')('http://localhost:' + serverport + '/index.html');<% } /* end not wp */ else { /* is wp */ %>require('opn')('<%= localUrl %>');<% } /* end is wp */ %>
     lrserver.listen(livereloadport);
 });
 <% if (wordpress) { %>
@@ -115,7 +126,7 @@ gulp.task('images', function () {
 
 
 gulp.task('watch', function () {
-    gulp.watch(paths.js, ['scripts']);
+    gulp.watch(paths.jsAll, ['scripts']);
     gulp.watch(paths.sass, ['styles']);<% if (!jekyll && !wordpress) { %>
     gulp.watch(paths.html, ['html']);
     <% } %>gulp.watch(paths.img, ['images']);<% if (wordpress) { %>

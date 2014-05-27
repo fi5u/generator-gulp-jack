@@ -1,0 +1,66 @@
+@import '../../base/utils/__utils';
+@import '../../base/project/__project';
+
+
+// _____ STRUCTURE _____ //
+
+@include define('button-bar') {
+    @include _add(button-bar) {
+        padding: 20px;
+    }
+
+    @include _add(button-bar__btn) {
+        float: right;
+    }
+}
+
+@mixin button-bar($selector, $defaultSkin: true) {
+    #{$selector} {
+        @extend %button-bar;
+    }
+
+    #{$selector}__btn {
+        @extend %button-bar__btn;
+    }
+
+    @if $defaultSkin != false {
+        @include button-bar-skin-default($selector);
+    }
+}
+
+
+// _____ SKIN _____ //
+
+@import '../../base/project/_variables';
+@import '../../base/project/_helpers';
+
+@include define('button-bar-skin-default') {
+    %button-bar-skin-default__button-bar {
+        background: #d24;
+        border: 2px solid #666;
+    }
+
+    %button-bar-skin-default__btn {
+        background: #3d0;
+        border: 3px solid #ddd;
+    }
+
+    %button-bar-skin-default__btn_hover {
+        background: #d6a;
+        border-color: #fff;
+    }
+}
+
+@mixin button-bar-skin-default($selector) {
+    #{$selector} {
+        @extend %button-bar-skin-default__button-bar;
+    }
+
+    #{$selector}__btn {
+        @extend %button-bar-skin-default__btn;
+
+        &:hover {
+            @extend %button-bar-skin-default__btn_hover;
+        }
+    }
+}

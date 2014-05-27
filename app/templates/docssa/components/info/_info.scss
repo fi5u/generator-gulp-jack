@@ -1,0 +1,90 @@
+
+@import '../../base/utils/__utils';
+
+// _____ STRUCTURE _____ //
+
+
+
+// define component placeholders for component contents (no selector here)
+@include define('info') {
+  %info {
+    padding: 10px;
+  }
+
+  %infoInner {
+    padding: 20px;
+  }
+  %infoAltState {
+    padding: 30px;
+  }
+}
+
+
+// map the placeholders content to some selectors through a mixin
+@mixin info($selector: '.info', $hover: ':hover', $param2: '', $defaultSkin: true) {
+
+  #{$selector} {
+    @extend %info;
+  }
+
+  #{$selector}_title {
+    @extend %infoInner;
+  }
+
+  @if $hover == ':hover' {
+    #{$selector}:hover {
+      @extend %infoAltState;
+    }
+  } @else {
+    #{$selector}_#{$hover} {
+      @extend %infoAltState;
+    }
+  }
+
+  @if $defaultSkin != false {
+    @include info-skin-default($selector, $hover, $param2);
+  }
+
+}
+
+/* **** INFO COMPONENT SKIN **** */
+
+// define component placeholders for component skin (no selector here)
+@include define('info_skin') {
+  %info-skin-default {
+    background: #eee;
+    color: blue;
+  }
+
+  %infoInner-skin-default {
+    color: red;
+  }
+  %infoAltState-skin-default {
+    border: solid 1px red;
+  }
+}
+
+// provide a default skin for the component
+// only visual changes that don't affect the component layout should be in here
+@mixin info-skin-default($selector: '.info', $hover: ':hover', $param2: '') {
+
+    #{$selector} {
+      @extend %info-skin-default;
+    }
+    #{$selector}_inner {
+      @extend %infoInner-skin-default;
+    }
+
+    @if $hover == ':hover' {
+      #{$selector}:hover {
+        @extend %infoAltState-skin-default;
+      }
+    } @else {
+      #{$selector}_#{$hover} {
+        @extend %infoAltState-skin-default;
+      }
+    }
+
+}
+
+@include info('.info');
