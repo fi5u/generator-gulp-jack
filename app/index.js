@@ -43,15 +43,15 @@ var util = require('util'),
                             performReplacement(' _s', ' ' + self._.slugify(self.siteName).charAt(0).toUpperCase() + self._.slugify(self.siteName).slice(1), [appDir]);
                             performReplacement('_s-', self._.slugify(self.siteName) + '-', [appDir]);
 
-                            fs.rename(projectDir + '/bower_components/modernizr/modernizr.js', projectDir + '/' + appDir + '/js/libs/modernizr.js', function (err) {
+                            fs.rename(projectDir + '/bower_components/modernizr/modernizr.js', projectDir + '/' + appDir + '/js/lib/modernizr.js', function (err) {
                                 if (err) throw err;
                             });
                         } else {
-                            fs.rename(projectDir + '/bower_components/modernizr/modernizr.js', projectDir + '/' + appDir + '/assets/js/libs/modernizr.js', function (err) {
+                            fs.rename(projectDir + '/bower_components/modernizr/modernizr.js', projectDir + '/' + appDir + '/assets/js/lib/modernizr.js', function (err) {
                                 if (err) throw err;
                             });
 
-                            fs.rename(projectDir + '/bower_components/jquery-legacy/jquery.min.js', projectDir + '/' + appDir + '/assets/js/libs/jquery.min.js', function (err) {
+                            fs.rename(projectDir + '/bower_components/jquery-legacy/jquery.min.js', projectDir + '/' + appDir + '/assets/js/lib/jquery.min.js', function (err) {
                                 if (err) throw err;
                             });
                         }
@@ -163,11 +163,13 @@ var util = require('util'),
             this.copy('wordpress/_wp-config.php', destDir + '/wp-config.php');
             this.mkdir(destDir + '/wp-content/themes/' + this._.slugify(this.siteName));
             this.mkdir(appDir + '/images');
-            this.mkdir(appDir + '/js/libs');
+            this.mkdir(appDir + '/js/lib');
             this.directory('wordpress/theme', appDir);
 
             if (this.docssa) {
                 this.directory('docssa', appDir + '/sass');
+                this.directory('sass/object', appDir + '/sass/specifics');
+                this.copy('sass/global/_variables.scss', appDir + '/sass/base/project/_variables.scss');
             } else {
                 this.directory('sass', appDir + '/sass');
             }
@@ -183,12 +185,14 @@ var util = require('util'),
             this.mkdir(appDir + '/assets');
             this.mkdir(appDir + '/assets/images');
             this.mkdir(appDir + '/assets/js/vendor');
-            this.mkdir(appDir + '/assets/js/libs');
+            this.mkdir(appDir + '/assets/js/lib');
 
             this.directory('js', appDir + '/assets/js');
 
             if (this.docssa) {
                 this.directory('docssa', appDir + '/assets/sass');
+                this.directory('sass/object', appDir + '/assets/sass/specifics');
+                this.copy('sass/global/_variables.scss', appDir + '/assets/sass/base/project/_variables.scss');
             } else {
                 this.directory('sass', appDir + '/assets/sass');
             }

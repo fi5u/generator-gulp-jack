@@ -1,16 +1,7 @@
-
 @include define('project-helpers') {
 
-  /* _____ PROJECT HELPERS _____ */
-
-  @include _add(basicClickable) {
-    color: $color-main;
-    text-decoration: none;
-
-    &:hover {
-      color: $color-main-light;
-      text-decoration: underline;
-    }
-  }
+//    @include _add() {
+//
+//    }
 
 }
