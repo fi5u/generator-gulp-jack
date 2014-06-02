@@ -91,7 +91,7 @@ var util = require('util'),
             type: 'confirm',
             name: 'docssa',
             message: 'Would you like to use DoCSSa CSS architecture?',
-            default: false
+            default: true
         }, {
             name: 'localUrl',
             message: 'What is the local site URL?',
@@ -168,8 +168,12 @@ var util = require('util'),
 
             if (this.docssa) {
                 this.directory('docssa', appDir + '/sass');
-                this.directory('sass/object', appDir + '/sass/specifics');
                 this.copy('sass/global/_variables.scss', appDir + '/sass/base/project/_variables.scss');
+                this.copy('sass/local/_typography.scss', appDir + '/sass/base/project/_typography.scss');
+                this.copy('sass/local/_images.scss', appDir + '/sass/base/project/_images.scss');
+                this.copy('sass/local/_lists.scss', appDir + '/sass/base/project/_lists.scss');
+                this.copy('sass/local/_forms.scss', appDir + '/sass/base/project/_forms.scss');
+                this.copy('sass/local/_tables.scss', appDir + '/sass/base/project/_tables.scss');
             } else {
                 this.directory('sass', appDir + '/sass');
             }
@@ -191,8 +195,12 @@ var util = require('util'),
 
             if (this.docssa) {
                 this.directory('docssa', appDir + '/assets/sass');
-                this.directory('sass/object', appDir + '/assets/sass/specifics');
                 this.copy('sass/global/_variables.scss', appDir + '/assets/sass/base/project/_variables.scss');
+                this.copy('sass/local/_typography.scss', appDir + '/assets/sass/base/project/_typography.scss');
+                this.copy('sass/local/_images.scss', appDir + '/assets/sass/base/project/_images.scss');
+                this.copy('sass/local/_lists.scss', appDir + '/assets/sass/base/project/_lists.scss');
+                this.copy('sass/local/_forms.scss', appDir + '/assets/sass/base/project/_forms.scss');
+                this.copy('sass/local/_tables.scss', appDir + '/assets/sass/base/project/_tables.scss');
             } else {
                 this.directory('sass', appDir + '/assets/sass');
             }

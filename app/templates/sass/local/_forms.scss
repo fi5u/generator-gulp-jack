@@ -1,19 +1,19 @@
 form {
-    @include margin-bottom();
+
 }
 
 ::-webkit-input-placeholder {
-   color: lighten($col1, 20%);
+   color: $placeholder-col;
 }
 
 :-moz-placeholder {
-   color: lighten($col1, 20%);
+   color: $placeholder-col;
 }
 
 ::-moz-placeholder {
-   color: lighten($col1, 20%);
+   color: $placeholder-col;
 }
 
 :-ms-input-placeholder {
-   color: lighten($col1, 20%);
+   color: $placeholder-col;
 }

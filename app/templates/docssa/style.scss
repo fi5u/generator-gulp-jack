@@ -1,51 +1,20 @@
-
-
-/* @import "../../../bower_components/normalize.css/_normalize";
-@import "../../../bower_components/susy/sass/_susy";
-
-@import "bourbon"; */
-
-/* @import "global/variables";
-@import "global/placeholders";
-@import "global/functions";
-@import "global/mixins";
-
-@import "local/fonts";
-@import "local/typography";
-@import "local/forms";
-@import "local/images";
-@import "local/lists";
-@import "local/helpers";
-
-@import "object/page-header";
-@import "object/page-footer";
- */
-
 @charset "UTF-8";
 
-/*!
-========== INIT
-*/
+// INIT
 @import "../../../bower_components/normalize.css/_normalize";
 @import "../../../bower_components/susy/sass/_susy";
 
 
-/*!
-========== BASE
-*/
+// BASE
 // variables, fonts, mixins, helpers... common styles used across the entire site
 @import 'base/__base';
 
 
-/*!
-========== COMPONENTS
-*/
+// COMPONENTS
 // reusable/framework components
 @import 'components/__components';
 
 
-/*!
-========== SPECIFICS
-*/
+// SPECIFICS
 // more specific declarations, may be built on a per page basis
 @import 'specifics/__specifics';

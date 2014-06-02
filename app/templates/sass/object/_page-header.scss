@@ -29,7 +29,6 @@
         padding: 0 $grid-padding;
 
         background: $nav-col;
-        @include columns(12 8em);
 
         /* @include transition(all $nav-trans-dur);
         @include transition-timing-function($nav-trans-ease); */

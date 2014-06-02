@@ -4,7 +4,9 @@ $baseFontSize: 16;
 
 // breakpoints
 $breakpoints: (
-  "small": 600px,
-  "medium": 900px,
-  "large": 1200px
+    "xs": 20em,
+    "s": 30em,
+    "m": 48em,
+    "l": 64em,
+    "nav-break": 30em
 );

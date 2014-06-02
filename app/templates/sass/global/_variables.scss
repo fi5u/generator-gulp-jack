@@ -20,6 +20,13 @@ $column-width: 4.375em; // 70px @ 16px
 $gutter-width: 1.875em; // 30px @ 16px
 $grid-padding: 10px;
 
+$susy: (
+    columns: $total-columns,
+    column-width: $column-width,
+    gutters: $gutter-width/$column-width,
+    math: fluid,
+    global-box-sizing: border-box,
+);
 
 /* breakpoints */
 $break-xs: 20em; // 320px @ 16px
@@ -34,6 +41,7 @@ $col1: #d24;
 
 $nav-col: $col1;
 $highlight-col: lighten($col1, 10%);
+$placeholder-col: lighten($col1, 20%);
 $col-scheme: dark; // dark or light
 
 
@@ -44,7 +52,7 @@ $font-body: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Hel
 $font-weight-heavy: 900;
 $font-weight-reg: 300;
 
-$line-h-multiplier: 1.5;
+$line-h: 1.5;
 
 
 /* anim */

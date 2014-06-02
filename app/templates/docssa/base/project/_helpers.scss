@@ -1,7 +1,12 @@
 @include define('project-helpers') {
+    // USAGE: @include _use();
 
-//    @include _add() {
-//
-//    }
-
+    @include _add(selectionColor) {
+        @if $col-scheme == dark {
+            color: #fff;
+        } @else {
+            color: #000;
+        }
+        background: $highlight-col;
+    }
 }

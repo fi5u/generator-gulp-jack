@@ -1,4 +1,4 @@
-@include define('button-bar-skin-promo') {
+@include define("button-bar-skin-promo") {
     %button-bar-skin-promo__button-bar {
         background: #e1e;
         border: 3px solid skyblue;
@@ -9,13 +9,13 @@
         border: 3px solid #333;
     }
 
-    %button-bar-skin-promo__btn_hover {
+    %button-bar-skin-promo__btn--hover {
         background: #a69;
         border-color: #7b9;
     }
 }
 
-@mixin button-bar-skin-promo($selector) {
+@mixin button-bar-skin-promo($selector, $hover: ":hover", $param2: "") {
     #{$selector} {
         @extend %button-bar-skin-promo__button-bar;
     }
@@ -24,7 +24,7 @@
         @extend %button-bar-skin-promo__btn;
 
         &:hover {
-            @extend %button-bar-skin-promo__btn_hover;
+            @extend %button-bar-skin-promo__btn--hover;
         }
     }
 }
