@@ -60,9 +60,5 @@ $nav-trans-dur: 1s;
 $nav-trans-ease: cubic-bezier(x1, y1, x2, y2);
 
 
-/* misc */
-$sub-menu-indent: 10px;
-$img-dir: "../img";
-
 // Use: @media #{$hidpi} { ... }
 $hidpi: "screen and (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi)";
