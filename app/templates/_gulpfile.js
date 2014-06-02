@@ -3,6 +3,7 @@ var sass = require('gulp-ruby-sass');
 var bourbon = require('node-bourbon').includePaths;
 var minifyCSS = require('gulp-minify-css');
 var imagemin = require('gulp-imagemin');
+var newer = require('gulp-newer');
 var http = require('http');
 var lr = require('tiny-lr');
 var lrserver = lr();
@@ -63,6 +64,7 @@ var paths = {<% if (!wordpress) { %><% if (jekyll) { %>
 
 <% if (!wordpress) { %>gulp.task('vendorScripts', function () {
     return gulp.src([paths.jsVendor])
+        .pipe(newer(paths.destJS + '/vendor.js'))
         .pipe(concat('vendor.js'))
         .pipe(uglify())
         .pipe(gulp.dest(paths.destJS));
@@ -77,6 +79,7 @@ gulp.task('libScripts', function () {
 
 gulp.task('scripts', [<% if (!wordpress) { %>'vendorScripts', <% } %>'libScripts'], function () {
     return gulp.src([paths.js])<% if (!wordpress) { %>
+        .pipe(newer(paths.destJS + '/script.js'))
         .pipe(concat('script.js'))<% } %>
         .pipe(gulp.dest(paths.destJS))
         .pipe(refresh(lrserver));
@@ -85,12 +88,10 @@ gulp.task('scripts', [<% if (!wordpress) { %>'vendorScripts', <% } %>'libScripts
 
 gulp.task('styles', function () {
     return gulp.src(paths.sass)
-        .pipe(sass({
-        loadPath: require('node-bourbon').includePaths
-    }
-    ))
-    .pipe(gulp.dest(paths.destCSS))
-    .pipe(refresh(lrserver));
+        .pipe(newer(paths.destCSS))
+        .pipe(sass({loadPath: require('node-bourbon').includePaths}))
+        .pipe(gulp.dest(paths.destCSS))
+        .pipe(refresh(lrserver));
 });
 
 
@@ -121,6 +122,7 @@ gulp.task('php', function () {
 
 gulp.task('images', function () {
     return gulp.src(paths.img)
+        .pipe(newer(paths.destImg))
         .pipe(imagemin({optimizationLevel: 5}))
         .pipe(gulp.dest(paths.destImg))
         .pipe(refresh(lrserver));
