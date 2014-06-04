@@ -23,52 +23,24 @@ var appRoute = '<% if (!jekyll) { %>app<% } else { %>.<% } %>',
     livereloadport = 35729,
     serverport = 5001;
 
-var paths = {<% if (!wordpress) { %><% if (jekyll) { %>
+var paths = {
     app: appRoute,
-    html: appRoute + '/index.html',
+    html: appRoute + '/*{,*/*}.html',<% if (wordpress) { %>
+    php: appRoute + '/*{,*/*}.php',<% } %>
     assets: appRoute + '/assets',
-    sass: appRoute + '/assets/sass/**/*.scss',
-    jsAll: appRoute + '/assets/js/**/*.js',
-    js: appRoute + '/assets/js/*.js',
-    jsLib: appRoute + '/assets/js/lib/*.js',
+    sass: appRoute + '/<% if (!wordpress) { %>assets/<% } %>sass/*{,*/*}.scss',
+    jsAll: appRoute + '/<% if (!wordpress) { %>assets/<% } %>js/*{,*/*}.js',
+    js: appRoute + '/<% if (!wordpress) { %>assets/<% } %>js/*.js',
+    jsLib: appRoute + '/<% if (!wordpress) { %>assets/<% } %>js/lib/*.js',
     jsVendor: appRoute + '/assets/js/vendor/*.js',
-    img: appRoute + '/assets/images/**',
-    sprites: appRoute + '/assets/images/sprites/*.svg',
-    spritesDir: appRoute + '/assets/sass/<% if (docssa) { %>base/project<% } else { %>local<% } %>',
-    dest: destRoute,
-    destJS: destRoute + '/assets/js',
-    destJSLib: destRoute + '/assets/js/lib',
-    destCSS: destRoute + '/assets/css',
-    destImg: destRoute + '/assets/images'<% /* end not wp && is jekyll */ } else { /* not wp &&  not jekyll */ %>
-    app: appRoute,
-    html: appRoute + '/**/*.html',
-    assets: appRoute + '/assets',
-    sass: appRoute + '/assets/sass/**/*.scss',
-    jsAll: appRoute + '/assets/js/**/*.js',
-    js: appRoute + '/assets/js/*.js',
-    jsLib: appRoute + '/assets/js/lib/*.js',
-    jsVendor: appRoute + '/assets/js/vendor/*.js',
-    img: appRoute + '/assets/images/**',
-    sprites: appRoute + '/assets/images/sprites/*.svg',
-    spritesDir: appRoute + '/assets/sass/<% if (docssa) { %>base/project<% } else { %>local<% } %>',
-    dest: destRoute,
-    destJS: destRoute + '/assets/js',
-    destJSLib: destRoute + '/assets/js/lib',
-    destCSS: destRoute + '/assets/css',
-    destImg: destRoute + '/assets/images'<% } /* end not wp && not jekyll */ %><% } else { /* is wp */ %>
-    php: appRoute + '/**/*.php',
-    sass: appRoute + '/sass/**/*.scss',
-    jsAll: appRoute + '/js/**/*.js',
-    jsLib: appRoute + '/js/lib',
-    js: appRoute + '/js/**/*.js',
-    img: appRoute + '/images/**',
-    sprites: appRoute + '/images/sprites/*.svg',
-    spritesDir: appRoute + '/sass/<% if (docssa) { %>base/project<% } else { %>local<% } %>',
-    dest: destRoute + '/wp-content/themes/<%= _.slugify(siteName) %>',
-    destJS: destRoute + '/wp-content/themes/<%= _.slugify(siteName) %>/js',
-    destJSLib: destRoute + '/wp-content/themes/<%= _.slugify(siteName) %>/js/lib',
-    destCSS: destRoute + '/wp-content/themes/<%= _.slugify(siteName) %>',
-    destImg: destRoute + '/wp-content/themes/<%= _.slugify(siteName) %>/images'<% } /* end is wp */ %>
+    img: appRoute + '/<% if (!wordpress) { %>assets/<% } %>images/**',
+    sprites: appRoute + '/<% if (!wordpress) { %>assets/<% } %>images/sprites/*.svg',
+    spritesDir: appRoute + '/<% if (!wordpress) { %>assets/<% } %>sass/<% if (docssa) { %>base/project<% } else { %>local<% } %>',
+    dest: destRoute<% if (wordpress) { %> + '/wp-content/themes/<%= _.slugify(siteName) %>'<% } %>,
+    destJS: destRoute + <% if (wordpress) { %>'/wp-content/themes/<%= _.slugify(siteName) %>/js'<% } else { %>'/assets/js'<% } %>,
+    destJSLib: destRoute + <% if (wordpress) { %>'/wp-content/themes/<%= _.slugify(siteName) %>/js/lib'<% } else { %>'/assets/js/lib'<% } %>,
+    destCSS: destRoute + <% if (wordpress) { %>'/wp-content/themes/<%= _.slugify(siteName) %>'<% } else { %>'/assets/css'<% } %>,
+    destImg: destRoute + <% if (wordpress) { %>'/wp-content/themes/<%= _.slugify(siteName) %>/images'<% } else { %>'/assets/images'<% } %>
 };
 
 var spriteConfig = {
