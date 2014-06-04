@@ -14,6 +14,7 @@
         "gulp-newer": "~0.3.0",
         "ecstatic": "^0.5.1",
         "gulp-watch": "^0.6.4",
+        "gulp-svg-sprites": "~0.1.2",
         "gulp-clean": "^0.2.4",
         "gulp-uglify": "^0.2.1",
         "gulp-concat": "^2.2.0",

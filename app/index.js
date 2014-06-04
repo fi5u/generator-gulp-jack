@@ -162,7 +162,7 @@ var util = require('util'),
             this.directory('wordpress/core', destDir);
             this.copy('wordpress/_wp-config.php', destDir + '/wp-config.php');
             this.mkdir(destDir + '/wp-content/themes/' + this._.slugify(this.siteName));
-            this.mkdir(appDir + '/images');
+            this.directory('images', appDir + '/images');
             this.mkdir(appDir + '/js/lib');
             this.directory('wordpress/theme', appDir);
 
@@ -187,7 +187,7 @@ var util = require('util'),
             }
 
             this.mkdir(appDir + '/assets');
-            this.mkdir(appDir + '/assets/images');
+            this.directory('images', appDir + '/assets/images');
             this.mkdir(appDir + '/assets/js/vendor');
             this.mkdir(appDir + '/assets/js/lib');
 

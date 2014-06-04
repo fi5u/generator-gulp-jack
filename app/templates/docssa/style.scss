@@ -1,8 +1,13 @@
 @charset "UTF-8";
 
 // INIT
+<% if (jekyll || wordpress) { %>
+@import "../../bower_components/normalize.css/_normalize";
+@import "../../bower_components/susy/sass/_susy";
+<% } else { %>
 @import "../../../bower_components/normalize.css/_normalize";
 @import "../../../bower_components/susy/sass/_susy";
+<% } %>
 @import "bourbon";
 
 

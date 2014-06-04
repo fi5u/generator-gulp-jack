@@ -28,6 +28,7 @@ $susy: (
     global-box-sizing: border-box,
 );
 
+
 /* breakpoints */
 $break-xs: 20em; // 320px @ 16px
 $break-s: 30em; // 480px @ 16px
@@ -59,6 +60,7 @@ $line-h: 1.5;
 $nav-trans-dur: 1s;
 $nav-trans-ease: cubic-bezier(x1, y1, x2, y2);
 
-
+$sub-menu-indent: 1em;
+$img-dir: "/assets/images";
 // Use: @media #{$hidpi} { ... }
 $hidpi: "screen and (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi)";
