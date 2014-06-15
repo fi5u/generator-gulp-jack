@@ -31,6 +31,7 @@ var paths = {
     php: appRoute + '/*{,*/*}.php',<% } %>
     assets: appRoute + '/assets',
     sass: appRoute + '/<% if (!wordpress) { %>assets/<% } %>sass/*{,*/*}.scss',
+    fonts: appRoute + '/<% if (!wordpress) { %>assets/<% } %>sass/fonts/**',
     jsAll: appRoute + '/<% if (!wordpress) { %>assets/<% } %>js/*{,*/*}.js',
     js: appRoute + '/<% if (!wordpress) { %>assets/<% } %>js/*.js',
     jsLib: appRoute + '/<% if (!wordpress) { %>assets/<% } %>js/lib/*.js',
@@ -39,9 +40,10 @@ var paths = {
     sprites: appRoute + '/<% if (!wordpress) { %>assets/<% } %>images/sprites/*.svg',
     spritesDir: appRoute + '/<% if (!wordpress) { %>assets/<% } %>sass/<% if (docssa) { %>base/project<% } else { %>local<% } %>',
     dest: destRoute<% if (wordpress) { %> + '/wp-content/themes/<%= _.slugify(siteName) %>'<% } %>,
+    destCSS: destRoute + <% if (wordpress) { %>'/wp-content/themes/<%= _.slugify(siteName) %>'<% } else { %>'/assets/css'<% } %>,
+    destFonts: destRoute + <% if (wordpress) { %>'/wp-content/themes/<%= _.slugify(siteName) %>/fonts'<% } else { %>'/assets/css/fonts'<% } %>,
     destJS: destRoute + <% if (wordpress) { %>'/wp-content/themes/<%= _.slugify(siteName) %>/js'<% } else { %>'/assets/js'<% } %>,
     destJSLib: destRoute + <% if (wordpress) { %>'/wp-content/themes/<%= _.slugify(siteName) %>/js/lib'<% } else { %>'/assets/js/lib'<% } %>,
-    destCSS: destRoute + <% if (wordpress) { %>'/wp-content/themes/<%= _.slugify(siteName) %>'<% } else { %>'/assets/css'<% } %>,
     destImg: destRoute + <% if (wordpress) { %>'/wp-content/themes/<%= _.slugify(siteName) %>/images'<% } else { %>'/assets/images'<% } %>
 };
 
@@ -94,6 +96,12 @@ gulp.task('styles', function () {
         .pipe(sass({loadPath: require('node-bourbon').includePaths}))
         .pipe(gulp.dest(paths.destCSS))
         .pipe(refresh(lrserver));
+});
+
+
+gulp.task('fonts', function () {
+    return gulp.src([paths.fonts])
+        .pipe(gulp.dest(paths.destFonts));
 });
 
 
@@ -192,7 +200,7 @@ gulp.task('tryJekyll', function (cb) {
         .pipe(refresh(lrserver));
 }); */ %>
 
-gulp.task('build', ['scripts', 'sprites', 'styles', 'images',<% if (wordpress) { %>'php',<% } else if (!jekyll) { %>'html',<% } %> 'serve', 'watch']);
+gulp.task('build', ['scripts', 'sprites', 'styles', 'images', 'fonts',<% if (wordpress) { %>'php',<% } else if (!jekyll) { %>'html',<% } %> 'serve', 'watch']);
 
 
 gulp.task('default', <% if (!jekyll) { %>['clean'], <% } %>function () {
