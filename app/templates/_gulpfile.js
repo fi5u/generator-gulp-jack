@@ -6,6 +6,8 @@ var imagemin = require('gulp-imagemin');
 var svgSprites = require('gulp-svg-sprites');
 var svg = svgSprites.svg;
 var png = svgSprites.png;
+var plumber = require('gulp-plumber');
+var gutil = require('gulp-util');
 var newer = require('gulp-newer');
 var http = require('http');
 var lr = require('tiny-lr');
@@ -57,6 +59,11 @@ var spriteConfig = {
     generatePreview: false
 };
 
+var onError = function (err) {
+    gutil.beep();
+    console.log(err);
+};
+
 <% if (!wordpress) { %>gulp.task('vendorScripts', function () {
     return gulp.src([paths.jsVendor])
         .pipe(newer(paths.destJS + '/vendor.js'))
@@ -83,7 +90,7 @@ gulp.task('scripts', [<% if (!wordpress) { %>'vendorScripts', <% } %>'libScripts
 
 gulp.task('styles', function () {
     return gulp.src(paths.sass)
-        .pipe(newer(paths.destCSS))
+        .pipe(plumber(onError))
         .pipe(sass({loadPath: require('node-bourbon').includePaths}))
         .pipe(gulp.dest(paths.destCSS))
         .pipe(refresh(lrserver));
