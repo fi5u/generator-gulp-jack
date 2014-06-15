@@ -1,0 +1,11 @@
+dist
+.editorconfig
+.jshintrc
+.sass-cache
+/assets
+bower_components
+bower.json
+gulpfile.js
+node_modules
+package.json
+.gitignore

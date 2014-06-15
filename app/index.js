@@ -208,6 +208,7 @@ var util = require('util'),
 
         this.copy('_package.json', 'package.json');
         this.copy('_bower.json', 'bower.json');
+        this.copy('_gitignore.txt', '.gitignore');
         this.template('_gulpfile.js', 'gulpfile.js');
     },
 
