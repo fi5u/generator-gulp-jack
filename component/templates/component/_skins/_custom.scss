@@ -1,0 +1,25 @@
+@include define("<%= _.slugify(name) %>-skin-custom") {
+    %<%= _.slugify(name) %>-skin-custom {
+
+    }
+
+    %<%= _.slugify(name) %>-skin-custom--hover {
+
+    }
+}
+
+@mixin <%= _.slugify(name) %>-skin-custom($selector, $hover: ":hover", $param2: "") {
+    #{$selector} {
+        @extend %<%= _.slugify(name) %>-skin-custom;
+    }
+
+    @if $hover == ':hover' {
+        #{$selector}:hover {
+            @extend %<%= _.slugify(name) %>-skin-custom--hover;
+        }
+    } @else {
+        #{$selector}_#{$hover} {
+            @extend %<%= _.slugify(name) %>-skin-custom--hover;
+        }
+    }
+}
