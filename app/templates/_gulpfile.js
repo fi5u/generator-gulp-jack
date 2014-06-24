@@ -116,8 +116,14 @@ gulp.task('fonts', function () {
     lrserver.listen(livereloadport);
 });
 
+<% if (jekyll) { %>gulp.task('jekyll', function () {
+    var spawn = require('child_process').spawn,
+        jekyll = spawn('jekyll', ['build']);
 
-<% if (wordpress) { %>gulp.task('php', function () {
+    jekyll.on('exit', function (code) {
+        console.log('-- Finished Jekyll Build --')
+    })
+});<% } %><% if (wordpress) { %>gulp.task('php', function () {
     return gulp.src(paths.php)
         .pipe(newer(paths.dest))
         .pipe(embedlr())
@@ -156,53 +162,15 @@ gulp.task('watch', function () {
     <% if (!jekyll && !wordpress) { %>gulp.watch(paths.html, ['html']);
     <% } %>gulp.watch([paths.img, '!' + paths.app + '/**/images/sprites{,/**}'], ['images']);
     gulp.watch(paths.sprites, ['sprites']);<% if (wordpress) { %>
-    gulp.watch(paths.php, ['php']);<% } %>
-});
+    gulp.watch(paths.php, ['php']);<% } %><% if (jekyll) { %>
+    gulp.watch([paths.html, './**/*.yml', '!./dist/**', '!./dist/*/**'], ['jekyll']);
 
-
-<% if (jekyll) { %>gulp.task('jekyll', function() {
-    var spawn = require('child_process').spawn,
-    j = spawn('jekyll', ['-w', 'build']);
-
-    j.stdout.on('data', function (data) {
-        console.log('stdout: ' + data);
+    gulp.watch([paths.dest + '/**/*.html']).on('change', function (file) {
+        return gulp.src(paths.dest)
+            .pipe(refresh(lrserver));
     });
-
-    watch({glob: paths.destRoute + '/**'}, function(files) {
-        return files.pipe(refresh(lrserver));
-    });
-
-    gulp.start('build');
-});<% } %>
-
-<% /* Failed examples of getting jekyll to work:
-
-gulp.task('tryJekyll', function (cb) {
-    exec("jekyll build", function (err, stdout, stderr) {
-        console.log(stdout);
-        console.log(stderr);
-        cb(err);
-      });
+    <% } %>
 });
 
-gulp.task('tryJekyll', function (cb) {
-    var spawn = require('child_process').spawn;
 
-    return gulp.src(['*.html', '** /*.html'])
-        .pipe(embedlr())
-        .pipe(intermediate('_data', function (tempDir, cb) {
-            var command = spawn('jekyll', ['build']);
-            command.on('close', function () {
-                cb();
-            });
-        }))
-        .pipe(gulp.dest('dist'))
-        .pipe(refresh(lrserver));
-}); */ %>
-
-gulp.task('build', ['scripts', 'sprites', 'styles', 'images', 'fonts',<% if (wordpress) { %>'php',<% } else if (!jekyll) { %>'html',<% } %> 'serve', 'watch']);
-
-
-gulp.task('default', <% if (!jekyll) { %>['clean'], <% } %>function () {
-    <% if (jekyll) { %>gulp.start('jekyll');<% } else { %>gulp.start('build');<% } %>
-});
+gulp.task('default', [<% if (!jekyll) { %>'clean', <% } %>'scripts', 'sprites', 'styles', 'images', 'fonts', <% if (wordpress) { %>'php', <% } else if (!jekyll) { %>'html', <% } %><% if (jekyll) { %>'jekyll',<% } %> 'serve', 'watch']);
