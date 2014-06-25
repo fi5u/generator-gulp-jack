@@ -20,6 +20,57 @@ var clean = require('gulp-clean');<% } /* end not jekyll */ %><% if (!wordpress)
 var uglify = require('gulp-uglify');
 var concat = require('gulp-concat');<% } /* end not wp */ %>
 
+/* sprite hack to get sprites as mq-friendly placeholders */
+var svgSpritesCssRender = require('gulp-svg-sprites/lib/css-render'),
+    svgSpritesUtils = require('gulp-svg-sprites/lib/utils'),
+    svgSpritesCssUtils = require('gulp-svg-sprites/lib/css-utils');
+
+svgSpritesCssRender.render = function(sprite, config) {
+    var css = '';
+
+    var data = sprite.elements.map(function (element) {
+        var className = element.className = svgSpritesCssUtils.makeClassName(config.className, element.className, config);
+        element.name = className.replace(".", "");
+
+        // output a variable containing the width, height, offset, PNG, and SVG of this sprite
+        css += '$' + element.name + ': ' +
+            svgSpritesUtils.scaleValue(element.width) + 'px ' +
+            svgSpritesUtils.scaleValue(element.height) + 'px ' +
+            '-' + svgSpritesUtils.scaleValue(element.x) + 'px ' +
+            '\'' + svgSpritesUtils.makePath(config.pngPath, svgSpritesUtils.swapFileName(sprite.path), config) + '\' ' +
+            '\'' + svgSpritesUtils.makePath(config.svgPath, sprite.path, config) + '\';\n';
+
+        return element;
+    });
+
+    // output the mixin required to render an actual sprite
+    css +=
+        '@mixin sprite-svg($sprite) {\n' +
+            '$sprite-x: nth($sprite, 3);\n' +
+            '$sprite-png: nth($sprite, 4);\n' +
+            '$sprite-svg: nth($sprite, 5);\n' +
+
+            'width: nth($sprite, 1);\n' +
+            'height: nth($sprite, 2);\n' +
+
+            'background-position: $sprite-x 0;\n' +
+            'background-image: url(#{$sprite-svg});\n' +
+
+            // background image changes if SVG is not supported
+            '.no-svg & {\n' +
+                'background-image: url(#{$sprite-png});\n' +
+            '}\n' +
+        '}';
+
+    return {
+        content: css,
+        elements: data,
+        svgFile: svgSpritesUtils.makePath(config.svgPath, sprite.path, config)
+    };
+}
+/* end sprite hack */
+
+
 var appRoute = '<% if (!jekyll) { %>app<% } else { %>.<% } %>',
     destRoute = 'dist',
     livereloadport = 35729,
