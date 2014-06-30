@@ -1,7 +1,3 @@
-form {
-
-}
-
 ::-webkit-input-placeholder {
    color: $placeholder-col;
 }
@@ -17,3 +13,15 @@ form {
 :-ms-input-placeholder {
    color: $placeholder-col;
 }
+<% if (docssa) { %>
+
+// Custom checkbox/radio
+*[type="checkbox"] {
+    @include _use(customCheck);
+    @include _use(customCheckSkin);
+}
+
+*[type="radio"] {
+    @include _use(customRadio);
+    @include _use(customRadioSkin);
+}<% } %>
