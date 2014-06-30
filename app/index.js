@@ -55,6 +55,10 @@ var util = require('util'),
                                 if (err) throw err;
                             });
                         }
+
+                        fs.rename(projectDir + '/bower_components/jquery.customSelect/jquery.customSelect.js', projectDir + '/' + appDir + '/assets/js/vendor/jquery.customSelect.js', function (err) {
+                            if (err) throw err;
+                        });
                     }
                 });
             }
