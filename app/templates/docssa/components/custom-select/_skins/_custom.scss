@@ -1,0 +1,59 @@
+@include define("custom-select-skin-custom") {
+    @include _add(custom-select-skin-custom) {
+
+    }
+
+    @include _add(custom-select-skin-custom--hover) {
+
+    }
+
+    @include _add(custom-select-skin-custom--open) {
+
+    }
+
+    @include _add(custom-select-skin-custom--focus) {
+
+    }
+
+    @include _add(custom-select-skin-custom--disabled-option) {
+
+    }
+
+    @include _add(custom-select-skin-custom--disabled) {
+
+    }
+
+    @include _add(custom-select-skin-custom--inner) {
+
+    }
+}
+
+@mixin custom-select-skin-custom($selector, $hover: ":hover", $param2: "") {
+    #{$selector} {
+        @extend %custom-select-skin-custom !optional;
+    }
+
+    #{$selector}Hover {
+        @extend %custom-select-skin-custom--hover !optional;
+    }
+
+    #{$selector}Open {
+        @extend %custom-select-skin-custom--open !optional;
+    }
+
+    #{$selector}Focus {
+        @extend %custom-select-skin-custom--focus !optional;
+    }
+
+    #{$selector}DisabledOption {
+        @extend %custom-select-skin-custom--disabled-option !optional;
+    }
+
+    #{$selector}Disabled {
+        @extend %custom-select-skin-custom--disabled !optional;
+    }
+
+    #{$selector}Inner {
+        @extend %custom-select-skin-custom--inner !optional;
+    }
+}

@@ -1,4 +1,4 @@
-/* sizes */
+// sizes
 $unit-default: 16;
 $unit-default-px: $unit-default + px;
 
@@ -14,7 +14,7 @@ $offcanvas-nav-w: 70%;
 $footer-h: 200px;
 
 
-/* grid */
+// grid
 $total-columns: 12;
 $column-width: 4.375em; // 70px @ 16px
 $gutter-width: 1.875em; // 30px @ 16px
@@ -29,7 +29,7 @@ $susy: (
 );
 
 
-/* breakpoints */
+// breakpoints
 $break-xs: 20em; // 320px @ 16px
 $break-s: 30em; // 480px @ 16px
 $break-m: 48em; // 768px @ 16px
@@ -37,7 +37,7 @@ $break-l: 64em; // 1024px; @ 16px
 $nav-break: $break-m;
 
 
-/* colors */
+// colors
 $col1: #d24;
 
 $nav-col: $col1;
@@ -46,7 +46,7 @@ $placeholder-col: lighten($col1, 20%);
 $col-scheme: dark; // dark or light
 
 
-/* typography */
+// typography
 $font-heading: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 $font-body: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 
@@ -56,7 +56,7 @@ $font-weight-reg: 300;
 $line-h: 1.5;
 
 
-/* anim */
+// anim
 $nav-trans-dur: 1s;
 $nav-trans-ease: cubic-bezier(x1, y1, x2, y2);
 

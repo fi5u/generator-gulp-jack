@@ -10,16 +10,16 @@
 
 @mixin <%= _.slugify(name) %>-skin-custom($selector, $hover: ":hover", $param2: "") {
     #{$selector} {
-        @extend %<%= _.slugify(name) %>-skin-custom;
+        @extend %<%= _.slugify(name) %>-skin-custom !optional;
     }
 
     @if $hover == ':hover' {
         #{$selector}:hover {
-            @extend %<%= _.slugify(name) %>-skin-custom--hover;
+            @extend %<%= _.slugify(name) %>-skin-custom--hover !optional;
         }
     } @else {
         #{$selector}_#{$hover} {
-            @extend %<%= _.slugify(name) %>-skin-custom--hover;
+            @extend %<%= _.slugify(name) %>-skin-custom--hover !optional;
         }
     }
 }

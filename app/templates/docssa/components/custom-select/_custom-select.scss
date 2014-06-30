@@ -1,0 +1,148 @@
+@import '../../base/utils/__utils';
+@import '../../base/project/__project';
+
+
+//usage examples:
+//@include custom-select();
+//
+//@include custom-select('.my-custom-select', $defaultSkin: false);
+//@include custom-select-skin-custom('.my-custom-select');
+
+// _____ STRUCTURE _____ //
+
+@include define("custom-select") {
+    @include _add(custom-select) {
+        width: 100%;
+        padding: 7px 9px;
+    }
+
+    @include _add(custom-select--hover) {
+
+    }
+
+    @include _add(custom-select--open) {
+
+    }
+
+    @include _add(custom-select--focus) {
+
+    }
+
+    @include _add(custom-select--disabled-option) {
+
+    }
+
+    @include _add(custom-select--disabled) {
+
+    }
+
+    @include _add(custom-select--inner) {
+
+    }
+}
+
+@mixin custom-select($selector: ".custom-select", $defaultSkin: true) {
+    #{$selector} {
+        @extend %custom-select !optional;
+    }
+
+    #{$selector}Hover {
+        @extend %custom-select--hover !optional;
+    }
+
+    #{$selector}Open {
+        @extend %custom-select--open !optional;
+    }
+
+    #{$selector}Focus {
+        @extend %custom-select--focus !optional;
+    }
+
+    #{$selector}DisabledOption {
+        @extend %custom-select--disabled-option !optional;
+    }
+
+    #{$selector}Disabled {
+        @extend %custom-select--disabled !optional;
+    }
+
+    #{$selector}Inner {
+        @extend %custom-select--inner !optional;
+    }
+
+    @if $defaultSkin != false {
+        @include custom-select-skin-default($selector);
+    }
+}
+
+
+// _____ SKIN _____ //
+
+@import '../../base/project/_variables';
+@import '../../base/project/_helpers';
+
+@include define("custom-select-skin-default") {
+    @include _add(custom-select-skin-default) {
+        background: #fff url(#{$img-dir}/dropdown-arrow.svg) right center no-repeat;
+        border: 1px solid #ddd;
+        color: #555;
+
+        @at-root .no-svg & {
+            background-image: url(#{$img-dir}/dropdown-arrow.png);
+        }
+    }
+
+    @include _add(custom-select-skin-default--hover) {
+
+    }
+
+    @include _add(custom-select-skin-default--open) {
+
+    }
+
+    @include _add(custom-select-skin-default--focus) {
+
+    }
+
+    @include _add(custom-select-skin-default--disabled-option) {
+
+    }
+
+    @include _add(custom-select-skin-default--disabled) {
+
+    }
+
+    @include _add(custom-select-skin-default--inner) {
+
+    }
+}
+
+@mixin custom-select-skin-default($selector) {
+    #{$selector} {
+        @extend %custom-select-skin-default !optional;
+    }
+
+    #{$selector}Hover {
+        @extend %custom-select-skin-default--hover !optional;
+    }
+
+    #{$selector}Open {
+        @extend %custom-select-skin-default--open !optional;
+    }
+
+    #{$selector}Focus {
+        @extend %custom-select-skin-default--focus !optional;
+    }
+
+    #{$selector}DisabledOption {
+        @extend %custom-select-skin-default--disabled-option !optional;
+    }
+
+    #{$selector}Disabled {
+        @extend %custom-select-skin-default--disabled !optional;
+    }
+
+    #{$selector}Inner {
+        @extend %custom-select-skin-default--inner !optional;
+    }
+}

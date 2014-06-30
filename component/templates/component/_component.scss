@@ -3,13 +3,13 @@
 
 
 //usage examples:
-//@include example();
-//@include example('.example2');
-//@include example('.example3', 'myHoverClass');
-//@include example('.example4', $param2: 'someParam', $hover: 'myHover');
+//@include <%= _.slugify(name) %>();
+//@include <%= _.slugify(name) %>('.<%= _.slugify(name) %>2');
+//@include <%= _.slugify(name) %>('.<%= _.slugify(name) %>3', 'myHoverClass');
+//@include <%= _.slugify(name) %>('.<%= _.slugify(name) %>4', $param2: 'someParam', $hover: 'myHover');
 //
-//@include example('.example5', $defaultSkin: false);
-//@include example-skin-alt('.example5');
+//@include <%= _.slugify(name) %>('.<%= _.slugify(name) %>5', $defaultSkin: false);
+//@include <%= _.slugify(name) %>-skin-alt('.example5');
 
 // _____ STRUCTURE _____ //
 
@@ -25,7 +25,7 @@
 
 @mixin <%= _.slugify(name) %>($selector: ".<%= _.slugify(name) %>", $hover: ':hover', $param: "", $defaultSkin: true) {
     #{$selector} {
-        @extend %<%= _.slugify(name) %>;
+        @extend %<%= _.slugify(name) %> !optional;
     }
 
     // Add elements like:
@@ -35,11 +35,11 @@
 
     @if $hover == ':hover' {
         #{$selector}:hover {
-            @extend %<%= _.slugify(name) %>--hover;
+            @extend %<%= _.slugify(name) %>--hover !optional;
         }
     } @else {
         #{$selector}_#{$hover} {
-            @extend %<%= _.slugify(name) %>--hover;
+            @extend %<%= _.slugify(name) %>--hover !optional;
         }
     }
 
@@ -66,7 +66,7 @@
 
 @mixin <%= _.slugify(name) %>-skin-default($selector, $hover: ":hover", $param: "") {
     #{$selector} {
-        @extend %<%= _.slugify(name) %>-skin-default;
+        @extend %<%= _.slugify(name) %>-skin-default !optional;
     }
 
     // Add elements like:
@@ -76,11 +76,11 @@
 
     @if $hover == ':hover' {
         #{$selector}:hover {
-            @extend %<%= _.slugify(name) %>-skin-default--hover;
+            @extend %<%= _.slugify(name) %>-skin-default--hover !optional;
         }
     } @else {
         #{$selector}_#{$hover} {
-            @extend %<%= _.slugify(name) %>-skin-default--hover;
+            @extend %<%= _.slugify(name) %>-skin-default--hover !optional;
         }
     }
 }

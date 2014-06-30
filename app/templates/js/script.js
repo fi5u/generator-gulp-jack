@@ -3,7 +3,10 @@
     /*
      * VARIABLES
      */
-    var customSelect = $('select').customSelect();
+    var customSelect = $('select').customSelect({
+        customClass: 'custom-select'
+    });
+
 
 
     /*
