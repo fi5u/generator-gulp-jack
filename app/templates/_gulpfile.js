@@ -87,7 +87,7 @@ var paths = {
     js: appRoute + '/<% if (!wordpress) { %>assets/<% } %>js/*.js',
     jsLib: appRoute + '/<% if (!wordpress) { %>assets/<% } %>js/lib/*.js',
     jsVendor: appRoute + '/assets/js/vendor/*.js',
-    img: appRoute + '/<% if (!wordpress) { %>assets/<% } %>images/**',
+    img: appRoute + '/<% if (!wordpress) { %>assets/<% } %>images/**/*',
     sprites: appRoute + '/<% if (!wordpress) { %>assets/<% } %>images/sprites/*.svg',
     spritesDir: appRoute + '/<% if (!wordpress) { %>assets/<% } %>sass/<% if (docssa) { %>base/project<% } else { %>local<% } %>',
     dest: destRoute<% if (wordpress) { %> + '/wp-content/themes/<%= _.slugify(siteName) %>'<% } %>,
@@ -196,11 +196,24 @@ gulp.task('sprites', function () {
 });
 
 
-gulp.task('images', function () {
+gulp.task('toPng', function () {
+    gulp.src([paths.assets + '/images/**/*.svg', '!' + paths.assets + '/images/svg-sprite.svg', '!' + paths.assets + '/images/sprites/**'])
+        .pipe(svg2png())
+        .pipe(imagemin({
+            progressive: true,
+            interlaced: true
+        }))
+        .pipe(gulp.dest(paths.destImg));
+});
+
+
+gulp.task('images', ['toPng'], function () {
     return gulp.src([paths.img, '!' + paths.app + '/**/images/sprites{,/**}'])
-        /*.pipe(newer(paths.destImg))*/
-        /*.pipe(svg2png())*/
-        /*.pipe(imagemin({optimizationLevel: 5}))*/
+        .pipe(newer(paths.destImg))
+        .pipe(imagemin({
+            progressive: true,
+            interlaced: true
+        }))
         .pipe(gulp.dest(paths.destImg))
         .pipe(refresh(lrserver));
 });
