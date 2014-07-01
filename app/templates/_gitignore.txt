@@ -9,3 +9,4 @@ gulpfile.js
 node_modules
 package.json
 .gitignore
+project_assets
