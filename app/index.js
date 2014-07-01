@@ -212,6 +212,8 @@ var util = require('util'),
             }
         }
 
+        this.directory('originals', appDir + '/originals');
+        this.mkdir(appDir + '/originals/_layout');
         this.copy('_package.json', 'package.json');
         this.copy('_bower.json', 'bower.json');
         this.copy('_gitignore.txt', '.gitignore');
