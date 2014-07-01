@@ -46,6 +46,10 @@ var util = require('util'),
                             fs.rename(projectDir + '/bower_components/modernizr/modernizr.js', projectDir + '/' + appDir + '/js/lib/modernizr.js', function (err) {
                                 if (err) throw err;
                             });
+
+                            fs.rename(projectDir + '/bower_components/jquery.customSelect/jquery.customSelect.js', projectDir + '/' + appDir + '/js/lib/jquery.customSelect.js', function (err) {
+                                if (err) throw err;
+                            });
                         } else {
                             fs.rename(projectDir + '/bower_components/modernizr/modernizr.js', projectDir + '/' + appDir + '/assets/js/lib/modernizr.js', function (err) {
                                 if (err) throw err;
@@ -54,11 +58,13 @@ var util = require('util'),
                             fs.rename(projectDir + '/bower_components/jquery-legacy/jquery.min.js', projectDir + '/' + appDir + '/assets/js/lib/jquery.min.js', function (err) {
                                 if (err) throw err;
                             });
+
+                            fs.rename(projectDir + '/bower_components/jquery.customSelect/jquery.customSelect.js', projectDir + '/' + appDir + '/assets/js/vendor/jquery.customSelect.js', function (err) {
+                                if (err) throw err;
+                            });
                         }
 
-                        fs.rename(projectDir + '/bower_components/jquery.customSelect/jquery.customSelect.js', projectDir + '/' + appDir + '/assets/js/vendor/jquery.customSelect.js', function (err) {
-                            if (err) throw err;
-                        });
+
                     }
                 });
             }
@@ -168,7 +174,9 @@ var util = require('util'),
             this.mkdir(destDir + '/wp-content/themes/' + this._.slugify(this.siteName));
             this.mkdir(appDir + '/fonts');
             this.directory('images', appDir + '/images');
+            this.directory('js', appDir + '/js');
             this.mkdir(appDir + '/js/lib');
+            this.mkdir(appDir + '/js/vendor');
             this.directory('wordpress/theme', appDir);
 
             if (this.docssa) {

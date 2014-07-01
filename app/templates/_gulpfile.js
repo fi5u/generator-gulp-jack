@@ -80,7 +80,7 @@ var paths = {
     app: appRoute,
     html: appRoute + '/*{,*/*}.html',<% if (wordpress) { %>
     php: appRoute + '/*{,*/*}.php',<% } %>
-    assets: appRoute + '/assets',
+    assets: appRoute + '<% if (!wordpress) { %>/assets<% } %>',
     sass: appRoute + '/<% if (!wordpress) { %>assets/<% } %>sass/*{,*/*}.scss',
     fonts: appRoute + '/<% if (!wordpress) { %>assets/<% } %>sass/fonts/**',
     jsAll: appRoute + '/<% if (!wordpress) { %>assets/<% } %>js/*{,*/*}.js',
