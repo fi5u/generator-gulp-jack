@@ -4,6 +4,7 @@ var bourbon = require('node-bourbon').includePaths;
 var minifyCSS = require('gulp-minify-css');
 var imagemin = require('gulp-imagemin');
 var svgSprites = require('gulp-svg-sprites');
+var svg2png = require('gulp-svg2png');
 var svg = svgSprites.svg;
 var png = svgSprites.png;
 var plumber = require('gulp-plumber');
@@ -15,8 +16,7 @@ var lrserver = lr();
 var refresh = require('gulp-livereload');
 var embedlr = require('gulp-embedlr');
 var ecstatic = require('ecstatic');<% if (jekyll) { %>
-var watch = require('gulp-watch');<% } else { /* not jekyll */ %>
-var clean = require('gulp-clean');<% } /* end not jekyll */ %><% if (!wordpress) { %>
+var watch = require('gulp-watch');<% } /* end not jekyll */ %><% if (!wordpress) { %>
 var uglify = require('gulp-uglify');
 var concat = require('gulp-concat');<% } /* end not wp */ %>
 
@@ -156,9 +156,7 @@ gulp.task('fonts', function () {
 });
 
 
-<% if (!jekyll) { %>gulp.task('clean', function () {
-    return gulp.src(['.tmp', paths.dest], { read: false }).pipe(clean());
-});
+<% if (!jekyll) { %>gulp.task('clean', require('del').bind(null, ['.tmp', paths.dest]));
 
 
 <% } /* end not jekyll */ %>gulp.task('serve', function () {
@@ -200,8 +198,9 @@ gulp.task('sprites', function () {
 
 gulp.task('images', function () {
     return gulp.src([paths.img, '!' + paths.app + '/**/images/sprites{,/**}'])
-        .pipe(newer(paths.destImg))
-        .pipe(imagemin({optimizationLevel: 5}))
+        /*.pipe(newer(paths.destImg))*/
+        /*.pipe(svg2png())*/
+        /*.pipe(imagemin({optimizationLevel: 5}))*/
         .pipe(gulp.dest(paths.destImg))
         .pipe(refresh(lrserver));
 });
@@ -223,5 +222,8 @@ gulp.task('watch', function () {
     <% } %>
 });
 
+gulp.task('build', ['scripts', 'sprites', 'styles', 'images', 'fonts', <% if (wordpress) { %>'php', <% } else if (!jekyll) { %>'html', <% } %><% if (jekyll) { %>'jekyll',<% } %> 'serve', 'watch']);
 
-gulp.task('default', [<% if (!jekyll) { %>'clean', <% } %>'scripts', 'sprites', 'styles', 'images', 'fonts', <% if (wordpress) { %>'php', <% } else if (!jekyll) { %>'html', <% } %><% if (jekyll) { %>'jekyll',<% } %> 'serve', 'watch']);
+gulp.task('default', <% if (!jekyll) { %>['clean'],<% } %> function () {
+    gulp.start('build');
+});
