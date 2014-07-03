@@ -17,6 +17,7 @@ var refresh = require('gulp-livereload');
 var embedlr = require('gulp-embedlr');
 var ecstatic = require('ecstatic');<% if (jekyll) { %>
 var watch = require('gulp-watch');<% } /* end not jekyll */ %><% if (!wordpress) { %>
+var insert = require('gulp-insert');
 var uglify = require('gulp-uglify');
 var concat = require('gulp-concat');<% } /* end not wp */ %>
 
@@ -122,6 +123,7 @@ var onError = function (err) {
         .pipe(newer(paths.destJS + '/vendor.js'))
         .pipe(concat('vendor.js'))
         .pipe(uglify())
+        .pipe(insert.wrap('(function (window, document, $, undefined) {', '})(window, document, jQuery);'))
         .pipe(gulp.dest(paths.destJS));
 });<% } %>
 
