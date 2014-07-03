@@ -22,7 +22,8 @@
         min-height: 100%;
 
         font-family: $font-body;
-        @include remIt(font-size, $unit-default);
+        // Set the body font size to $base-font-size
+        @include font-size();
         color: #000;
         line-height: $line-h;
 

@@ -110,11 +110,24 @@ $placeholders: ();
 // placeholder implementor
 
 @mixin _use($name) {
-
   @if $current-breakpoint == $default-breakpoint {
     @extend %#{$name} !optional;
   } @else {
     @extend %#{$name}-#{$current-breakpoint} !optional;
   }
+}
 
+
+@function palette($palette, $tone: 'base') {
+    $palette-color: map-get($palettes, $palette);
+    @if $palette-color == null {
+        @warn "`#{$palette}` doesn't exist in palettes.";
+    }
+    $palette-tone: map-get($palette-color, $tone);
+
+    @if $palette-tone == null {
+        @warn "`#{$tone}` doesn't exist in palettes";
+    }
+
+    @return map-get($palette-color, $tone);
 }

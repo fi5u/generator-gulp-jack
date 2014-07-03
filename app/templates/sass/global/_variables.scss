@@ -1,14 +1,16 @@
 // sizes
-$unit-default: 16;
-$unit-default-px: $unit-default + px;
+<% if (!docssa) { %>
+$base-font-size; 16;
+<% } %>
 
-$font-size-xxxl: 2.25; // 36px @ 16px
-$font-size-xxl: 1.5; // 24px @ 16px
-$font-size-xl: 1.125; // 18px @ 16px
-$font-size-l: 1; // 16px @ 16px
-$font-size-m: 0.875; // 14px @ 16px
-$font-size-s: 0.75; // 12px @ 16px
-$font-size-xs: 0.625; // 10px @ 16px
+$font-size: (
+    xs: 0.625, // 10px @ 16px
+    s: 0.75, // 12px @ 16px
+    m: 0.875, // 14px @ 16px
+    l: 1, // 16px @ 16px
+    xl: 1.125, // 18px @ 16px
+    xl2: 1.5 // 24px @ 16px
+);
 
 $offcanvas-nav-w: 70%;
 $footer-h: 200px;
@@ -38,11 +40,25 @@ $nav-break: $break-m;
 
 
 // colors
-$col1: #d24;
+$palettes: (
+    primary: (
+        light: lighten(#d24, 10%),
+        base: #d24
+    ),
+    gray: (
+        base: #999
+    ),
+    white: (
+        base: #fff
+    ),
+    black: (
+        base: #000
+    )
+);
 
-$nav-col: $col1;
-$highlight-col: lighten($col1, 10%);
-$placeholder-col: lighten($col1, 20%);
+$nav-col: palette(primary);
+$highlight-col: palette(primary, light);
+$placeholder-col: palette(primary, light);
 $col-scheme: dark; // dark or light
 
 

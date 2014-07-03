@@ -19,14 +19,14 @@
     //usage @ include font-size(2, 3) or without vars = 1rem font-size and $line-h line-height
     //usage or just with one value for the line height to be automatically applied
 
-    font-size     : ($size * $unit-default) + px;
-    line-height   : ($line * $unit-default) + px;
+    font-size     : ($size * $base-font-size) + px;
+    line-height   : ($line * $base-font-size) + px;
     font-size     : $size + rem;
     line-height   : $line + rem;
 }
 
 @mixin margin-bottom($margin: $line-h) {
-    margin-bottom: $margin * $unit-default + px;
+    margin-bottom: $margin * $base-font-size + px;
     margin-bottom: $margin + rem;
 }
 

@@ -10,7 +10,7 @@
     @else {
         @if unitless($val) {
             @if $val == 0 { @return $val }
-            @else { @return $val * $unit-default};
+            @else { @return $val * $base-font-size};
         } @else { @return $val};
     }
 }
@@ -25,4 +25,18 @@
             @else { @return $val+rem};
         } @else { @return $val};
     }
+}
+
+@function palette($palette, $tone: 'base') {
+    $palette-color: map-get($palettes, $palette);
+    @if $palette-color == null {
+        @warn "`#{$palette}` doesn't exist in palettes.";
+    }
+    $palette-tone: map-get($palette-color, $tone);
+
+    @if $palette-tone == null {
+        @warn "`#{$tone}` doesn't exist in palettes";
+    }
+
+    @return map-get($palette-color, $tone);
 }
