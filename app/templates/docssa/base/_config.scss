@@ -2,6 +2,9 @@
 
 $base-font-size: 16;
 
+// Set the line height multiplier to calculate default line-height (in px and rem)
+$line-height-multiplier: 1.5;
+
 // breakpoints
 $breakpoints: (
     "xs": 20em,

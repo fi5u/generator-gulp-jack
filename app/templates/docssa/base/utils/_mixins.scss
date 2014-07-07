@@ -394,33 +394,35 @@
 
 
 @mixin font-size($size: "") {
-    // Accepts
-    // • a value from font-size map,
-    // • a unitless value (treated as rem)
-    // • a px value
-    // Returns
-    // • font size in rem with px fallback
+    // Size accepts:
+    // • value from $font-size map
+    // • rem value
+    // • px value
+    // • unitless value (treated as rem)
+    // • empty (a default of base font size will be returned)
 
-    @if $size == "" {
-        // Work out rem from px value
-        font-size: $base-font-size;
-        font-size: (($base-font-size / ($base-font-size * 0 + 1)) / $base-font-size) + rem;
+    font-size: size($size, px);
+    font-size: size($size, rem);
+}
+
+
+@mixin line-height($size: "") {
+    // Size accepts:
+    // • value from $font-size map
+    // • rem value
+    // • px value
+    // • unitless value
+    //   (treated as a line-height multiplier, i.e. $size is returned)
+    // • empty (a default line-height of $base-font-size * $line-height-multiplier will be returned)
+
+    $unitless: false;
+    @if $size != '' and type-of($size) != string and unit($size) == '' {
+        $unitless: true;
+    }
+    @if $unitless == false {
+        line-height: size($size, px, $line-height-multiplier, $unitless);
+        line-height: size($size, rem, $line-height-multiplier, $unitless);
     } @else {
-        $user-font-size: map-get($font-size, $size);
-
-        @if $user-font-size != null {
-          font-size: ($user-font-size * $base-font-size) + px;
-          font-size: $user-font-size + rem;
-        } @else if unit($size) == '' {
-            // No unit treat as rem
-            font-size: ($size * $base-font-size) + px;
-            font-size: $size + rem;
-        } @else if unit($size) == 'px'{
-            // Work out rem from px value
-            font-size: $size;
-            font-size: (($size / ($size * 0 + 1)) / $base-font-size) + rem;
-        } @else {
-            @warn "Font size error: use a value from the size map, a unitless rem value or a px value";
-        }
+        line-height: size($size, null, null, $unitless);
     }
 }

@@ -14,18 +14,20 @@
         width: 100%;
         height: 100%;
 
-        font-size: 100%;
+        // Generates a base font size in percentage
+        // to which 1 rem will equal
+        font-size: $base-font-size / 16 * 100%;
+        // Set a default line-height of $base-font-size * $line-height-multiplier
+        // (in rem with px fallback)
+        @include line-height();
     }
 
     body {
         width: 100%;
         min-height: 100%;
 
-        font-family: $font-body;
-        // Set the body font size to $base-font-size
-        @include font-size();
-        color: #000;
-        line-height: $line-h;
+        font-family: font-family();
+        color: palette(black);
 
         background: #fff;
 

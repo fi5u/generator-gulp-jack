@@ -118,8 +118,9 @@ $placeholders: ();
 }
 
 
-@function palette($palette, $tone: 'base') {
+@function palette($palette, $tone: "base") {
     $palette-color: map-get($palettes, $palette);
+
     @if $palette-color == null {
         @warn "`#{$palette}` doesn't exist in palettes.";
     }
@@ -130,4 +131,87 @@ $placeholders: ();
     }
 
     @return map-get($palette-color, $tone);
+}
+
+
+@function font-family($name: "f-body") {
+    $font-family: map-get($font-families, $name);
+
+    @if $font-family == null {
+        @warn "`#{$name}` doesn't exist in $font-families map. Please choose from:";
+        @each $font-family in $font-families {
+            @warn " #{$font-family}";
+        }
+        @warn ".";
+    }
+
+    @return $font-family;
+}
+
+
+@function size($size, $unit, $multiplier:'', $unitless:false) {
+    // $size accepts
+    // • a value from font-size map,
+    // • a unitless value (treated as rem)
+    // • a px value
+    // $unit accepts
+    // • px or rem
+    // $multiplier accepts
+    // • int/decimal
+    // (only applicable when no $size is supplied)
+    // $unitless accepts
+    // • bool
+    // Returns
+    // • size in rem with px fallback
+    // or if $unitless
+    // • $size
+
+    @if $unitless == true {
+        @return $size;
+    } @else {
+        @if $size == "" {
+            @if $multiplier != '' {
+                // Work out rem from px value using multiplier
+                @if $unit == px {
+                    @return ($base-font-size * $multiplier) + px;
+                } @else {
+                    @return ((($base-font-size * $multiplier) / ($base-font-size * 0 + 1)) / $base-font-size) + rem;
+                }
+            } @else {
+                // Work out rem from px value
+                @if $unit == px {
+                    @return $base-font-size + px;
+                } @else {
+                    @return (($base-font-size / ($base-font-size * 0 + 1)) / $base-font-size) + rem;
+                }
+            }
+
+        } @else {
+            $user-font-size: map-get($font-size, $size);
+
+            @if $user-font-size != null {
+                @if $unit == px {
+                    @return ($user-font-size * $base-font-size) + px;
+                } @else {
+                    @return $user-font-size + rem;
+                }
+            } @else if unit($size) == '' or unit($size) == rem {
+                // Rem or no unit treat as rem
+                @if $unit == px {
+                    @return (($size / ($size * 0 + 1)) * $base-font-size) + px;
+                } @else {
+                    @return ($size / ($size * 0 + 1)) + rem;
+                }
+            } @else if unit($size) == 'px'{
+                // Work out rem from px value
+                @if $unit == px {
+                    @return $size;
+                } @else {
+                    @return (($size / ($size * 0 + 1)) / $base-font-size) + rem;
+                }
+            } @else {
+                @warn "Font size error: use a value from the size map, a unitless rem value or a px value";
+            }
+        }
+    }
 }

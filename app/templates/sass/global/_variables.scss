@@ -1,17 +1,3 @@
-// sizes
-<% if (!docssa) { %>
-$base-font-size; 16;
-<% } %>
-
-$font-size: (
-    xs: 0.625, // 10px @ 16px
-    s: 0.75, // 12px @ 16px
-    m: 0.875, // 14px @ 16px
-    l: 1, // 16px @ 16px
-    xl: 1.125, // 18px @ 16px
-    xl2: 1.5 // 24px @ 16px
-);
-
 $offcanvas-nav-w: 70%;
 $footer-h: 200px;
 
@@ -62,14 +48,30 @@ $placeholder-col: palette(primary, light);
 $col-scheme: dark; // dark or light
 
 
-// typography
-$font-heading: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
-$font-body: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+// TYPOGRAPHY
+// see other typographic settings in base>_config
 
-$font-weight-heavy: 900;
-$font-weight-reg: 300;
+// font stacks
+$f-stack-helvetica-l: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 
-$line-h: 1.5;
+// font maps
+$font-families: (
+    f-heading: $f-stack-helvetica-l,
+    f-body: $f-stack-helvetica-l
+);
+
+// sizes
+<% if (!docssa) { %>
+$base-font-size; 16;
+<% } %>
+$font-size: (
+    xs: 0.625,  // 10px @ 16px
+    s: 0.75,    // 12px @ 16px
+    m: 0.875,   // 14px @ 16px
+    l: 1,       // 16px @ 16px
+    xl: 1.125,  // 18px @ 16px
+    xl2: 1.5    // 24px @ 16px
+);
 
 
 // anim
