@@ -1,0 +1,180 @@
+@import '../../base/utils/__utils';
+@import '../../base/project/__project';
+
+
+//usage examples:
+//@include oc-nav();
+//
+//@include oc-nav('.my-oc-nav', $defaultSkin: false);
+//@include oc-nav-skin-custom('.my-oc-nav');
+
+
+// ________ VARS ________ //
+
+$oc-nav-mq: s;
+$oc-nav-sz-w-nav: 220px;
+$oc-nav-c-overlay: #d24;
+$oc-nav-c-btn: skyblue;
+$oc-nav-c-item-font: #000;
+$oc-nav-c-item-font--hover: $oc-nav-c-item-font;
+$oc-nav-c-item: lighten($oc-nav-c-overlay, 5%);
+$oc-nav-c-item--hover: #d24;
+$oc-nav-c-nav: $oc-nav-c-item;
+$oc-nav-anim-dur: .25s;
+$oc-nav-anim-ease: ease-in-out;
+$oc-nav-op-overlay: 0.4; // overlay opacity
+
+
+// _____ STRUCTURE _____ //
+
+@include define("oc-nav") {
+    @include _add(oc-nav) {
+
+        // Default and small screen nav structure styles
+        @include position(fixed, 0px auto 0px 0px);
+        z-index: 999999;
+        @include size($oc-nav-sz-w-nav 100%);
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        @include transform(translateX(-$oc-nav-sz-w-nav));
+
+        ul {
+            padding: 0;
+        }
+
+        li {
+            a {
+                display: block;
+                padding: 1em;
+            }
+        }
+
+        // Full width nav structure styles
+        @include breakpoint(s) {
+            position: static;
+            width: auto;
+            @include transform(translateX(0));
+
+            li {
+                @include inline-block;
+
+                a {
+                    display: inline;
+                    padding: 0;
+                }
+            }
+        }
+    }
+
+    @include _add(oc-nav_is_visible) {
+        @include transform(translateX(0));
+    }
+
+    @include _add(oc-nav--btn) {
+        @include inline-block;
+        position: relative;
+
+        @include breakpoint(s) {
+            display: none;
+        }
+    }
+
+    @include _add(oc-nav--overlay) {
+        @include position(fixed, 0px 0px 0px 0px);
+        z-index: 999998;
+    }
+
+}
+
+@mixin oc-nav($selector: ".nav", $defaultSkin: true) {
+    #{$selector} {
+        @extend %oc-nav !optional;
+    }
+
+    #{$selector}_is_visible {
+        @extend %oc-nav_is_visible !optional;
+    }
+
+    #{$selector}--btn {
+        @extend %oc-nav--btn !optional;
+    }
+
+    #{$selector}--overlay {
+        @extend %oc-nav--overlay !optional;
+    }
+
+    @if $defaultSkin != false {
+        @include oc-nav-skin-default($selector);
+    }
+}
+
+
+// _____ SKIN _____ //
+
+@import '../../base/project/_variables';
+@import '../../base/project/_helpers';
+
+@include define("oc-nav-skin-default") {
+    @include _add(oc-nav-skin-default) {
+
+        // Default and small screen nav skin styles
+        background: $oc-nav-c-nav;
+        @include transition(all $oc-nav-anim-dur $oc-nav-anim-ease);
+
+        li {
+            list-style: none;
+
+            a {
+                color: $oc-nav-c-item-font;
+
+                &:hover {
+                    color: $oc-nav-c-item-font--hover;
+                    background-color: $oc-nav-c-item--hover;
+                }
+            }
+        }
+
+        // Full width nav skin styles
+        @include breakpoint(s) {
+            background: none;
+        }
+    }
+
+    @include _add(oc-nav-skin-default--btn) {
+        background: $oc-nav-c-btn;
+        @include sprite-svg($sprite--icon-menu-blk);
+        cursor: pointer;
+        outline: none;
+        border: none;
+    }
+
+    @include _add(oc-nav-skin-default--overlay) {
+        visibility: hidden;
+        @include opacity(0);
+        background: $oc-nav-c-overlay;
+        @include transition(all $oc-nav-anim-dur $oc-nav-anim-ease);
+    }
+
+    @include _add(oc-nav-skin-default--overlay_is_visible) {
+        visibility: visible;
+        @include opacity($oc-nav-op-overlay);
+    }
+}
+
+@mixin oc-nav-skin-default($selector) {
+    #{$selector} {
+        @extend %oc-nav-skin-default !optional;
+    }
+
+    #{$selector}--btn {
+        @extend %oc-nav-skin-default--btn !optional;
+    }
+
+    #{$selector}--overlay {
+        @extend %oc-nav-skin-default--overlay !optional;
+    }
+
+    #{$selector}--overlay_is_visible {
+        @extend %oc-nav-skin-default--overlay_is_visible !optional;
+    }
+}

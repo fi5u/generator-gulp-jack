@@ -1,12 +1,8 @@
 (function (window, document, $, undefined) {
-
     /*
      * VARIABLES
      */
     var navClass = 'nav';
-    var customSelect = $('select').customSelect({
-        customClass: 'custom-select'
-    });
 
 
 
@@ -21,11 +17,6 @@
     }
 
 
-    /*
-     * ON LOAD
-     */
-
-
 
     /*
      * EVENTS
@@ -35,6 +26,5 @@
       '.' + navClass + '--overlay').on('click touchstart', function(e){
         toggleNav(e, navClass);
     });
-
 
 })(window, document, jQuery);
