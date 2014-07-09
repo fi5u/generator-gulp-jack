@@ -13,7 +13,6 @@
 :-ms-input-placeholder {
    color: $placeholder-col;
 }
-<% if (docssa) { %>
 
 // Custom checkbox/radio
 *[type="checkbox"] {
@@ -24,4 +23,4 @@
 *[type="radio"] {
     @include _use(customRadio);
     @include _use(customRadioSkin);
-}<% } %>
+}

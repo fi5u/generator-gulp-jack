@@ -90,7 +90,7 @@ var paths = {
     jsVendor: appRoute + '/assets/js/vendor/*.js',
     img: appRoute + '/<% if (!wordpress) { %>assets/<% } %>images/**/*',
     sprites: appRoute + '/<% if (!wordpress) { %>assets/<% } %>images/sprites/*.svg',
-    spritesDir: appRoute + '/<% if (!wordpress) { %>assets/<% } %>sass/<% if (docssa) { %>base/project<% } else { %>local<% } %>',
+    spritesDir: appRoute + '/<% if (!wordpress) { %>assets/<% } %>sass/base/project',
     dest: destRoute<% if (wordpress) { %> + '/wp-content/themes/<%= _.slugify(siteName) %>'<% } %>,
     destCSS: destRoute + <% if (wordpress) { %>'/wp-content/themes/<%= _.slugify(siteName) %>'<% } else { %>'/assets/css'<% } %>,
     destFonts: destRoute + <% if (wordpress) { %>'/wp-content/themes/<%= _.slugify(siteName) %>/fonts'<% } else { %>'/assets/css/fonts'<% } %>,
@@ -106,9 +106,8 @@ var spriteConfig = {
     pngPath: "%f",<% } else { /* is wp */ %>svgPath: "images/svg-sprite.svg",
     pngPath: "images/png-sprite.png",
     <% } %>
-    svg: {<% if (docssa) { %>
-        sprite: "../../..<% if (!wordpress) { %>/../assets<% } %>/images/svg-sprite.svg"<% } else { /* not docssa */ %>
-        sprite: "../..<% if (!wordpress) { %>/../assets<% } %>/images/svg-sprite.svg"<% } %>
+    svg: {
+        sprite: "../../..<% if (!wordpress) { %>/../assets<% } %>/images/svg-sprite.svg"
     },
     generatePreview: false
 };

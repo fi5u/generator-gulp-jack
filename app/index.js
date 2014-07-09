@@ -98,11 +98,6 @@ var util = require('util'),
                 return !props.wordpress;
             }
         }, {
-            type: 'confirm',
-            name: 'docssa',
-            message: 'Would you like to use DoCSSa CSS architecture?',
-            default: true
-        }, {
             name: 'localUrl',
             message: 'What is the local site URL?',
             default: function (props) {
@@ -154,7 +149,6 @@ var util = require('util'),
             this.siteName = props.siteName;
             this.jekyll = props.jekyll;
             this.wordpress = props.wordpress;
-            this.docssa = props.docssa;
             this.localUrl = props.localUrl;
             this.dbName = props.dbName;
             this.dbUsername = props.dbUsername;
@@ -178,18 +172,8 @@ var util = require('util'),
             this.mkdir(appDir + '/js/lib');
             this.mkdir(appDir + '/js/vendor');
             this.directory('wordpress/theme', appDir);
+            this.directory('sass', appDir + '/sass');
 
-            if (this.docssa) {
-                this.directory('docssa', appDir + '/sass');
-                this.copy('sass/global/_variables.scss', appDir + '/sass/base/project/_variables.scss');
-                this.copy('sass/local/_typography.scss', appDir + '/sass/base/project/_typography.scss');
-                this.copy('sass/local/_images.scss', appDir + '/sass/base/project/_images.scss');
-                this.copy('sass/local/_lists.scss', appDir + '/sass/base/project/_lists.scss');
-                this.copy('sass/local/_forms.scss', appDir + '/sass/base/project/_forms.scss');
-                this.copy('sass/local/_tables.scss', appDir + '/sass/base/project/_tables.scss');
-            } else {
-                this.directory('sass', appDir + '/sass');
-            }
         } else {
             if(this.jekyll) {
                 appDir = './';
@@ -206,18 +190,7 @@ var util = require('util'),
             this.mkdir(appDir + '/assets/js/lib');
 
             this.directory('js', appDir + '/assets/js');
-
-            if (this.docssa) {
-                this.directory('docssa', appDir + '/assets/sass');
-                this.copy('sass/global/_variables.scss', appDir + '/assets/sass/base/project/_variables.scss');
-                this.copy('sass/local/_typography.scss', appDir + '/assets/sass/base/project/_typography.scss');
-                this.copy('sass/local/_images.scss', appDir + '/assets/sass/base/project/_images.scss');
-                this.copy('sass/local/_lists.scss', appDir + '/assets/sass/base/project/_lists.scss');
-                this.copy('sass/local/_forms.scss', appDir + '/assets/sass/base/project/_forms.scss');
-                this.copy('sass/local/_tables.scss', appDir + '/assets/sass/base/project/_tables.scss');
-            } else {
-                this.directory('sass', appDir + '/assets/sass');
-            }
+            this.directory('sass', appDir + '/assets/sass');
         }
 
         this.directory('project_assets', 'project_assets');

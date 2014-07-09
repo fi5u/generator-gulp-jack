@@ -12,10 +12,7 @@ Text Domain: _s
 Domain Path: /languages/
 Tags:
 */
-
-<% } %>@charset "UTF-8";
-
-// INIT
+<% } %>
 <% if (jekyll || wordpress) { %>
 @import "../../bower_components/normalize.css/_normalize";
 @import "../../bower_components/susy/sass/_susy";
@@ -25,17 +22,19 @@ Tags:
 <% } %>
 @import "bourbon";
 
+@import "global/variables";
+@import "global/placeholders";
+@import "global/functions";
+@import "global/mixins";
 
-// BASE
-// variables, fonts, mixins, helpers... common styles used across the entire site
-@import 'base/__base';
+@import "local/fonts";
+@import "local/typography";
+@import "local/forms";
+@import "local/images";
+@import "local/lists";
+@import "local/tables";
+@import "local/helpers";
+@import "local/sprites";
 
-
-// COMPONENTS
-// reusable/framework components
-@import 'components/__components';
-
-
-// SPECIFICS
-// more specific declarations, may be built on a per page basis
-@import 'specifics/__specifics';
+@import "object/page-header";
+@import "object/page-footer";
