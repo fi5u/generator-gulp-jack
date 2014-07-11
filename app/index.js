@@ -3,8 +3,8 @@ var util = require('util'),
     path = require('path'),
     yeoman = require('yeoman-generator'),
     chalk = require('chalk'),
-    appDir = 'app',
-    destDir = 'dist',
+    appDir = 'app/',
+    destDir = 'dist/',
 
     GulpJackGenerator = yeoman.generators.Base.extend({
     init: function () {
@@ -30,48 +30,42 @@ var util = require('util'),
                         }
 
                         var fs = require('fs'),
-                            projectDir = process.cwd();
+                            projectDir = process.cwd() + '/',
+                            assetsDir = 'assets/';
 
-                        fs.rename(projectDir + '/bower_components/normalize.css/normalize.css', projectDir + '/bower_components/normalize.css/_normalize.scss', function (err) {
+                        fs.rename(projectDir + 'bower_components/normalize.css/normalize.css', projectDir + 'bower_components/normalize.css/_normalize.scss', function (err) {
                             if (err) throw err;
                         });
 
                         if (self.wordpress) {
+                            assetsDir = ''
                             performReplacement('Text Domain: _s', 'Text Domain: ' + self._.slugify(self.siteName), [appDir], '*.scss');
                             performReplacement("'_s'", "'" + self._.slugify(self.siteName) + "'", [appDir]);
                             performReplacement('_s_', self._.slugify(self.siteName).replace('-','_') + '_', [appDir]);
                             performReplacement(' _s', ' ' + self._.slugify(self.siteName).charAt(0).toUpperCase() + self._.slugify(self.siteName).slice(1), [appDir]);
                             performReplacement('_s-', self._.slugify(self.siteName) + '-', [appDir]);
 
-                            fs.rename(projectDir + '/bower_components/jquery.customSelect/jquery.customSelect.js', projectDir + '/' + appDir + '/js/lib/jquery.customSelect.js', function (err) {
+                            fs.rename(projectDir + 'bower_components/jquery.customSelect/jquery.customSelect.js', projectDir + appDir + 'js/lib/jquery.customSelect.js', function (err) {
                                 if (err) throw err;
                             });
 
-                            fs.rename(projectDir + '/bower_components/respond/src/respond.js', projectDir + '/' + appDir + '/js/lib/respond.js', function (err) {
-                                if (err) throw err;
-                            });
-
-                            fs.rename(projectDir + '/bower_components/selectivizr/selectivizr.js', projectDir + '/' + appDir + '/js/lib/selectivizr.js', function (err) {
-                                if (err) throw err;
-                            });
                         } else {
-                            fs.rename(projectDir + '/bower_components/jquery-legacy/dist/jquery.min.js', projectDir + '/' + appDir + '/assets/js/lib/jquery.min.js', function (err) {
+                            fs.rename(projectDir + 'bower_components/jquery-legacy/dist/jquery.min.js', projectDir + appDir + assetsDir + 'js/lib/jquery.min.js', function (err) {
                                 if (err) throw err;
                             });
 
-                            fs.rename(projectDir + '/bower_components/jquery.customSelect/jquery.customSelect.js', projectDir + '/' + appDir + '/assets/js/vendor/jquery.customSelect.js', function (err) {
-                                if (err) throw err;
-                            });
-
-                            fs.rename(projectDir + '/bower_components/respond/src/respond.js', projectDir + '/' + appDir + '/assets/js/lib/respond.js', function (err) {
-                                if (err) throw err;
-                            });
-
-                            fs.rename(projectDir + '/bower_components/selectivizr/selectivizr.js', projectDir + '/' + appDir + '/assets/js/lib/selectivizr.js', function (err) {
+                            fs.rename(projectDir + 'bower_components/jquery.customSelect/jquery.customSelect.js', projectDir + appDir + assetsDir + 'js/vendor/jquery.customSelect.js', function (err) {
                                 if (err) throw err;
                             });
                         }
 
+                        fs.rename(projectDir + 'bower_components/respond/src/respond.js', projectDir + appDir + assetsDir + 'js/lib/respond.js', function (err) {
+                            if (err) throw err;
+                        });
+
+                        fs.rename(projectDir + 'bower_components/selectivizr/selectivizr.js', projectDir + appDir + assetsDir + 'js/lib/selectivizr.js', function (err) {
+                            if (err) throw err;
+                        });
 
                     }
                 });
@@ -172,14 +166,14 @@ var util = require('util'),
         if (this.wordpress) {
             this.mkdir(destDir);
             this.directory('wordpress/core', destDir);
-            this.copy('wordpress/_wp-config.php', destDir + '/wp-config.php');
-            this.mkdir(destDir + '/wp-content/themes/' + this._.slugify(this.siteName));
-            this.mkdir(appDir + '/fonts');
-            this.directory('images', appDir + '/images');
-            this.directory('js', appDir + '/js');
+            this.copy('wordpress/_wp-config.php', destDir + 'wp-config.php');
+            this.mkdir(destDir + 'wp-content/themes/' + this._.slugify(this.siteName));
+            this.mkdir(appDir + 'fonts');
+            this.directory('images', appDir + 'images');
+            this.directory('js', appDir + 'js');
             this.mkdir(appDir + '/js/vendor');
             this.directory('wordpress/theme', appDir);
-            this.directory('sass', appDir + '/sass');
+            this.directory('sass', appDir + 'sass');
 
         } else {
             if(this.jekyll) {
@@ -190,13 +184,13 @@ var util = require('util'),
                 this.directory('html', appDir);
             }
 
-            this.mkdir(appDir + '/assets');
-            this.mkdir(appDir + '/assets/fonts');
-            this.directory('images', appDir + '/assets/images');
-            this.mkdir(appDir + '/assets/js/vendor');
+            this.mkdir(appDir + 'assets');
+            this.mkdir(appDir + 'assets/fonts');
+            this.directory('images', appDir + 'assets/images');
+            this.mkdir(appDir + 'assets/js/vendor');
 
-            this.directory('js', appDir + '/assets/js');
-            this.directory('sass', appDir + '/assets/sass');
+            this.directory('js', appDir + 'assets/js');
+            this.directory('sass', appDir + 'assets/sass');
         }
 
         this.directory('project_assets', 'project_assets');
