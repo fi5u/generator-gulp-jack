@@ -88,9 +88,14 @@ add_action( 'widgets_init', '_s_widgets_init' );
  * Enqueue scripts and styles.
  */
 function _s_scripts() {
+    wp_register_script( '_s-polyfills-loader', get_template_directory_uri() . '/js/polyfills-loader.js', array(), '20140701', false );
+    // Pass the directory uri to the polyfills-loader script
+    wp_localize_script( '_s-polyfills-loader', 'templateUri', get_template_directory_uri() );
+
 	wp_enqueue_style( '_s-style', get_stylesheet_uri() );
 
     wp_enqueue_script( '_s-modernizr', get_template_directory_uri() . '/js/lib/modernizr.js', array(), '20140701', false );
+    wp_enqueue_script( '_s-polyfills-loader' );
 	wp_enqueue_script( '_s-navigation', get_template_directory_uri() . '/js/navigation.js', array(), '20140701', true );
 	wp_enqueue_script( '_s-skip-link-focus-fix', get_template_directory_uri() . '/js/skip-link-focus-fix.js', array(), '20140701', true );
 

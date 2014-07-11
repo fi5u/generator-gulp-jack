@@ -9,10 +9,19 @@
 
         <link rel="stylesheet" href="assets/css/style.css">
         <script src="assets/js/lib/modernizr.js"></script>
+        <script>
+        Modernizr.load([{
+            test: Modernizr.mediaqueries,
+            nope: 'assets/js/lib/respond.js'
+        },{
+            test: Modernizr.lastchild,
+            nope: ['assets/js/lib/nwmatcher-1.2.5.js', 'assets/js/lib/selectivizr.js']
+        }]);
+        </script>
     </head>
     <body>
 
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="assets/js/lib/jquery.min.js"><\/script>')</script>
 
         <script src="assets/js/vendor.js"></script>
