@@ -133,18 +133,6 @@
 }
 
 
-@mixin background-size($value, $useModernizr: true) {
-
-    $backgroundsize: getPrefix(backgroundsize, $useModernizr);
-
-    #{map-get($backgroundsize, yes)} & {
-        -webkit-background-size: $value; // Saf3-4
-        background-size: $value; // Opera, IE9, Saf5, Chrome, FF4+
-    }
-
-}
-
-
 @mixin linear-gradient($from, $to, $fallback: '', $useModernizr: true) {
 
     $cssgradients: getPrefix(cssgradients, $useModernizr);
@@ -424,5 +412,16 @@
         line-height: size($size, rem, $line-height-multiplier, $unitless);
     } @else {
         line-height: size($size, null, null, $unitless);
+    }
+}
+
+
+@mixin bgsize($type: cover) {
+    background-size: $type;
+
+    @at-root .no-backgroundsize & {
+        // Ensure 'backgroundsize.min.htc' is a sibling of the page displaying this selector
+        // May need to add -> AddType text/x-component .htc <- to htaccess
+        -ms-behavior: url(/backgroundsize.min.htc);
     }
 }

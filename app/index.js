@@ -45,11 +45,19 @@ var util = require('util'),
                             performReplacement(' _s', ' ' + self._.slugify(self.siteName).charAt(0).toUpperCase() + self._.slugify(self.siteName).slice(1), [appDir]);
                             performReplacement('_s-', self._.slugify(self.siteName) + '-', [appDir]);
 
+                            fs.rename(projectDir + 'bower_components/background-size-polyfill/backgroundsize.min.htc', projectDir + destDir + 'backgroundsize.min.htc', function (err) {
+                                if (err) throw err;
+                            });
+
                             fs.rename(projectDir + 'bower_components/jquery.customSelect/jquery.customSelect.js', projectDir + appDir + 'js/lib/jquery.customSelect.js', function (err) {
                                 if (err) throw err;
                             });
 
                         } else {
+                            fs.rename(projectDir + 'bower_components/background-size-polyfill/backgroundsize.min.htc', projectDir + appDir + 'backgroundsize.min.htc', function (err) {
+                                if (err) throw err;
+                            });
+
                             fs.rename(projectDir + 'bower_components/jquery-legacy/dist/jquery.min.js', projectDir + appDir + assetsDir + 'js/lib/jquery.min.js', function (err) {
                                 if (err) throw err;
                             });

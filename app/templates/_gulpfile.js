@@ -220,6 +220,11 @@ gulp.task('images', ['toPng'], function () {
 });
 
 
+gulp.task('filesCopy', function () {
+    gulp.src([paths.app + '/backgroundsize.min.htc'])
+        .pipe(gulp.dest(paths.dest));
+});
+
 gulp.task('watch', function () {
     gulp.watch(paths.jsAll, ['scripts']);
     gulp.watch(paths.sass, ['styles']);
@@ -236,7 +241,7 @@ gulp.task('watch', function () {
     <% } %>
 });
 
-gulp.task('build', ['scripts', 'sprites', 'styles', 'images', 'fonts', <% if (wordpress) { %>'php', <% } else if (!jekyll) { %>'html', <% } %><% if (jekyll) { %>'jekyll',<% } %> 'serve', 'watch']);
+gulp.task('build', ['scripts', 'sprites', 'styles', 'images', 'fonts', <% if (wordpress) { %>'php', <% } else if (!jekyll) { %>'html', <% } %><% if (jekyll) { %>'jekyll',<% } %>'filesCopy', 'serve', 'watch']);
 
 gulp.task('default', <% if (!jekyll) { %>['clean'],<% } %> function () {
     gulp.start('build');
