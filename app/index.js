@@ -5,6 +5,7 @@ var util = require('util'),
     chalk = require('chalk'),
     appDir = 'app/',
     destDir = 'dist/',
+    isWpShared = false,
 
     GulpJackGenerator = yeoman.generators.Base.extend({
     init: function () {
@@ -45,9 +46,11 @@ var util = require('util'),
                             performReplacement(' _s', ' ' + self._.slugify(self.siteName).charAt(0).toUpperCase() + self._.slugify(self.siteName).slice(1), [appDir]);
                             performReplacement('_s-', self._.slugify(self.siteName) + '-', [appDir]);
 
-                            fs.rename(projectDir + 'bower_components/background-size-polyfill/backgroundsize.min.htc', projectDir + destDir + 'backgroundsize.min.htc', function (err) {
-                                if (err) throw err;
-                            });
+                            if (!isWpShared) {
+                                fs.rename(projectDir + 'bower_components/background-size-polyfill/backgroundsize.min.htc', projectDir + destDir + 'backgroundsize.min.htc', function (err) {
+                                    if (err) throw err;
+                                });
+                            }
 
                             fs.rename(projectDir + 'bower_components/jquery.customSelect/jquery.customSelect.js', projectDir + appDir + 'js/lib/jquery.customSelect.js', function (err) {
                                 if (err) throw err;
@@ -108,13 +111,21 @@ var util = require('util'),
                 return !props.wordpress;
             }
         }, {
+            type: 'confirm',
+            name: 'wpShared',
+            message: 'Is the theme to be served from the shared WordPress directory?',
+            default: true,
+            when: function (props) {
+                return props.wordpress;
+            }
+        }, {
             name: 'localUrl',
             message: 'What is the local site URL?',
             default: function (props) {
                 return 'http://dev.' + self._.slugify(props.siteName);
             },
             when: function (props) {
-                return props.wordpress;
+                return props.wordpress && !props.wpShared;
             }
         }, {
             name: 'dbName',
@@ -123,35 +134,35 @@ var util = require('util'),
                 return self._.slugify(props.siteName);
             },
             when: function (props) {
-                return props.wordpress;
+                return props.wordpress && !props.wpShared;
             }
         }, {
             name: 'dbUsername',
             message: 'What is the username for the database?',
             default: 'root',
             when: function (props) {
-                return props.wordpress;
+                return props.wordpress && !props.wpShared;
             }
         }, {
             name: 'dbPassword',
             message: 'What is the password for the database',
             default: 'root',
             when: function (props) {
-                return props.wordpress;
+                return props.wordpress && !props.wpShared;
             }
         }, {
             name: 'dbHost',
             message: 'What is the host for the database',
             default: 'localhost',
             when: function (props) {
-                return props.wordpress;
+                return props.wordpress && !props.wpShared;
             }
         }, {
             name: 'dbTablePrefix',
             message: 'What is the table prefix',
             default: 'wp_',
             when: function (props) {
-                return props.wordpress;
+                return props.wordpress && !props.wpShared;
             }
         }];
 
@@ -159,6 +170,7 @@ var util = require('util'),
             this.siteName = props.siteName;
             this.jekyll = props.jekyll;
             this.wordpress = props.wordpress;
+            this.wpShared = props.wpShared;
             this.localUrl = props.localUrl;
             this.dbName = props.dbName;
             this.dbUsername = props.dbUsername;
@@ -172,10 +184,16 @@ var util = require('util'),
 
     app: function () {
         if (this.wordpress) {
-            this.mkdir(destDir);
-            this.directory('wordpress/core', destDir);
-            this.copy('wordpress/_wp-config.php', destDir + 'wp-config.php');
-            this.mkdir(destDir + 'wp-content/themes/' + this._.slugify(this.siteName));
+            if(this.wpShared) {
+                isWpShared = true;
+                destDir = '/Users/fisu/Sites/wordpress/wp-content/themes/' + this._.slugify(this.siteName);
+            } else {
+                this.mkdir(destDir);
+                this.directory('wordpress/core', destDir);
+                this.copy('wordpress/_wp-config.php', destDir + 'wp-config.php');
+                this.mkdir(destDir + 'wp-content/themes/' + this._.slugify(this.siteName));
+            }
+
             this.mkdir(appDir + 'fonts');
             this.directory('images', appDir + 'images');
             this.copy('js/script.js', appDir + 'js/script.js');
