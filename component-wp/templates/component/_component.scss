@@ -1,0 +1,86 @@
+@import '../../base/utils/__utils';
+@import '../../base/project/__project';
+
+
+//usage examples:
+//@include <%= _.slugify(name) %>();
+//@include <%= _.slugify(name) %>('.<%= _.slugify(name) %>2');
+//@include <%= _.slugify(name) %>('.<%= _.slugify(name) %>3', 'myHoverClass');
+//@include <%= _.slugify(name) %>('.<%= _.slugify(name) %>4', $param2: 'someParam', $hover: 'myHover');
+//
+//@include <%= _.slugify(name) %>('.<%= _.slugify(name) %>5', $defaultSkin: false);
+//@include <%= _.slugify(name) %>-skin-alt('.example5');
+
+// _____ STRUCTURE _____ //
+
+@include define("<%= _.slugify(name) %>") {
+    @include _add(<%= _.slugify(name) %>) {
+
+    }
+
+    @include _add(<%= _.slugify(name) %>--hover) {
+
+    }
+}
+
+@mixin <%= _.slugify(name) %>($selector: ".<%= _.slugify(name) %>", $hover: ':hover', $param: "", $defaultSkin: true) {
+    #{$selector} {
+        @extend %<%= _.slugify(name) %> !optional;
+    }
+
+    // Add elements like:
+    // #{$selector}__btn {
+    //     @extend %<%= _.slugify(name) %>__btn;
+    // }
+
+    @if $hover == ':hover' {
+        #{$selector}:hover {
+            @extend %<%= _.slugify(name) %>--hover !optional;
+        }
+    } @else {
+        #{$selector}_#{$hover} {
+            @extend %<%= _.slugify(name) %>--hover !optional;
+        }
+    }
+
+    @if $defaultSkin != false {
+        @include <%= _.slugify(name) %>-skin-default($selector);
+    }
+}
+
+
+// _____ SKIN _____ //
+
+@import '../../base/project/_variables';
+@import '../../base/project/_helpers';
+
+@include define('<%= _.slugify(name) %>-skin-default') {
+    %<%= _.slugify(name) %>-skin-default {
+
+    }
+
+    %<%= _.slugify(name) %>-skin-default--hover {
+
+    }
+}
+
+@mixin <%= _.slugify(name) %>-skin-default($selector, $hover: ":hover", $param: "") {
+    #{$selector} {
+        @extend %<%= _.slugify(name) %>-skin-default !optional;
+    }
+
+    // Add elements like:
+    // #{$selector}__btn {
+    //     @extend %<%= _.slugify(name) %>__btn;
+    // }
+
+    @if $hover == ':hover' {
+        #{$selector}:hover {
+            @extend %<%= _.slugify(name) %>-skin-default--hover !optional;
+        }
+    } @else {
+        #{$selector}_#{$hover} {
+            @extend %<%= _.slugify(name) %>-skin-default--hover !optional;
+        }
+    }
+}
