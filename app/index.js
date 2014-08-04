@@ -178,8 +178,9 @@ var util = require('util'),
             this.mkdir(destDir + 'wp-content/themes/' + this._.slugify(this.siteName));
             this.mkdir(appDir + 'fonts');
             this.directory('images', appDir + 'images');
-            this.directory('js', appDir + 'js');
-            this.mkdir(appDir + '/js/vendor');
+            this.copy('js/script.js', appDir + 'js/script.js');
+            this.directory('js/lib', appDir + 'js/lib');
+            this.directory('js/vendor', appDir + 'js/lib');
             this.directory('wordpress/theme', appDir);
             this.directory('sass', appDir + 'sass');
 
@@ -195,8 +196,6 @@ var util = require('util'),
             this.mkdir(appDir + 'assets');
             this.mkdir(appDir + 'assets/fonts');
             this.directory('images', appDir + 'assets/images');
-            this.mkdir(appDir + 'assets/js/vendor');
-
             this.directory('js', appDir + 'assets/js');
             this.directory('sass', appDir + 'assets/sass');
         }
