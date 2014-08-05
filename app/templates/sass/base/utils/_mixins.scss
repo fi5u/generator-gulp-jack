@@ -7,15 +7,15 @@
         font-family: $fontname;
 
         // IE9 Compat Modes
-        src: url('fonts/#{$filename}.eot');
+        src: url('#{$font-dir}/#{$filename}.eot');
         // IE6-IE8
-        src: url('fonts/#{$filename}.eot?#iefix') format('embedded-opentype'),
+        src: url('#{$font-dir}/#{$filename}.eot?#iefix') format('embedded-opentype'),
         // Modern Browsers
-        url('fonts/#{$filename}.woff') format('woff'),
+        url('#{$font-dir}/#{$filename}.woff') format('woff'),
         // Safari, Android, iOS
-        url('fonts/#{$filename}.ttf') format('truetype'),
+        url('#{$font-dir}/#{$filename}.ttf') format('truetype'),
         // Legacy iOS
-        url('fonts/#{$filename}.svg##{$svgLabel}') format('svg');
+        url('#{$font-dir}/#{$filename}.svg##{$svgLabel}') format('svg');
 
         @if $isBold {
             font-weight: bold;

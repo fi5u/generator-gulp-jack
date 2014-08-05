@@ -24,11 +24,11 @@ Tags:
 @import "../../../bower_components/susy/sass/_susy";
 <% } %>@import "bourbon";
 
-<% if (!wordpress) { %>
-// PATHS
-$path: "local"; // live or local
 
-<% } %>
+// PATHS
+$path: "live"; // live or local
+
+
 // BASE
 // variables, fonts, mixins, helpers... common styles used across the entire site
 @import 'base/__base';

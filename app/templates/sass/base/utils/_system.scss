@@ -122,12 +122,12 @@ $placeholders: ();
     $palette-color: map-get($palettes, $palette);
 
     @if $palette-color == null {
-        @warn "`#{$palette}` doesn't exist in palettes.";
+        @warn "`#{$palette}` does not exist in palettes.";
     }
     $palette-tone: map-get($palette-color, $tone);
 
     @if $palette-tone == null {
-        @warn "`#{$tone}` doesn't exist in palettes";
+        @warn "`#{$tone}` does not exist in palettes";
     }
 
     @return map-get($palette-color, $tone);

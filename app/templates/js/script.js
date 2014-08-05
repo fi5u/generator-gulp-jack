@@ -4,9 +4,9 @@
      * VARIABLES
      */
     var navClass = 'nav';
-    var customSelect = $('select').customSelect({
+    var customSelect = $('select').length ? $('select').customSelect({
         customClass: 'custom-select'
-    });
+    }) : '';
 
 
 

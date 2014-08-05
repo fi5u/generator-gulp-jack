@@ -82,7 +82,7 @@ var paths = {
     php: appRoute + '/*{,*/*}.php',<% } %>
     assets: appRoute + '<% if (!wordpress) { %>/assets<% } %>',
     sass: appRoute + '/<% if (!wordpress) { %>assets/<% } %>sass/*{,*/*}.scss',
-    fonts: appRoute + '/<% if (!wordpress) { %>assets/<% } %>sass/fonts/**',
+    fonts: appRoute + '/<% if (!wordpress) { %>assets/<% } %>fonts/**',
     jsAll: appRoute + '/<% if (!wordpress) { %>assets/<% } %>js/*{,*/*}.js',
     js: appRoute + '/<% if (!wordpress) { %>assets/<% } %>js/*.js',
     jsLib: appRoute + '/<% if (!wordpress) { %>assets/<% } %>js/lib/*.js',
@@ -92,7 +92,7 @@ var paths = {
     spritesDir: appRoute + '/<% if (!wordpress) { %>assets/<% } %>sass/base/project',
     dest: destRoute<% if (wordpress && !wpShared) { %> + '/wp-content/themes/<%= _.slugify(siteName) %>'<% } %>,
     destCSS: destRoute<% if (wordpress) { %><% if (!wpShared) { %> + '/wp-content/themes/<%= _.slugify(siteName) %>'<% } %><% } else { %> + '/assets/css'<% } %>,
-    destFonts: destRoute + <% if (wordpress) { %><% if (!wpShared) { %>'/wp-content/themes/<%= _.slugify(siteName) %>/fonts'<% } else { %>'/css/fonts'<% } %><% } else { %>'/assets/css/fonts'<% } %>,
+    destFonts: destRoute + <% if (wordpress) { %><% if (!wpShared) { %>'/wp-content/themes/<%= _.slugify(siteName) %>/fonts'<% } else { %>'/fonts'<% } %><% } else { %>'/assets/fonts'<% } %>,
     destJS: destRoute + <% if (wordpress) { %><% if (!wpShared) { %>'/wp-content/themes/<%= _.slugify(siteName) %>/js'<% } else { %>'/js'<% } %><% } else { %>'/assets/js'<% } %>,
     destJSLib: destRoute + <% if (wordpress) { %><% if (!wpShared) { %>'/wp-content/themes/<%= _.slugify(siteName) %>/js/lib'<% } else { %>'/js/lib'<% } %><% } else { %>'/assets/js/lib'<% } %>,
     destImg: destRoute + <% if (wordpress) { %><% if (!wpShared) { %>'/wp-content/themes/<%= _.slugify(siteName) %>/images'<% } else { %>'/images'<% } %><% } else { %>'/assets/images'<% } %>

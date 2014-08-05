@@ -56,6 +56,10 @@ var util = require('util'),
                                 if (err) throw err;
                             });
 
+                            fs.unlink(projectDir + appDir + 'sass/live.scss', function (err) {
+                                if (err) throw err;
+                            });
+
                         } else {
                             fs.rename(projectDir + 'bower_components/background-size-polyfill/backgroundsize.min.htc', projectDir + appDir + 'backgroundsize.min.htc', function (err) {
                                 if (err) throw err;
@@ -68,9 +72,15 @@ var util = require('util'),
                             fs.rename(projectDir + 'bower_components/jquery.customSelect/jquery.customSelect.js', projectDir + appDir + assetsDir + 'js/vendor/jquery.customSelect.js', function (err) {
                                 if (err) throw err;
                             });
+
+                            fs.rename(projectDir + appDir + assetsDir + 'sass/live.scss', projectDir + appDir + assetsDir + 'sass/' + self._.slugify(self.siteName) + '.scss', function (err) {
+                                if (err) throw err;
+                            });
                         }
 
-                        fs.rename(projectDir + 'bower_components/respond/src/respond.js', projectDir + appDir + assetsDir + 'js/lib/respond.js', function (err) {
+
+
+                        fs.rename(projectDir + 'bower_components/respond/dest/respond.min.js', projectDir + appDir + assetsDir + 'js/lib/respond.min.js', function (err) {
                             if (err) throw err;
                         });
 

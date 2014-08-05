@@ -17,8 +17,13 @@ $susy: (
 // COLORS
 $palettes: (
     primary: (
-        light: lighten(#d24, 10%),
+        // lightest: ,
+        lighter: lighten(#d24, 10%),
+        // light: ,
         base: #d24
+        // dark: ,
+        // darker: ,
+        // darkest:
     ),
     gray: (
         base: #999
@@ -31,8 +36,8 @@ $palettes: (
     )
 );
 
-$highlight-col: palette(primary, light);
-$placeholder-col: palette(primary, light);
+$highlight-col: palette(primary, lighter);
+$placeholder-col: palette(primary, lighter);
 $col-scheme: dark; // dark or light
 
 
@@ -62,10 +67,6 @@ $font-size: (
 // ANIMATION
 $trans-dur: 1s;
 $trans-ease: cubic-bezier(x1, y1, x2, y2);
-
-
-// PATHS
-$img-dir: "<% if (wordpress) { %>images<% } else { %>../images<% } %>";
 
 
 // MQ

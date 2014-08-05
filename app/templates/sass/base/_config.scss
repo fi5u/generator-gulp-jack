@@ -13,3 +13,18 @@ $breakpoints: (
     "l": 64em,
     "nav-break": 30em
 );
+
+$local-img-dir: "<% if (!wordpress) { %>../<% } %>images";
+<% if (!wordpress) { %>$live-img-dir: "/live/img/dir/not/set";
+<% } %>$local-font-dir: "<% if (!wordpress) { %>../<% } %>fonts";
+<% if (!wordpress) { %>$live-font-dir: "/live/font/dir/not/set";
+<% } %>
+$img-dir: $<% if (!wordpress) { %>live<% } else { %>local<% } %>-img-dir;
+$font-dir: $<% if (!wordpress) { %>live<% } else { %>local<% } %>-font-dir;
+<% if (!wordpress) { %>
+@if variable-exists(path) {
+    @if $path == 'local' {
+        $img-dir: $local-img-dir;
+        $font-dir: $local-font-dir;
+    }
+}<% } %>
