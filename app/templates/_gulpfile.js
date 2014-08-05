@@ -106,7 +106,7 @@ var spriteConfig = {
     pngPath: "images/png-sprite.png",
     <% } %>
     svg: {
-        sprite: "#{$img-dir}/svg-sprite.svg"
+        sprite: "../../..<% if (!wordpress) { %>/../assets<% } %>/images/svg-sprite.svg"
     },
     generatePreview: false
 };
