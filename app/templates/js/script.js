@@ -3,10 +3,14 @@
     /*
      * VARIABLES
      */
-    var navClass = 'nav';
-    var customSelect = $('select').length ? $('select').customSelect({
-        customClass: 'custom-select'
-    }) : '';
+    var // Set class for off canvas nav
+        navClass = 'nav',
+        // If a select box exists instatiate the custom select plugin
+        customSelect = $('select').length ? $('select').customSelect({
+            customClass: 'custom-select'
+        }) : '',
+        // Instantiate parsley
+        $parsley = $("form").parsley();
 
 
 

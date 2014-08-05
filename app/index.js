@@ -56,6 +56,10 @@ var util = require('util'),
                                 if (err) throw err;
                             });
 
+                            fs.rename(projectDir + 'bower_components/parsleyjs/dist/parsley.min.js', projectDir + appDir + 'js/lib/parsley.min.js', function (err) {
+                                if (err) throw err;
+                            });
+
                             fs.unlink(projectDir + appDir + 'sass/live.scss', function (err) {
                                 if (err) throw err;
                             });
@@ -70,6 +74,14 @@ var util = require('util'),
                             });
 
                             fs.rename(projectDir + 'bower_components/jquery.customSelect/jquery.customSelect.js', projectDir + appDir + assetsDir + 'js/vendor/jquery.customSelect.js', function (err) {
+                                if (err) throw err;
+                            });
+
+                            fs.rename(projectDir + 'bower_components/parsleyjs/dist/parsley.js', projectDir + appDir + assetsDir + 'js/vendor/parsley.js', function (err) {
+                                if (err) throw err;
+                            });
+
+                            fs.rename(projectDir + appDir + assetsDir + 'js/lib/parsleyfi.js', projectDir + appDir + assetsDir + 'js/vendor/parsleyfi.js', function (err) {
                                 if (err) throw err;
                             });
 
