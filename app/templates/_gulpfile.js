@@ -241,8 +241,13 @@ gulp.task('watch', function () {
     <% } %>
 });
 
-gulp.task('build', ['scripts', 'sprites', 'styles', 'images', 'fonts', <% if (wordpress) { %>'php', <% } else if (!jekyll) { %>'html', <% } %><% if (jekyll) { %>'jekyll',<% } %>'filesCopy', 'serve', 'watch']);
+gulp.task('build', ['scripts', 'sprites', 'styles', 'images', 'fonts', <% if (wordpress) { %>'php', <% } else if (!jekyll) { %>'html', <% } %><% if (jekyll) { %>'jekyll',<% } %>'filesCopy']);
+
+gulp.task('server', ['build'], function () {
+    gulp.start('serve');
+    gulp.start('watch');
+});
 
 gulp.task('default', <% if (!jekyll) { %>['clean'],<% } %> function () {
-    gulp.start('build');
+    gulp.start('server');
 });
