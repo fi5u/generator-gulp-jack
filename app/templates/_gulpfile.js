@@ -106,7 +106,7 @@ var spriteConfig = {
     pngPath: "images/png-sprite.png",
     <% } %>
     svg: {
-        sprite: "../../..<% if (!wordpress) { %>/../assets<% } %>/images/svg-sprite.svg"
+        sprite: "#{$img-dir}/svg-sprite.svg"
     },
     generatePreview: false
 };
@@ -116,6 +116,7 @@ var onError = function (err) {
     console.log(err);
 };
 
+
 <% if (!wordpress) { %>gulp.task('vendorScripts', function () {
     return gulp.src([paths.jsVendor])
         .pipe(newer(paths.destJS + '/vendor.js'))
@@ -123,10 +124,10 @@ var onError = function (err) {
         .pipe(uglify())
         .pipe(insert.wrap('(function (window, document, $, undefined) {', '})(window, document, jQuery);'))
         .pipe(gulp.dest(paths.destJS));
-});<% } %>
+});
 
 
-gulp.task('libScripts', function () {
+<% } %>gulp.task('libScripts', function () {
     return gulp.src([paths.jsLib])
         .pipe(gulp.dest(paths.destJSLib));
 });
@@ -154,37 +155,6 @@ gulp.task('fonts', function () {
     return gulp.src([paths.fonts])
         .pipe(gulp.dest(paths.destFonts));
 });
-
-
-<% if (!jekyll) { %>gulp.task('clean', require('del').bind(null, ['.tmp', paths.dest]<% if (wpShared) { %>, {force: true}<% } %>));
-
-
-<% } /* end not jekyll */ %>gulp.task('serve', function () {
-    http.createServer(ecstatic({ root: __dirname + '/' + paths.dest })).listen(serverport);<% if (!wordpress) { %>
-    require('opn')('http://localhost:' + serverport + '/index.html');<% } /* end not wp */ else { /* is wp */ %>require('opn')('<%= localUrl %>');<% } /* end is wp */ %>
-    lrserver.listen(livereloadport);
-});
-
-<% if (jekyll) { %>gulp.task('jekyll', function () {
-    var spawn = require('child_process').spawn,
-        jekyll = spawn('jekyll', ['build']);
-
-    jekyll.on('exit', function (code) {
-        console.log('-- Finished Jekyll Build --')
-    })
-});<% } %><% if (wordpress) { %>gulp.task('php', function () {
-    return gulp.src(paths.php)
-        .pipe(newer(paths.dest))
-        .pipe(embedlr())
-        .pipe(gulp.dest(paths.dest))
-        .pipe(refresh(lrserver));
-});<% } /* end is wp */ else { /* not wp */ %><% if (!jekyll) { /* not wp && not jekyll */ %>gulp.task('html', function () {
-    return gulp.src([paths.html, '!' + paths.app + '/assets/sass/**/*.html'])
-        .pipe(newer(paths.dest))
-        .pipe(embedlr())
-        .pipe(gulp.dest(paths.dest))
-        .pipe(refresh(lrserver));
-});<% } /* end not wp && not jekyll */ %><% } /* end not wp */ %>
 
 
 gulp.task('sprites', function () {
@@ -217,6 +187,37 @@ gulp.task('images', ['toPng'], function () {
         .pipe(gulp.dest(paths.destImg))
         .pipe(refresh(lrserver));
 });
+
+
+<% if (!jekyll) { %>gulp.task('clean', require('del').bind(null, ['.tmp', paths.dest]<% if (wpShared) { %>, {force: true}<% } %>));
+
+
+<% } /* end not jekyll */ %>gulp.task('serve', function () {
+    http.createServer(ecstatic({ root: __dirname + '/' + paths.dest })).listen(serverport);<% if (!wordpress) { %>
+    require('opn')('http://localhost:' + serverport + '/index.html');<% } /* end not wp */ else { /* is wp */ %>require('opn')('<%= localUrl %>');<% } /* end is wp */ %>
+    lrserver.listen(livereloadport);
+});
+
+<% if (jekyll) { %>gulp.task('jekyll', function () {
+    var spawn = require('child_process').spawn,
+        jekyll = spawn('jekyll', ['build']);
+
+    jekyll.on('exit', function (code) {
+        console.log('-- Finished Jekyll Build --')
+    })
+});<% } %><% if (wordpress) { %>gulp.task('php', function () {
+    return gulp.src(paths.php)
+        .pipe(newer(paths.dest))
+        .pipe(embedlr())
+        .pipe(gulp.dest(paths.dest))
+        .pipe(refresh(lrserver));
+});<% } /* end is wp */ else { /* not wp */ %><% if (!jekyll) { /* not wp && not jekyll */ %>gulp.task('html', function () {
+    return gulp.src([paths.html, '!' + paths.app + '/assets/sass/**/*.html'])
+        .pipe(newer(paths.dest))
+        .pipe(embedlr())
+        .pipe(gulp.dest(paths.dest))
+        .pipe(refresh(lrserver));
+});<% } /* end not wp && not jekyll */ %><% } /* end not wp */ %>
 
 
 gulp.task('filesCopy', function () {
