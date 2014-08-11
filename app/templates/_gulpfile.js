@@ -1,6 +1,5 @@
 var gulp = require('gulp');
 var sass = require('gulp-ruby-sass');
-var bourbon = require('node-bourbon').includePaths;
 var minifyCSS = require('gulp-minify-css');
 var imagemin = require('gulp-imagemin');
 var svgSprites = require('gulp-svg-sprites');
