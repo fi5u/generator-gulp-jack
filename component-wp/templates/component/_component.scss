@@ -1,5 +1,5 @@
 @import '../../base/utils/__utils';
-@import '../../base/project/__project';
+@import '../../project/__project';
 
 
 //usage examples:
@@ -51,8 +51,8 @@
 
 // _____ SKIN _____ //
 
-@import '../../base/project/_variables';
-@import '../../base/project/_helpers';
+@import '../../project/_variables';
+@import '../../project/_helpers';
 
 @include define('<%= _.slugify(name) %>-skin-default') {
     %<%= _.slugify(name) %>-skin-default {

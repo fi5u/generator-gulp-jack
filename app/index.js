@@ -32,11 +32,37 @@ var util = require('util'),
 
                         var fs = require('fs'),
                             projectDir = process.cwd() + '/',
-                            assetsDir = 'assets/';
+                            assetsDir = self.wordpress ? '' : 'assets/';
 
                         fs.rename(projectDir + 'bower_components/normalize.css/normalize.css', projectDir + 'bower_components/normalize.css/_normalize.scss', function (err) {
                             if (err) throw err;
                         });
+
+                        if (self.bootstrap) {
+                            fs.rename(projectDir + 'bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap', projectDir + appDir + assetsDir + 'sass/lib/bootstrap', function (err) {
+                                if (err) throw err;
+                                fs.rename(projectDir + appDir + assetsDir + 'sass/lib/bootstrap/bootstrap.scss', projectDir + appDir + assetsDir + 'sass/lib/bootstrap/__bootstrap.scss', function (err) {
+                                    fs.readFile(projectDir + appDir + assetsDir + 'sass/lib/bootstrap/_glyphicons.scss', 'utf8', function (err,data) {
+                                      if (err) {
+                                        return console.log(err);
+                                      }
+                                      var result = data.replace(/\$icon-font-path}/g, '$font-dir}/');
+
+                                      fs.writeFile(projectDir + appDir + assetsDir + 'sass/lib/bootstrap/_glyphicons.scss', result, 'utf8', function (err) {
+                                         if (err) return console.log(err);
+                                      });
+                                    });
+                                });
+                            });
+
+                            fs.rename(projectDir + 'bower_components/bootstrap-sass-official/assets/javascripts/bootstrap', projectDir + appDir + assetsDir + 'js/lib/bootstrap', function (err) {
+                                if (err) throw err;
+                            });
+
+                            fs.rename(projectDir + 'bower_components/bootstrap-sass-official/assets/fonts/bootstrap', projectDir + appDir + assetsDir + 'fonts', function (err) {
+                                if (err) throw err;
+                            });
+                        }
 
                         if (self.wordpress) {
                             assetsDir = ''
@@ -90,8 +116,6 @@ var util = require('util'),
                             });
                         }
 
-
-
                         fs.rename(projectDir + 'bower_components/respond/dest/respond.min.js', projectDir + appDir + assetsDir + 'js/lib/respond.min.js', function (err) {
                             if (err) throw err;
                         });
@@ -132,6 +156,11 @@ var util = require('util'),
             when: function (props) {
                 return !props.wordpress;
             }
+        }, {
+            type: 'confirm',
+            name: 'bootstrap',
+            message: 'Would you like to use Bootstrap?',
+            default: false
         }, {
             type: 'confirm',
             name: 'wpShared',
@@ -190,8 +219,9 @@ var util = require('util'),
 
         this.prompt(prompts, function (props) {
             this.siteName = props.siteName;
-            this.jekyll = props.jekyll;
             this.wordpress = props.wordpress;
+            this.jekyll = props.jekyll;
+            this.bootstrap = props.bootstrap;
             this.wpShared = props.wpShared;
             this.localUrl = props.localUrl;
             this.dbName = props.dbName;

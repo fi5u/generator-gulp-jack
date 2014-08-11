@@ -1,5 +1,5 @@
-@import '../../base/utils/__utils';
-@import '../../base/project/__project';
+@import "../../base/utils/__utils";
+@import "../../project/__project";
 
 
 //usage examples:
@@ -111,8 +111,8 @@ $oc-nav-op-overlay: 0.4; // overlay opacity
 
 // _____ SKIN _____ //
 
-@import '../../base/project/_variables';
-@import '../../base/project/_helpers';
+@import "../../project/_variables";
+@import "../../project/_helpers";
 
 @include define("oc-nav-skin-default") {
     @include _add(oc-nav-skin-default) {

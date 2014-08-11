@@ -89,7 +89,7 @@ var paths = {
     jsVendor: appRoute + '/assets/js/vendor/*.js',
     img: appRoute + '/<% if (!wordpress) { %>assets/<% } %>images/**/*',
     sprites: appRoute + '/<% if (!wordpress) { %>assets/<% } %>images/sprites/*.svg',
-    spritesDir: appRoute + '/<% if (!wordpress) { %>assets/<% } %>sass/base/project',
+    spritesDir: appRoute + '/<% if (!wordpress) { %>assets/<% } %>sass/project',
     dest: destRoute<% if (wordpress && !wpShared) { %> + '/wp-content/themes/<%= _.slugify(siteName) %>'<% } %>,
     destCSS: destRoute<% if (wordpress) { %><% if (!wpShared) { %> + '/wp-content/themes/<%= _.slugify(siteName) %>'<% } %><% } else { %> + '/assets/css'<% } %>,
     destFonts: destRoute + <% if (wordpress) { %><% if (!wpShared) { %>'/wp-content/themes/<%= _.slugify(siteName) %>/fonts'<% } else { %>'/fonts'<% } %><% } else { %>'/assets/fonts'<% } %>,
@@ -224,6 +224,7 @@ gulp.task('filesCopy', function () {
     gulp.src([paths.app + '/backgroundsize.min.htc'])
         .pipe(gulp.dest(paths.dest));
 });
+
 
 gulp.task('watch', function () {
     gulp.watch(paths.jsAll, ['scripts']);

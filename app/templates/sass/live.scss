@@ -15,30 +15,29 @@ Tags:
 
 <% } %>@charset "UTF-8";
 
-// INIT
-<% if (jekyll || wordpress) { %>
-@import "../../bower_components/normalize.css/_normalize";
-@import "../../bower_components/susy/sass/_susy";
-<% } else { %>
-@import "../../../bower_components/normalize.css/_normalize";
-@import "../../../bower_components/susy/sass/_susy";
-<% } %>@import "bourbon";
-
-
 // PATHS
 $path: "live"; // live or local
 
 
 // BASE
-// variables, fonts, mixins, helpers... common styles used across the entire site
-@import 'base/__base';
+// config and utils
+@import "base/__base";
+
+
+// LIBS
+@import "lib/__lib";
+
+
+// PROJECT
+// specifics to this project
+@import "project/__project";
 
 
 // COMPONENTS
 // reusable/framework components
-@import 'components/__components';
+@import "components/__components";
 
 
 // SPECIFICS
 // more specific declarations, may be built on a per page basis
-@import 'specifics/__specifics';
+@import "specifics/__specifics";
