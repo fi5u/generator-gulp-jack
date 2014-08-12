@@ -10,7 +10,7 @@
             customClass: 'custom-select'
         }) : '',
         // Instantiate parsley
-        $parsley = $("form").parsley();
+        $parsley = $('form').length ? $('form').parsley() : '';
 
 
 
@@ -35,8 +35,7 @@
      * EVENTS
      */
     // Off canvas nav toggle
-    $('.' + navClass + '--btn,' +
-      '.' + navClass + '--overlay').on('click touchstart', function(e){
+    $('.' + navClass + '--btn, .' + navClass + '--overlay').on('click touchstart', function(e){
         toggleNav(e, navClass);
     });
 

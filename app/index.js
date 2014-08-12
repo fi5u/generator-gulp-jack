@@ -65,7 +65,7 @@ var util = require('util'),
                         }
 
                         if (self.wordpress) {
-                            assetsDir = ''
+                            assetsDir = '';
                             performReplacement('Text Domain: _s', 'Text Domain: ' + self._.slugify(self.siteName), [appDir], '*.scss');
                             performReplacement("'_s'", "'" + self._.slugify(self.siteName) + "'", [appDir]);
                             performReplacement('_s_', self._.slugify(self.siteName).replace('-','_') + '_', [appDir]);
