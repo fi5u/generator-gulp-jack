@@ -1,4 +1,4 @@
 @import "<% if (!jekyll || !wordpress) { %>../<% } %>../../../bower_components/susy/sass/_susy";
 @import "<% if (!jekyll || !wordpress) { %>../<% } %>../../../bower_components/normalize.css/_normalize";<% if (bootstrap) { %>
-@import "bootstrap/__bootstrap";<% } %>
+@import "bootstrap";<% } %>
 @import "bourbon";

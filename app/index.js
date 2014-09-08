@@ -34,9 +34,10 @@ var util = require('util'),
                             projectDir = process.cwd() + '/',
                             assetsDir = self.wordpress ? '' : 'assets/';
 
-                        function moveFile(origLocation, newLocation) {
+                        function moveFile(origLocation, newLocation, callback) {
                             fs.rename(projectDir + origLocation, projectDir + newLocation, function (err) {
                                 if (err) throw err;
+                                if (callback) callback();
                             });
                         }
 
@@ -74,23 +75,22 @@ var util = require('util'),
                         }
 
                         if (self.bootstrap) {
-                            fs.rename(projectDir + 'bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap', projectDir + appDir + assetsDir + 'sass/lib/bootstrap', function (err) {
-                                if (err) throw err;
-                                fs.rename(projectDir + appDir + assetsDir + 'sass/lib/bootstrap/bootstrap.scss', projectDir + appDir + assetsDir + 'sass/lib/bootstrap/__bootstrap.scss', function (err) {
-                                    fs.readFile(projectDir + appDir + assetsDir + 'sass/lib/bootstrap/_glyphicons.scss', 'utf8', function (err,data) {
-                                      if (err) {
-                                        return console.log(err);
-                                      }
-                                      var result = data.replace(/\$icon-font-path}/g, '$font-dir}/');
 
-                                      fs.writeFile(projectDir + appDir + assetsDir + 'sass/lib/bootstrap/_glyphicons.scss', result, 'utf8', function (err) {
-                                         if (err) return console.log(err);
-                                      });
+                            moveFile('bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap', appDir + assetsDir + 'sass/lib/bootstrap', function() {
+                                moveFile('bower_components/bootstrap-sass-official/assets/stylesheets/_bootstrap.scss', appDir + assetsDir + 'sass/lib/_bootstrap.scss');
+                                fs.readFile(projectDir + appDir + assetsDir + 'sass/lib/bootstrap/_glyphicons.scss', 'utf8', function (err,data) {
+                                    if (err) {
+                                        return console.log(err);
+                                    }
+                                    var result = data.replace(/\$icon-font-path}/g, '$font-dir}/');
+
+                                    fs.writeFile(projectDir + appDir + assetsDir + 'sass/lib/bootstrap/_glyphicons.scss', result, 'utf8', function (err) {
+                                        if (err) return console.log(err);
                                     });
                                 });
                             });
 
-                            moveFile('bower_components/bootstrap-sass-official/assets/javascripts/bootstrap', appDir + assetsDir + 'js/lib/bootstrap');
+                            moveFile('bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.js', appDir + assetsDir + 'js/lib/bootstrap.js');
                             moveFile('bower_components/bootstrap-sass-official/assets/fonts/bootstrap', appDir + assetsDir + 'fonts');
                         }
 
