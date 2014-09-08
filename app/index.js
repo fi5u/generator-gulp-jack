@@ -34,9 +34,44 @@ var util = require('util'),
                             projectDir = process.cwd() + '/',
                             assetsDir = self.wordpress ? '' : 'assets/';
 
-                        fs.rename(projectDir + 'bower_components/normalize.css/normalize.css', projectDir + 'bower_components/normalize.css/_normalize.scss', function (err) {
-                            if (err) throw err;
-                        });
+                        function moveFile(origLocation, newLocation) {
+                            fs.rename(projectDir + origLocation, projectDir + newLocation, function (err) {
+                                if (err) throw err;
+                            });
+                        }
+
+                        moveFile('bower_components/normalize.css/normalize.css', 'bower_components/normalize.css/_normalize.scss');
+
+
+                        if (self.wordpress) {
+                            assetsDir = '';
+                            performReplacement('Text Domain: _s', 'Text Domain: ' + self._.slugify(self.siteName), [appDir], '*.scss');
+                            performReplacement("'_s'", "'" + self._.slugify(self.siteName) + "'", [appDir]);
+                            performReplacement('_s_', self._.slugify(self.siteName).replace('-','_') + '_', [appDir]);
+                            performReplacement(' _s', ' ' + self._.slugify(self.siteName).charAt(0).toUpperCase() + self._.slugify(self.siteName).slice(1), [appDir]);
+                            performReplacement('_s-', self._.slugify(self.siteName) + '-', [appDir]);
+
+                            if (!isWpShared) {
+                                moveFile('bower_components/background-size-polyfill/backgroundsize.min.htc', destDir + 'backgroundsize.min.htc');
+                            }
+
+                            moveFile('bower_components/jquery.customSelect/jquery.customSelect.js', appDir + 'js/lib/jquery.customSelect.js');
+                            moveFile('bower_components/parsleyjs/dist/parsley.min.js', appDir + 'js/lib/parsley.min.js');
+
+                            fs.unlink(projectDir + appDir + 'sass/live.scss', function (err) {
+                                if (err) throw err;
+                            });
+
+
+                        } else {
+
+                            moveFile('bower_components/background-size-polyfill/backgroundsize.min.htc', appDir + 'backgroundsize.min.htc');
+                            moveFile('bower_components/jquery-legacy/dist/jquery.min.js', appDir + assetsDir + 'js/lib/jquery.min.js');
+                            moveFile('bower_components/jquery.customSelect/jquery.customSelect.js', appDir + assetsDir + 'js/vendor/jquery.customSelect.js');
+                            moveFile('bower_components/parsleyjs/dist/parsley.js', appDir + assetsDir + 'js/vendor/parsley.js');
+                            moveFile(appDir + assetsDir + 'js/lib/parsleyfi.js', appDir + assetsDir + 'js/vendor/parsleyfi.js');
+                            moveFile(appDir + assetsDir + 'sass/live.scss', appDir + assetsDir + 'sass/' + self._.slugify(self.siteName) + '.scss');
+                        }
 
                         if (self.bootstrap) {
                             fs.rename(projectDir + 'bower_components/bootstrap-sass-official/assets/stylesheets/bootstrap', projectDir + appDir + assetsDir + 'sass/lib/bootstrap', function (err) {
@@ -55,74 +90,12 @@ var util = require('util'),
                                 });
                             });
 
-                            fs.rename(projectDir + 'bower_components/bootstrap-sass-official/assets/javascripts/bootstrap', projectDir + appDir + assetsDir + 'js/lib/bootstrap', function (err) {
-                                if (err) throw err;
-                            });
-
-                            fs.rename(projectDir + 'bower_components/bootstrap-sass-official/assets/fonts/bootstrap', projectDir + appDir + assetsDir + 'fonts', function (err) {
-                                if (err) throw err;
-                            });
+                            moveFile('bower_components/bootstrap-sass-official/assets/javascripts/bootstrap', appDir + assetsDir + 'js/lib/bootstrap');
+                            moveFile('bower_components/bootstrap-sass-official/assets/fonts/bootstrap', appDir + assetsDir + 'fonts');
                         }
 
-                        if (self.wordpress) {
-                            assetsDir = '';
-                            performReplacement('Text Domain: _s', 'Text Domain: ' + self._.slugify(self.siteName), [appDir], '*.scss');
-                            performReplacement("'_s'", "'" + self._.slugify(self.siteName) + "'", [appDir]);
-                            performReplacement('_s_', self._.slugify(self.siteName).replace('-','_') + '_', [appDir]);
-                            performReplacement(' _s', ' ' + self._.slugify(self.siteName).charAt(0).toUpperCase() + self._.slugify(self.siteName).slice(1), [appDir]);
-                            performReplacement('_s-', self._.slugify(self.siteName) + '-', [appDir]);
-
-                            if (!isWpShared) {
-                                fs.rename(projectDir + 'bower_components/background-size-polyfill/backgroundsize.min.htc', projectDir + destDir + 'backgroundsize.min.htc', function (err) {
-                                    if (err) throw err;
-                                });
-                            }
-
-                            fs.rename(projectDir + 'bower_components/jquery.customSelect/jquery.customSelect.js', projectDir + appDir + 'js/lib/jquery.customSelect.js', function (err) {
-                                if (err) throw err;
-                            });
-
-                            fs.rename(projectDir + 'bower_components/parsleyjs/dist/parsley.min.js', projectDir + appDir + 'js/lib/parsley.min.js', function (err) {
-                                if (err) throw err;
-                            });
-
-                            fs.unlink(projectDir + appDir + 'sass/live.scss', function (err) {
-                                if (err) throw err;
-                            });
-
-                        } else {
-                            fs.rename(projectDir + 'bower_components/background-size-polyfill/backgroundsize.min.htc', projectDir + appDir + 'backgroundsize.min.htc', function (err) {
-                                if (err) throw err;
-                            });
-
-                            fs.rename(projectDir + 'bower_components/jquery-legacy/dist/jquery.min.js', projectDir + appDir + assetsDir + 'js/lib/jquery.min.js', function (err) {
-                                if (err) throw err;
-                            });
-
-                            fs.rename(projectDir + 'bower_components/jquery.customSelect/jquery.customSelect.js', projectDir + appDir + assetsDir + 'js/vendor/jquery.customSelect.js', function (err) {
-                                if (err) throw err;
-                            });
-
-                            fs.rename(projectDir + 'bower_components/parsleyjs/dist/parsley.js', projectDir + appDir + assetsDir + 'js/vendor/parsley.js', function (err) {
-                                if (err) throw err;
-                            });
-
-                            fs.rename(projectDir + appDir + assetsDir + 'js/lib/parsleyfi.js', projectDir + appDir + assetsDir + 'js/vendor/parsleyfi.js', function (err) {
-                                if (err) throw err;
-                            });
-
-                            fs.rename(projectDir + appDir + assetsDir + 'sass/live.scss', projectDir + appDir + assetsDir + 'sass/' + self._.slugify(self.siteName) + '.scss', function (err) {
-                                if (err) throw err;
-                            });
-                        }
-
-                        fs.rename(projectDir + 'bower_components/respond/dest/respond.min.js', projectDir + appDir + assetsDir + 'js/lib/respond.min.js', function (err) {
-                            if (err) throw err;
-                        });
-
-                        fs.rename(projectDir + 'bower_components/selectivizr/selectivizr.js', projectDir + appDir + assetsDir + 'js/lib/selectivizr.js', function (err) {
-                            if (err) throw err;
-                        });
+                        moveFile('bower_components/respond/dest/respond.min.js', appDir + assetsDir + 'js/lib/respond.min.js');
+                        moveFile('bower_components/selectivizr/selectivizr.js', appDir + assetsDir + 'js/lib/selectivizr.js');
 
                     }
                 });
