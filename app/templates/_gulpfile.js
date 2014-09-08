@@ -144,7 +144,10 @@ gulp.task('scripts', [<% if (!wordpress) { %>'vendorScripts', <% } %>'libScripts
 gulp.task('styles', function () {
     return gulp.src(paths.sass)
         .pipe(plumber(onError))
-        .pipe(sass({loadPath: require('node-bourbon').includePaths}))
+        .pipe(sass({
+            loadPath: require('node-bourbon').includePaths,
+            'sourcemap=none': true
+        }))
         .pipe(gulp.dest(paths.destCSS))
         .pipe(refresh(lrserver));
 });
