@@ -1,0 +1,14 @@
+{#svg}$sprite--{name}: {relWidth}em, {relHeight}em, {relPositionX}em, {relPositionY}em;
+{/svg}
+{#common}
+@mixin sprite-svg($sprite) {
+    width: nth($sprite,1);
+    height: nth($sprite,2);
+    background-position: nth($sprite,3) nth($sprite,4);
+    background-image: url(#{~lb}$img-dir{~rb}/sprite.svg);
+    background-repeat: no-repeat;
+
+    .no-svg & {
+        background-image: url(#{~lb}$img-dir{~rb}/sprite.png);
+    }
+}{/common}

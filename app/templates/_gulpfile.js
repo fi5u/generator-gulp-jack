@@ -2,10 +2,9 @@ var gulp = require('gulp');
 var sass = require('gulp-ruby-sass');
 var minifyCSS = require('gulp-minify-css');
 var imagemin = require('gulp-imagemin');
-var svgSprites = require('gulp-svg-sprites');
+var svgSprite = require("gulp-svg-sprites");
 var svg2png = require('gulp-svg2png');
-var svg = svgSprites.svg;
-var png = svgSprites.png;
+var filter = require('gulp-filter');
 var plumber = require('gulp-plumber');
 var gutil = require('gulp-util');
 var newer = require('gulp-newer');
@@ -18,57 +17,6 @@ var ecstatic = require('ecstatic');<% if (!wordpress) { %>
 var insert = require('gulp-insert');
 var uglify = require('gulp-uglify');
 var concat = require('gulp-concat');<% } /* end not wp */ %>
-
-/* sprite hack to get sprites as mq-friendly placeholders */
-var svgSpritesCssRender = require('gulp-svg-sprites/lib/css-render'),
-    svgSpritesUtils = require('gulp-svg-sprites/lib/utils'),
-    svgSpritesCssUtils = require('gulp-svg-sprites/lib/css-utils');
-
-svgSpritesCssRender.render = function(sprite, config) {
-    var css = '';
-
-    var data = sprite.elements.map(function (element) {
-        var className = element.className = svgSpritesCssUtils.makeClassName(config.className, element.className, config);
-        element.name = className.replace(".", "");
-
-        // output a variable containing the width, height, offset, PNG, and SVG of this sprite
-        css += '$' + element.name + ': ' +
-            svgSpritesUtils.scaleValue(element.width) + 'px ' +
-            svgSpritesUtils.scaleValue(element.height) + 'px ' +
-            '-' + svgSpritesUtils.scaleValue(element.x) + 'px ' +
-            '\'' + svgSpritesUtils.makePath(config.pngPath, svgSpritesUtils.swapFileName(sprite.path), config) + '\' ' +
-            '\'' + svgSpritesUtils.makePath(config.svgPath, sprite.path, config) + '\';\n';
-
-        return element;
-    });
-
-    // output the mixin required to render an actual sprite
-    css +=
-        '@mixin sprite-svg($sprite) {\n' +
-            '$sprite-x: nth($sprite, 3);\n' +
-            '$sprite-png: nth($sprite, 4);\n' +
-            '$sprite-svg: nth($sprite, 5);\n' +
-
-            'width: nth($sprite, 1);\n' +
-            'height: nth($sprite, 2);\n' +
-
-            'background-position: $sprite-x 0;\n' +
-            'background-image: url(#{$sprite-svg});\n' +
-
-            // background image changes if SVG is not supported
-            '.no-svg & {\n' +
-                'background-image: url(#{$sprite-png});\n' +
-            '}\n' +
-        '}';
-
-    return {
-        content: css,
-        elements: data,
-        svgFile: svgSpritesUtils.makePath(config.svgPath, sprite.path, config)
-    };
-}
-/* end sprite hack */
-
 
 var appRoute = '<% if (!jekyll) { %>app<% } else { %>.<% } %>',
     destRoute = '<% if (wpShared) { %>/Users/fisu/Sites/wordpress/wp-content/themes/<%= _.slugify(siteName) %><% } else { %>dist<% } %>',
@@ -98,16 +46,12 @@ var paths = {
 };
 
 var spriteConfig = {
-    className: ".sprite--%f",
-    cssFile: "_sprites.scss",
-    <% if (!wordpress) { %>svgPath: "%f",
-    pngPath: "%f",<% } else { /* is wp */ %>svgPath: "images/svg-sprite.svg",
-    pngPath: "images/png-sprite.png",
-    <% } %>
-    svg: {
-        sprite: "../../..<% if (!wordpress) { %>/../assets<% } %>/images/svg-sprite.svg"
-    },
-    generatePreview: false
+    cssFile: 'sass/project/_sprites.scss',
+    preview: false,
+    svg: {sprite: 'images/sprite.svg'},
+    templates: {
+        css: require("fs").readFileSync("./_sprite-mixin.scss", "utf-8")
+    }
 };
 
 var onError = function (err) {
@@ -141,7 +85,7 @@ gulp.task('scripts', [<% if (!wordpress) { %>'vendorScripts', <% } %>'libScripts
 });
 
 
-gulp.task('styles', function () {
+gulp.task('styles', ['sprites'], function () {
     return gulp.src(paths.sass)
         .pipe(plumber(onError))
         .pipe(sass({
@@ -161,10 +105,12 @@ gulp.task('fonts', function () {
 
 gulp.task('sprites', function () {
     return gulp.src(paths.sprites)
-        .pipe(newer(paths.spritesDir))
-        .pipe(svg(spriteConfig))
-        .pipe(gulp.dest(paths.spritesDir))
-        .pipe(png())
+        .pipe(newer(paths.assets))
+        .pipe(svgSprite(spriteConfig))
+        .pipe(gulp.dest(paths.assets))
+        .pipe(filter('**/*.svg'))
+        .pipe(svg2png())
+        .pipe(gulp.dest(paths.assets))
 });
 
 
@@ -244,12 +190,15 @@ gulp.task('watch', function () {
     <% } %>
 });
 
-gulp.task('build', ['scripts', 'sprites', 'styles', 'images', 'fonts', <% if (wordpress) { %>'php', <% } else if (!jekyll) { %>'html', <% } %><% if (jekyll) { %>'jekyll',<% } %>'filesCopy']);
+
+gulp.task('build', ['scripts', 'styles', 'images', 'fonts', <% if (wordpress) { %>'php', <% } else if (!jekyll) { %>'html', <% } %><% if (jekyll) { %>'jekyll',<% } %>'filesCopy']);
+
 
 gulp.task('server', ['build'], function () {
     gulp.start('serve');
     gulp.start('watch');
 });
+
 
 gulp.task('default', <% if (!jekyll) { %>['clean'],<% } %> function () {
     gulp.start('server');
