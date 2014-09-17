@@ -175,8 +175,9 @@ gulp.task('filesCopy', function () {
 
 
 gulp.task('watch', function () {
-    gulp.watch(paths.jsAll, ['scripts']);
-    gulp.watch(paths.sass, ['styles']);
+    gulp.watch(paths.js, ['customScripts']);
+    gulp.watch(paths.jsLib, ['libScripts']);
+    gulp.watch(paths.sass, ['sass']);
     <% if (!jekyll && !wordpress) { %>gulp.watch(paths.html, ['html']);
     <% } %>gulp.watch([paths.img, '!' + paths.app + '/**/images/sprites{,/**}'], ['images']);
     gulp.watch(paths.sprites, ['sprites']);<% if (wordpress) { %>
