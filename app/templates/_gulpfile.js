@@ -76,7 +76,7 @@ var onError = function (err) {
 });
 
 
-gulp.task('scripts', [<% if (!wordpress) { %>'vendorScripts', <% } %>'libScripts'], function () {
+gulp.task('customScripts', function () {
     return gulp.src([paths.js])<% if (!wordpress) { %>
         .pipe(newer(paths.destJS + '/script.js'))
         .pipe(concat('script.js'))<% } %>
@@ -85,7 +85,7 @@ gulp.task('scripts', [<% if (!wordpress) { %>'vendorScripts', <% } %>'libScripts
 });
 
 
-gulp.task('styles', ['sprites'], function () {
+gulp.task('sass', function () {
     return gulp.src(paths.sass)
         .pipe(plumber(onError))
         .pipe(sass({
@@ -191,10 +191,24 @@ gulp.task('watch', function () {
 });
 
 
-gulp.task('build', ['scripts', 'styles', 'images', 'fonts', <% if (wordpress) { %>'php', <% } else if (!jekyll) { %>'html', <% } %><% if (jekyll) { %>'jekyll',<% } %>'filesCopy']);
+gulp.task('scripts', [<% if (!wordpress) { %>'vendorScripts', <% } %>'libScripts'], function() {
+    gulp.start('customScripts');
+});
 
 
-gulp.task('server', ['build'], function () {
+gulp.task('styles', ['sprites'], function() {
+    gulp.start('sass');
+});
+
+
+gulp.task('visual', ['images'], function() {
+    gulp.start('styles');
+});
+
+gulp.task('build', ['scripts', 'visual', 'fonts', <% if (wordpress) { %>'php', <% } else if (!jekyll) { %>'html', <% } %><% if (jekyll) { %>'jekyll',<% } %>'filesCopy']);
+
+
+gulp.task('server', ['build'], function() {
     gulp.start('serve');
     gulp.start('watch');
 });

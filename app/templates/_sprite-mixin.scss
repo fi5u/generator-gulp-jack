@@ -1,4 +1,4 @@
-{#svg}$sprite--{name}: {relWidth}em, {relHeight}em, {relPositionX}em, {relPositionY}em;
+{#svg}$sprite--{name}: ({relWidth}*10)+px, ({relHeight}*10)+px, ({relPositionX}*10)+px, ({relPositionY}*10)+px;
 {/svg}
 {#common}
 @mixin sprite-svg($sprite) {

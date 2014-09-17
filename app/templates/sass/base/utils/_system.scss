@@ -63,7 +63,6 @@ $placeholders: ();
 }
 
 // placeholder
-
 @mixin _add($name) {
     // If placeholder doesn't exist yet in `$placeholders` list
     @if not index($placeholders, $name) {
@@ -101,9 +100,9 @@ $placeholders: ();
     }
 
     // If placeholder already exists, just warn the user
-  /* @else {
-    @warn "Placeholder `#{$name}` already exists.";
-  } */
+    //@else {
+    //    @warn "Placeholder `#{$name}` already exists.";
+    //}
 }
 
 // placeholder implementor
