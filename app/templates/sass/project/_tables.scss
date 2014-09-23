@@ -1,3 +1,4 @@
 table {
-
+<% if (verticalRhythm) { %>    @include ktype(0,0,1);
+<% } %>
 }

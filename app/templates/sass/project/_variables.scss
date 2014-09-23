@@ -62,6 +62,13 @@ $font-size: (
     xl: 1.125,  // 18px @ 16px
     xl2: 1.5    // 24px @ 16px
 );
+<% if (verticalRhythm) { %>
+// See https://github.com/Pushplaybang/knife
+$body-font-size:    $base-font-size;
+$body-line-height:  $line-height-multiplier;
+$scale-factor:      $perfect-fourth;
+$ie8compatability:  true;
+<% } %>
 
 
 // ANIMATION

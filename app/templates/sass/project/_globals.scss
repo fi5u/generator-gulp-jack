@@ -13,13 +13,13 @@
     html {
         width: 100%;
         height: 100%;
-
-        // Generates a base font size in percentage
+        <% if (verticalRhythm) { %>@include khtml();
+        <% } else { %>// Generates a base font size in percentage
         // to which 1 rem will equal
         font-size: $base-font-size / 16 * 100%;
         // Set a default line-height of $base-font-size * $line-height-multiplier
         // (in rem with px fallback)
-        @include line-height();
+        @include line-height();<% } %>
     }
 
     body {
@@ -28,6 +28,8 @@
 
         font-family: font-family();
         color: palette(black);
+        <% if (verticalRhythm) { %>
+        @include kbody();<% } %>
 
         background: #fff;
 
