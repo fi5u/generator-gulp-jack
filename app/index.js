@@ -94,6 +94,10 @@ var util = require('util'),
                             moveFile('bower_components/bootstrap-sass-official/assets/fonts/bootstrap', appDir + assetsDir + 'fonts');
                         }
 
+                        if (self.verticalRhythm) {
+                            moveFile('bower_components/knife/_knife.sass', appDir + assetsDir + 'sass/project/_vertical-rhythm.sass');
+                        }
+
                         moveFile('bower_components/respond/dest/respond.min.js', appDir + assetsDir + 'js/lib/respond.min.js');
                         moveFile('bower_components/selectivizr/selectivizr.js', appDir + assetsDir + 'js/lib/selectivizr.js');
 
@@ -134,6 +138,11 @@ var util = require('util'),
             name: 'bootstrap',
             message: 'Would you like to use Bootstrap?',
             default: false
+        }, {
+            type: 'confirm',
+            name: 'verticalRhythm',
+            message: 'Would you like to implement vertical rhythm?',
+            default: true
         }, {
             type: 'confirm',
             name: 'wpShared',
@@ -195,6 +204,7 @@ var util = require('util'),
             this.wordpress = props.wordpress;
             this.jekyll = props.jekyll;
             this.bootstrap = props.bootstrap;
+            this.verticalRhythm = props.verticalRhythm;
             this.wpShared = props.wpShared;
             this.localUrl = props.localUrl;
             this.dbName = props.dbName;
