@@ -50,7 +50,7 @@ var spriteConfig = {
     preview: false,
     svg: {sprite: 'images/sprite.svg'},
     templates: {
-        css: require("fs").readFileSync("./_sprite-mixin.scss", "utf-8")
+        css: require("fs").readFileSync("./templates/_sprite-mixin.scss", "utf-8")
     }
 };
 
