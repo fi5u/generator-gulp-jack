@@ -245,6 +245,7 @@ var util = require('util'),
 
         this.directory('project_assets', 'project_assets');
         this.mkdir('project_assets/_layout');
+        this.mkdir('project_assets/_cut');
         this.copy('_sprite-mixin.scss', '_sprite-mixin.scss');
         this.copy('_package.json', 'package.json');
         this.copy('_bower.json', 'bower.json');
