@@ -69,6 +69,7 @@ $body-line-height:  $line-height-multiplier;
 $scale-factor:      $perfect-fourth;
 $ie8compatability:  true;
 <% } %>
+$em-base: $base-font-size; // for Bourbon functions
 
 
 // ANIMATION

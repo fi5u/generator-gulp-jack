@@ -9,23 +9,6 @@ $modules: () !default;
     }
 }
 
-// getPrefixes
-// this function is used by mixins to set the proper progressive enhancement prefixes
-@function getPrefix($feature, $useModernizr: true) {
-    $yesPrefix: '';
-    $noPrefix: '';
-    @if $useModernizr {
-        $yesPrefix: '.' + $feature;
-        $noPrefix: '.no-' + $feature;
-    }
-    @return (yes: $yesPrefix, no: $noPrefix);
-}
-
-// system variables
-$default-breakpoint: root;
-$current-breakpoint: $default-breakpoint;
-$placeholders: ();
-
 
 // breakpoint
 // this mixin needs to be used to enter a @media that will let use use cross-media placeholders
@@ -35,6 +18,12 @@ $placeholders: ();
 //    @include _use(clearfix);
 //  }
 //}
+
+// system variables
+$default-breakpoint: root;
+$current-breakpoint: $default-breakpoint;
+$placeholders: ();
+
 @mixin breakpoint($breakpoint) {
     // Get the width from the keyword `$breakpoint`
     // Or `null` if the keyword doesn't exist in `$breakpoints` map
