@@ -4,8 +4,8 @@
     "dependencies": {
         "background-size-polyfill": "latest",<% if (bootstrap) { %>
         "bootstrap-sass-official": "latest",<% } %>
-        "jquery.customSelect": "latest",
-        "jquery-legacy": "jquery#1.11.x",<% if (verticalRhythm) { %>
+        "jquery.customSelect": "latest",<% if (!browserify) { %>
+        "jquery-legacy": "jquery#1.11.x",<% } %><% if (verticalRhythm) { %>
         "knife": "latest",<% } %>
         "normalize.css": "latest",
         "parsleyjs": "latest",

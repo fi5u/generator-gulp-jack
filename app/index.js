@@ -57,7 +57,10 @@ var util = require('util'),
                             }
 
                             moveFile('bower_components/jquery.customSelect/jquery.customSelect.js', appDir + 'js/lib/jquery.customSelect.js');
-                            moveFile('bower_components/parsleyjs/dist/parsley.min.js', appDir + 'js/lib/parsley.min.js');
+
+                            if (!self.browserify) {
+                                moveFile('bower_components/parsleyjs/dist/parsley.min.js', appDir + 'js/lib/parsley.min.js');
+                            }
 
                             fs.unlink(projectDir + appDir + 'sass/live.scss', function (err) {
                                 if (err) throw err;
@@ -67,11 +70,16 @@ var util = require('util'),
                         } else {
 
                             moveFile('bower_components/background-size-polyfill/backgroundsize.min.htc', appDir + 'backgroundsize.min.htc');
-                            moveFile('bower_components/jquery-legacy/dist/jquery.min.js', appDir + assetsDir + 'js/lib/jquery.min.js');
-                            moveFile('bower_components/jquery.customSelect/jquery.customSelect.js', appDir + assetsDir + 'js/vendor/jquery.customSelect.js');
-                            moveFile('bower_components/parsleyjs/dist/parsley.js', appDir + assetsDir + 'js/vendor/parsley.js');
-                            moveFile(appDir + assetsDir + 'js/lib/parsleyfi.js', appDir + assetsDir + 'js/vendor/parsleyfi.js');
                             moveFile(appDir + assetsDir + 'sass/live.scss', appDir + assetsDir + 'sass/' + self._.slugify(self.siteName) + '.scss');
+                            if (!self.browserify) {
+                                moveFile('bower_components/parsleyjs/dist/parsley.js', appDir + assetsDir + 'js/vendor/parsley.js');
+                                moveFile(appDir + assetsDir + 'js/lib/parsleyfi.js', appDir + assetsDir + 'js/vendor/parsleyfi.js');
+                                moveFile('bower_components/jquery-legacy/dist/jquery.min.js', appDir + assetsDir + 'js/lib/jquery.min.js');
+                                moveFile('bower_components/jquery.customSelect/jquery.customSelect.js', appDir + assetsDir + 'js/vendor/jquery.customSelect.js');
+                            } else {
+                                moveFile('bower_components/jquery.customSelect/jquery.customSelect.js', appDir + assetsDir + 'js/lib/jquery.customSelect.js');
+                                moveFile(appDir + assetsDir + 'js/lib/parsleyfi.js', appDir + assetsDir + 'js/lib/parsleyfi.js');
+                            }
                         }
 
                         if (self.bootstrap) {
@@ -100,7 +108,6 @@ var util = require('util'),
 
                         moveFile('bower_components/respond/dest/respond.min.js', appDir + assetsDir + 'js/lib/respond.min.js');
                         moveFile('bower_components/selectivizr/selectivizr.js', appDir + assetsDir + 'js/lib/selectivizr.js');
-
                     }
                 });
             }
@@ -142,6 +149,11 @@ var util = require('util'),
             type: 'confirm',
             name: 'verticalRhythm',
             message: 'Would you like to implement vertical rhythm?',
+            default: true
+        }, {
+            type: 'confirm',
+            name: 'browserify',
+            message: 'Would you like to use Browserify for JS',
             default: true
         }, {
             type: 'confirm',
@@ -205,6 +217,7 @@ var util = require('util'),
             this.jekyll = props.jekyll;
             this.bootstrap = props.bootstrap;
             this.verticalRhythm = props.verticalRhythm;
+            this.browserify = props.browserify;
             this.wpShared = props.wpShared;
             this.localUrl = props.localUrl;
             this.dbName = props.dbName;
@@ -249,7 +262,15 @@ var util = require('util'),
             this.mkdir(appDir + 'assets');
             this.mkdir(appDir + 'assets/fonts');
             this.directory('images', appDir + 'assets/images');
-            this.directory('js', appDir + 'assets/js');
+
+            if (this.browserify) {
+                this.copy('js/script.js', appDir + 'assets/js/script.js');
+                this.directory('js/lib', appDir + 'assets/js/lib');
+                this.copy('js/vendor/jquery.smartresize.js', appDir + 'assets/js/lib/jquery.smartresize.js');
+            } else {
+                this.directory('js', appDir + 'assets/js');
+            }
+
             this.directory('sass', appDir + 'assets/sass');
         }
 

@@ -1,5 +1,7 @@
 var gulp = require('gulp');
-var sass = require('gulp-ruby-sass');
+var sass = require('gulp-ruby-sass');<% if (browserify) { %>
+var browserify = require('browserify');
+var source = require('vinyl-source-stream');<% } %>
 var minifyCSS = require('gulp-minify-css');
 var imagemin = require('gulp-imagemin');
 var svgSprite = require("gulp-svg-sprites");
@@ -60,6 +62,23 @@ var onError = function (err) {
 };
 
 
+<% if (browserify) { %>gulp.task('browserify', function() {
+    return browserify('./' + paths.assets + '/js/script.js')
+        .bundle()
+        .pipe(source('script.js'))
+        .pipe(gulp.dest(paths.destJS));
+});
+
+
+<% } else { %>gulp.task('customScripts', function () {
+    return gulp.src([paths.js])<% if (!wordpress) { %>
+        .pipe(newer(paths.destJS + '/script.js'))
+        .pipe(concat('script.js'))<% } %>
+        .pipe(gulp.dest(paths.destJS))
+        .pipe(refresh(lrserver));
+});
+
+
 <% if (!wordpress) { %>gulp.task('vendorScripts', function () {
     return gulp.src([paths.jsVendor])
         .pipe(newer(paths.destJS + '/vendor.js'))
@@ -70,18 +89,9 @@ var onError = function (err) {
 });
 
 
-<% } %>gulp.task('libScripts', function () {
+<% } %><% } %>gulp.task('libScripts', function () {
     return gulp.src([paths.jsLib])
         .pipe(gulp.dest(paths.destJSLib));
-});
-
-
-gulp.task('customScripts', function () {
-    return gulp.src([paths.js])<% if (!wordpress) { %>
-        .pipe(newer(paths.destJS + '/script.js'))
-        .pipe(concat('script.js'))<% } %>
-        .pipe(gulp.dest(paths.destJS))
-        .pipe(refresh(lrserver));
 });
 
 
@@ -175,8 +185,8 @@ gulp.task('filesCopy', function () {
 
 
 gulp.task('watch', function () {
-    gulp.watch(paths.js, ['customScripts']);
-    gulp.watch(paths.jsLib, ['libScripts']);
+    <% if (!browserify) { %>gulp.watch(paths.js, ['customScripts']);
+    <% } %>gulp.watch(paths.jsLib, ['libScripts']);
     gulp.watch(paths.sass, ['sass']);
     <% if (!jekyll && !wordpress) { %>gulp.watch(paths.html, ['html']);
     <% } %>gulp.watch([paths.img, '!' + paths.app + '/**/images/sprites{,/**}'], ['images']);
@@ -192,8 +202,8 @@ gulp.task('watch', function () {
 });
 
 
-gulp.task('scripts', [<% if (!wordpress) { %>'vendorScripts', <% } %>'libScripts'], function() {
-    gulp.start('customScripts');
+gulp.task('scripts', [<% if (!wordpress) { %><% if (!browserify) { %>'vendorScripts', <% } %><% } %>'libScripts'], function() {
+    <% if (!browserify) { %>gulp.start('customScripts');<% } else { %>gulp.start('browserify');<% } %>
 });
 
 
