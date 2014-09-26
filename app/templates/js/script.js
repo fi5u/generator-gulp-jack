@@ -1,4 +1,4 @@
-(function (window, document, $, undefined) {
+<% if (!browserify) { %>(function (window, document, $, undefined) {
 
     /*
      * VARIABLES
@@ -40,4 +40,5 @@
     });
 
 
-})(window, document, jQuery);
+})(window, document, jQuery);<% } else { %>var $ = require('jquery');
+<% } %>
