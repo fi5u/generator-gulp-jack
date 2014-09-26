@@ -1,5 +1,6 @@
 var gulp = require('gulp');
 var sass = require('gulp-ruby-sass');<% if (browserify) { %>
+var watchify = require('watchify');
 var browserify = require('browserify');
 var source = require('vinyl-source-stream');<% } %>
 var minifyCSS = require('gulp-minify-css');
@@ -184,10 +185,26 @@ gulp.task('filesCopy', function () {
 });
 
 
-gulp.task('watch', function () {
+<% if (browserify) { %>gulp.task('watchJS', function() {
+    var bundler = watchify(browserify('./' + paths.assets + '/js/script.js', {debug:false}));
+    bundler.on('update', rebundle);
+
+    function rebundle() {
+        return bundler.bundle()
+        .on('error', gutil.log.bind(gutil, 'Browserify Error'))
+        .pipe(source('script.js'))
+        .pipe(gulp.dest(paths.destJS))
+        .pipe(refresh(lrserver));
+    }
+
+    return rebundle();
+});
+
+
+<% } %>gulp.task('watch', function () {
     <% if (!browserify) { %>gulp.watch(paths.js, ['customScripts']);
-    <% } %>gulp.watch(paths.jsLib, ['libScripts']);
-    gulp.watch(paths.sass, ['sass']);
+    gulp.watch(paths.jsLib, ['libScripts']);
+    <% } %>gulp.watch(paths.sass, ['sass']);
     <% if (!jekyll && !wordpress) { %>gulp.watch(paths.html, ['html']);
     <% } %>gulp.watch([paths.img, '!' + paths.app + '/**/images/sprites{,/**}'], ['images']);
     gulp.watch(paths.sprites, ['sprites']);<% if (wordpress) { %>
@@ -221,7 +238,8 @@ gulp.task('build', ['scripts', 'visual', 'fonts', <% if (wordpress) { %>'php', <
 
 gulp.task('server', ['build'], function() {
     gulp.start('serve');
-    gulp.start('watch');
+    <% if (browserify) { %>gulp.start('watchJS');
+    <% } %>gulp.start('watch');
 });
 
 
