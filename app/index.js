@@ -57,6 +57,7 @@ var util = require('util'),
                             }
 
                             moveFile('bower_components/jquery.customSelect/jquery.customSelect.js', appDir + 'js/lib/jquery.customSelect.js');
+                            moveFile('bower_components/picturefill/dist/picturefill.min.js', appDir + 'js/lib/picturefill.min.js');
 
                             if (!self.browserify) {
                                 moveFile('bower_components/parsleyjs/dist/parsley.min.js', appDir + 'js/lib/parsley.min.js');
@@ -71,6 +72,8 @@ var util = require('util'),
 
                             moveFile('bower_components/background-size-polyfill/backgroundsize.min.htc', appDir + 'backgroundsize.min.htc');
                             moveFile(appDir + assetsDir + 'sass/live.scss', appDir + assetsDir + 'sass/' + self._.slugify(self.siteName) + '.scss');
+                            moveFile('bower_components/picturefill/dist/picturefill.min.js', appDir + assetsDir + 'js/lib/picturefill.min.js');
+
                             if (!self.browserify) {
                                 moveFile('bower_components/parsleyjs/dist/parsley.js', appDir + assetsDir + 'js/vendor/parsley.js');
                                 moveFile(appDir + assetsDir + 'js/lib/parsleyfi.js', appDir + assetsDir + 'js/vendor/parsleyfi.js');

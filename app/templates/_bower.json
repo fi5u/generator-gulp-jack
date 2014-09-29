@@ -7,8 +7,9 @@
         "jquery.customSelect": "latest",<% if (!browserify) { %>
         "jquery-legacy": "jquery#1.11.x",<% } %><% if (verticalRhythm) { %>
         "knife": "latest",<% } %>
-        "normalize.css": "latest",
-        "parsleyjs": "latest",
+        "normalize.css": "latest",<% if (!browserify) { %>
+        "parsleyjs": "latest",<% } %>
+        "picturefill": "latest",
         "respond": "latest",
         "selectivizr": "latest",
         "susy": "latest"
