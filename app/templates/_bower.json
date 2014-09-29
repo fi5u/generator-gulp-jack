@@ -9,6 +9,7 @@
         "knife": "latest",<% } %>
         "normalize.css": "latest",<% if (!browserify) { %>
         "parsleyjs": "latest",<% } %>
+        "picturefill": "latest",
         "respond": "latest",
         "selectivizr": "latest",
         "susy": "latest"
