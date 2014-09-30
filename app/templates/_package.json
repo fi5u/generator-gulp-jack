@@ -2,8 +2,8 @@
     "name": "<%= _.slugify(appname) %>",
     "version": "0.0.0",
     "dependencies": {
-        <% if (browserify) { %>"parsleyjs": "*",
-        "jquery": "*"<% } %>
+        <% if (browserify) { %>"jquery": "*",
+        "parsleyjs": "*"<% } %>
         },
     "devDependencies": {
         <% if (browserify) { %>"browserify": "^5.12.0",
