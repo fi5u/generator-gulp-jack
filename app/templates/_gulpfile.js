@@ -90,13 +90,13 @@ var onError = function (err) {
 });
 
 
-<% } %><% } %>gulp.task('libScripts', function () {
+<% } %>gulp.task('libScripts', function () {
     return gulp.src([paths.jsLib])
         .pipe(gulp.dest(paths.destJSLib));
 });
 
 
-gulp.task('sass', function () {
+<% } %>gulp.task('sass', function () {
     return gulp.src(paths.sass)
         .pipe(plumber(onError))
         .pipe(sass({
@@ -219,9 +219,7 @@ gulp.task('filesCopy', function () {
 });
 
 
-gulp.task('scripts', [<% if (!wordpress) { %><% if (!browserify) { %>'vendorScripts', <% } %><% } %>'libScripts'], function() {
-    <% if (!browserify) { %>gulp.start('customScripts');<% } else { %>gulp.start('browserify');<% } %>
-});
+gulp.task('scripts', [<% if (!browserify) { %><% if (!wordpress) { %>'vendorScripts', <% } %>'libScripts', 'customScripts'<% } else { %>'browserify'<% } %>]);
 
 
 gulp.task('styles', ['sprites'], function() {
