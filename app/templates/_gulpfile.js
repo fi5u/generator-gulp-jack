@@ -92,7 +92,8 @@ var onError = function (err) {
 
 <% } %><% } %>gulp.task('libScripts', function () {
     return gulp.src([paths.jsLib])
-        .pipe(gulp.dest(paths.destJSLib));
+        <% if (browserify) { %>.pipe(filter(['**/modernizr.js', '**/picturefill.min.js', '**/respond.min.js', '**/selectivizr.js', '**/nwmatcher-1.2.5.js']))
+        <% } %>.pipe(gulp.dest(paths.destJSLib));
 });
 
 
