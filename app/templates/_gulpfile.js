@@ -8,6 +8,7 @@ var minifyCSS = require('gulp-minify-css');
 var imagemin = require('gulp-imagemin');
 var svgSprite = require("gulp-svg-sprites");
 var svg2png = require('gulp-svg2png');
+var gulpif = require('gulp-if');
 var filter = require('gulp-filter');
 var plumber = require('gulp-plumber');
 var gutil = require('gulp-util');
