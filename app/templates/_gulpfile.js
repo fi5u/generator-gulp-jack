@@ -21,6 +21,9 @@ var insert = require('gulp-insert');
 var uglify = require('gulp-uglify');
 var concat = require('gulp-concat');<% } /* end not wp */ %>
 
+// Project config
+var compress = false;
+
 var appRoute = '<% if (!jekyll) { %>app<% } else { %>.<% } %>',
     destRoute = '<% if (wpShared) { %>/Users/fisu/Sites/wordpress/wp-content/themes/<%= _.slugify(siteName) %><% } else { %>dist<% } %>',
     livereloadport = 35729,
@@ -64,7 +67,7 @@ var onError = function (err) {
 
 
 <% if (browserify) { %>gulp.task('browserifyMain', function() {
-    return browserify('./' + paths.assets + '/js/script.js')
+    return browserify('./' + paths.assets + '/js/script.js', {debug: !compress})
         .bundle()
         .pipe(source('script.js'))
         .pipe(gulp.dest(paths.destJS));
@@ -187,7 +190,7 @@ gulp.task('filesCopy', function () {
 
 
 <% if (browserify) { %>gulp.task('watchMain', function() {
-    var bundler = watchify(browserify('./' + paths.assets + '/js/script.js', {debug:false}));
+    var bundler = watchify(browserify('./' + paths.assets + '/js/script.js', {debug: !compress}));
     bundler.on('update', rebundle);
 
     function rebundle() {
