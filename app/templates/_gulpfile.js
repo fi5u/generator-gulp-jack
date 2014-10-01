@@ -2,7 +2,8 @@ var gulp = require('gulp');
 var sass = require('gulp-ruby-sass');<% if (browserify) { %>
 var watchify = require('watchify');
 var browserify = require('browserify');
-var source = require('vinyl-source-stream');<% } %>
+var source = require('vinyl-source-stream');
+var buffer = require('vinyl-buffer');<% } %>
 var minifyCSS = require('gulp-minify-css');
 var imagemin = require('gulp-imagemin');
 var svgSprite = require("gulp-svg-sprites");
@@ -70,6 +71,8 @@ var onError = function (err) {
     return browserify('./' + paths.assets + '/js/script.js', {debug: !compress})
         .bundle()
         .pipe(source('script.js'))
+        .pipe(gulpif(compress, buffer()))
+        .pipe(gulpif(compress, uglify()))
         .pipe(gulp.dest(paths.destJS));
 });
 
@@ -197,6 +200,8 @@ gulp.task('filesCopy', function () {
         return bundler.bundle()
         .on('error', gutil.log.bind(gutil, 'Browserify Error'))
         .pipe(source('script.js'))
+        .pipe(gulpif(compress, buffer()))
+        .pipe(gulpif(compress, uglify()))
         .pipe(gulp.dest(paths.destJS))
         .pipe(refresh(lrserver));
     }
