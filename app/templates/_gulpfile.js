@@ -68,17 +68,7 @@ var onError = function (err) {
 };
 
 
-<% if (browserify) { %>gulp.task('browserifyMain', function() {
-    return browserify('./' + paths.assets + '/js/script.js', {debug: !compress})
-        .bundle()
-        .pipe(source('script.js'))
-        .pipe(gulpif(compress, buffer()))
-        .pipe(gulpif(compress, uglify()))
-        .pipe(gulp.dest(paths.destJS));
-});
-
-
-<% } else { %>gulp.task('customScripts', function () {
+<% if (!browserify) { %>gulp.task('customScripts', function () {
     return gulp.src([paths.js])<% if (!wordpress) { %>
         .pipe(newer(paths.destJS + '/script.js'))
         .pipe(concat('script.js'))<% } %>
@@ -229,9 +219,7 @@ gulp.task('filesCopy', function () {
 });
 
 
-gulp.task('scripts', [<% if (!wordpress) { %><% if (!browserify) { %>'vendorScripts', <% } %><% } %>'libScripts'], function() {
-    <% if (!browserify) { %>gulp.start('customScripts');<% } else { %>gulp.start('browserify');<% } %>
-});
+gulp.task('scripts', [<% if (!wordpress) { %><% if (!browserify) { %>'vendorScripts', <% } %><% } %>'libScripts'<% if (!browserify) { %>, 'customScripts'<% } %>]);
 
 
 gulp.task('styles', ['sprites'], function() {
@@ -243,10 +231,7 @@ gulp.task('visual', ['images'], function() {
     gulp.start('styles');
 });
 
-<% if (browserify) { %>gulp.task('browserify', ['browserifyMain']);
-
-
-gulp.task('watchJS', ['watchMain']);
+<% if (browserify) { %>gulp.task('watchJS', ['watchMain']);
 <% } %>gulp.task('build', ['scripts', 'visual', 'fonts', <% if (wordpress) { %>'php', <% } else if (!jekyll) { %>'html', <% } %><% if (jekyll) { %>'jekyll',<% } %>'filesCopy']);
 
 
