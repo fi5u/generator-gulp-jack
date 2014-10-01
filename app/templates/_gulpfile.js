@@ -2,11 +2,13 @@ var gulp = require('gulp');
 var sass = require('gulp-ruby-sass');<% if (browserify) { %>
 var watchify = require('watchify');
 var browserify = require('browserify');
-var source = require('vinyl-source-stream');<% } %>
+var source = require('vinyl-source-stream');
+var buffer = require('vinyl-buffer');<% } %>
 var minifyCSS = require('gulp-minify-css');
 var imagemin = require('gulp-imagemin');
 var svgSprite = require("gulp-svg-sprites");
 var svg2png = require('gulp-svg2png');
+var gulpif = require('gulp-if');
 var filter = require('gulp-filter');
 var plumber = require('gulp-plumber');
 var gutil = require('gulp-util');
@@ -20,6 +22,9 @@ var ecstatic = require('ecstatic');<% if (!wordpress) { %>
 var insert = require('gulp-insert');
 var uglify = require('gulp-uglify');
 var concat = require('gulp-concat');<% } /* end not wp */ %>
+
+// Project config
+var compress = false;
 
 var appRoute = '<% if (!jekyll) { %>app<% } else { %>.<% } %>',
     destRoute = '<% if (wpShared) { %>/Users/fisu/Sites/wordpress/wp-content/themes/<%= _.slugify(siteName) %><% } else { %>dist<% } %>',
@@ -63,15 +68,7 @@ var onError = function (err) {
 };
 
 
-<% if (browserify) { %>gulp.task('browserifyMain', function() {
-    return browserify('./' + paths.assets + '/js/script.js')
-        .bundle()
-        .pipe(source('script.js'))
-        .pipe(gulp.dest(paths.destJS));
-});
-
-
-<% } else { %>gulp.task('customScripts', function () {
+<% if (!browserify) { %>gulp.task('customScripts', function () {
     return gulp.src([paths.js])<% if (!wordpress) { %>
         .pipe(newer(paths.destJS + '/script.js'))
         .pipe(concat('script.js'))<% } %>
@@ -187,13 +184,15 @@ gulp.task('filesCopy', function () {
 
 
 <% if (browserify) { %>gulp.task('watchMain', function() {
-    var bundler = watchify(browserify('./' + paths.assets + '/js/script.js', {debug:false}));
+    var bundler = watchify(browserify('./' + paths.assets + '/js/script.js', {debug: !compress}));
     bundler.on('update', rebundle);
 
     function rebundle() {
         return bundler.bundle()
         .on('error', gutil.log.bind(gutil, 'Browserify Error'))
         .pipe(source('script.js'))
+        .pipe(gulpif(compress, buffer()))
+        .pipe(gulpif(compress, uglify()))
         .pipe(gulp.dest(paths.destJS))
         .pipe(refresh(lrserver));
     }
@@ -220,9 +219,7 @@ gulp.task('filesCopy', function () {
 });
 
 
-gulp.task('scripts', [<% if (!wordpress) { %><% if (!browserify) { %>'vendorScripts', <% } %><% } %>'libScripts'], function() {
-    <% if (!browserify) { %>gulp.start('customScripts');<% } else { %>gulp.start('browserify');<% } %>
-});
+gulp.task('scripts', [<% if (!wordpress) { %><% if (!browserify) { %>'vendorScripts', <% } %><% } %>'libScripts'<% if (!browserify) { %>, 'customScripts'<% } %>]);
 
 
 gulp.task('styles', ['sprites'], function() {
@@ -234,10 +231,7 @@ gulp.task('visual', ['images'], function() {
     gulp.start('styles');
 });
 
-<% if (browserify) { %>gulp.task('browserify', ['browserifyMain']);
-
-
-gulp.task('watchJS', ['watchMain']);
+<% if (browserify) { %>gulp.task('watchJS', ['watchMain']);
 <% } %>gulp.task('build', ['scripts', 'visual', 'fonts', <% if (wordpress) { %>'php', <% } else if (!jekyll) { %>'html', <% } %><% if (jekyll) { %>'jekyll',<% } %>'filesCopy']);
 
 
