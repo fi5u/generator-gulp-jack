@@ -1,5 +1,6 @@
 var gulp = require('gulp');
-var sass = require('gulp-ruby-sass');<% if (browserify) { %>
+var sass = require('gulp-ruby-sass');
+var csso = require('gulp-csso');<% if (browserify) { %>
 var watchify = require('watchify');
 var browserify = require('browserify');
 var source = require('vinyl-source-stream');
@@ -101,6 +102,7 @@ gulp.task('sass', function () {
             loadPath: require('node-bourbon').includePaths,
             'sourcemap=none': true
         }))
+        .pipe(gulpif(compress, csso()))
         .pipe(gulp.dest(paths.destCSS))
         .pipe(refresh(lrserver));
 });
