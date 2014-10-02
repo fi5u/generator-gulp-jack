@@ -1,71 +1,5 @@
 @include define('universal-helpers') {
 
-    // Image replacement
-    @include _add(ir) {
-        overflow: hidden;
-        // IE 6/7 fallback
-        *text-indent: -9999px;
-        background-color: transparent;
-        border: 0;
-        &:before {
-            content: "";
-            display: block;
-            width: 0;
-            height: 100%;
-        }
-    }
-
-
-    // Hide from both screenreaders and browsers: h5bp.com/u
-    @include _add(hidden) {
-        display: none !important;
-        visibility: hidden;
-    }
-
-
-    // Hide only visually, but have it available for screenreaders: h5bp.com/v
-    @include _add(visuallyhidden) {
-        border: 0;
-        clip: rect(0 0 0 0);
-        height: 1px;
-        margin: -1px;
-        overflow: hidden;
-        padding: 0;
-        position: absolute;
-        width: 1px;
-        //
-        // Extends the .visuallyhidden class to allow the element to be focusable
-        // when navigated to via the keyboard: h5bp.com/p
-        //
-        &.focusable:active,
-        &.focusable:focus {
-            clip: auto;
-            height: auto;
-            margin: 0;
-            overflow: visible;
-            position: static;
-            width: auto;
-        }
-    }
-
-    // Hide visually and from screenreaders, but maintain layout
-    @include _add(invisible) {
-        visibility: hidden;
-    }
-
-    // Contain floats: h5bp.com/q
-    @include _add(clearfix) {
-        &:before,
-        &:after {
-            content: " ";
-            display: table;
-        }
-        &:after {
-            clear: both;
-        }
-        *zoom: 1;
-    }
-
     // Needed for verticalAlign
     @include _add(inlineBlock) {
         display: inline-block;
@@ -95,17 +29,8 @@
         transform: translateY(-50%);
     }
 
-    @include _add(nonSelectable) {
-        -webkit-touch-callout: none;
-        -webkit-user-select: none;
-        -khtml-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-    }
-
     @include _add(customCheckRadio) {
-        // <input type="checbox/radio"><label>abc</label>
+        // <input type="checkbox/radio"><label>abc</label>
         position: absolute;
         top: 0;
         left: 0;

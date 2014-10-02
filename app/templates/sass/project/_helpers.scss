@@ -1,43 +1,41 @@
-@include define('project-helpers') {
-    // USAGE: @include _use();
+// USAGE: @include _use();
 
-    @include _add(selectionColor) {
-        @if $col-scheme == dark {
-            color: #fff;
-        } @else {
-            color: #000;
-        }
-        background: $highlight-col;
+@include _add(selectionColor) {
+    @if $col-scheme == dark {
+        color: palette(white);
+    } @else {
+        color: palette(black);
+    }
+    background: $highlight-col;
+}
+
+@include _add(customCheckRadioSkin) {
+    + label:before {
+        width: 22px;
+        height: 22px;
+
+        background: #444;
     }
 
-    @include _add(customCheckRadioSkin) {
-        + label:before {
-            width: 22px;
-            height: 22px;
-
-            background: #444;
-        }
-
-        &:focus + label:before{
-            box-shadow: 1px 1px 1px rgba(0,0,0,0.4);
-        }
+    &:focus + label:before{
+        box-shadow: 1px 1px 1px rgba(0,0,0,0.4);
     }
+}
 
-    @include _add(customCheckSkin) {
-        @include _use(customCheckRadioSkin);
+@include _add(customCheckSkin) {
+    @include _use(customCheckRadioSkin);
 
-        &:checked + label:before {
-            content: "\2713"; // tick symbol
-        }
+    &:checked + label:before {
+        content: "\2713"; // tick symbol
     }
+}
 
-    @include _add(customRadioSkin) {
-        @include _use(customCheckRadioSkin);
+@include _add(customRadioSkin) {
+    @include _use(customCheckRadioSkin);
 
-        &:checked + label:before {
-            content: "";
-            border: 4px solid #d24;
-            background: #ccc;
-        }
+    &:checked + label:before {
+        content: "";
+        border: 4px solid #d24;
+        background: #ccc;
     }
 }

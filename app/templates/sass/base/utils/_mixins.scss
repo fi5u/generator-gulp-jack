@@ -1,8 +1,4 @@
-// Fonts
-// ==========================================================================
-
 @mixin importFont($fontname, $filename, $svgLabel, $isBold: false, $isItalic: false) {
-
     @font-face {
         font-family: $fontname;
 
@@ -29,7 +25,6 @@
             font-style: normal;
         }
     }
-
 }
 
 
@@ -78,7 +73,7 @@
 @mixin bgsize($type: cover) {
     background-size: $type;
 
-    @at-root .no-backgroundsize & {
+    .no-backgroundsize & {
         // Ensure 'backgroundsize.min.htc' is a sibling of the page displaying this selector
         // May need to add -> AddType text/x-component .htc <- to htaccess
         -ms-behavior: url(#{$htc-dir}backgroundsize.min.htc);

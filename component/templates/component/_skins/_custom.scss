@@ -8,7 +8,7 @@
     }
 }
 
-@mixin <%= _.slugify(name) %>-skin-custom($selector, $hover: ":hover", $param2: "") {
+@mixin <%= _.slugify(name) %>-skin-custom($selector: ".<%= _.slugify(name) %>", $hover: ":hover", $param2: "") {
     #{$selector} {
         @extend %<%= _.slugify(name) %>-skin-custom !optional;
     }

@@ -1,0 +1,13 @@
+// see other grid settings in base > _config
+$total-columns: 12;
+$column-width: 4.375em; // 70px @ 16px
+$gutter-width: 1.875em; // 30px @ 16px
+$grid-padding: 10px;
+
+$susy: (
+    columns: $total-columns,
+    column-width: $column-width,
+    gutters: $gutter-width/$column-width,
+    math: fluid,
+    global-box-sizing: border-box,
+);

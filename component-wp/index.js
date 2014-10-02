@@ -22,10 +22,6 @@ var ComponentGenerator = yeoman.generators.NamedBase.extend({
             if (err) throw err;
         });
 
-        fs.rename(appDir + '/sass/components/' + this._.slugify(this.name) + '/component.standalone.scss', appDir + '/sass/components/' + this._.slugify(this.name) + '/' + this._.slugify(this.name) + '.standalone.scss', function (err) {
-            if (err) throw err;
-        });
-
         fs.appendFile(appDir + '/sass/components/__components.scss', '@import "' + this._.slugify(this.name) + '/_' + this._.slugify(this.name) + '";\n@import "' + this._.slugify(this.name) + '/_skins/_custom";', function (err) {
             if (err) throw err;
         });
