@@ -15,12 +15,12 @@
 }
 
 // Custom checkbox/radio
-*[type="checkbox"] {
-    @include _use(customCheck);
-    @include _use(customCheckSkin);
-}
-
-*[type="radio"] {
-    @include _use(customRadio);
-    @include _use(customRadioSkin);
-}
+//*[type="checkbox"] {
+//    @include _use(customCheck);
+//    @include _use(customCheckSkin);
+//}
+//
+//*[type="radio"] {
+//    @include _use(customRadio);
+//    @include _use(customRadioSkin);
+//}

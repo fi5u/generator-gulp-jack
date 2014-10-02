@@ -1,0 +1,28 @@
+// see other typographic settings in base > _config
+
+// font stacks
+$f-stack-helvetica-l: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+
+// font maps
+$font-families: (
+    f-heading: $f-stack-helvetica-l,
+    f-body: $f-stack-helvetica-l
+);
+
+// sizes
+$font-size: (
+    xs: 0.625,  // 10px @ 16px
+    s: 0.75,    // 12px @ 16px
+    m: 0.875,   // 14px @ 16px
+    l: 1,       // 16px @ 16px
+    xl: 1.125,  // 18px @ 16px
+    xl2: 1.5    // 24px @ 16px
+);
+<% if (verticalRhythm) { %>
+// See https://github.com/Pushplaybang/knife
+$body-font-size:    $base-font-size * 1px;
+$body-line-height:  $line-height-multiplier;
+$scale-factor:      $perfect-fourth;
+$ie8compatability:  false;
+<% } %>
+$em-base: $base-font-size; // for Bourbon functions

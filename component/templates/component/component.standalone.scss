@@ -1,3 +1,0 @@
-@import "components/<%= _.slugify(name) %>/_<%= _.slugify(name) %>.scss";
-
-@include <%= _.slugify(name) %>('.<%= _.slugify(name) %>');

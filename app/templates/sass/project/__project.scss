@@ -1,6 +1,6 @@
 @import "../base/_config";<% if (verticalRhythm) { %>
 @import "_vertical-rhythm";<% } %>
-@import "_variables";
+@import "variables/__variables";
 @import "_fonts";
 @import "_globals";
 @import "_helpers";

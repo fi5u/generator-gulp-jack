@@ -1,0 +1,24 @@
+$palettes: (
+    primary: (
+        // lightest: ,
+        lighter: lighten(#d24, 10%),
+        // light: ,
+        base: #d24
+        // dark: ,
+        // darker: ,
+        // darkest:
+    ),
+    gray: (
+        base: #999
+    ),
+    white: (
+        base: #fff
+    ),
+    black: (
+        base: #000
+    )
+);
+
+$highlight-col: palette(primary, lighter);
+$placeholder-col: palette(primary, lighter);
+$col-scheme: dark; // dark or light
