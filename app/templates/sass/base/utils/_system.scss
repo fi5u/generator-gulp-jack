@@ -25,25 +25,21 @@ $placeholders: ();
     // Or `null` if the keyword doesn't exist in `$breakpoints` map
     $value: map-get($breakpoints, $breakpoint);
 
-    // If `$breakpoint` exists as a key in `$breakpoints`
-    @if $value != null {
-        // Update `$current-breakpoint`
-        $current-breakpoint: $breakpoint !global;
-
-        // Open a media query block
-        @media (min-width: $value) {
-            @content;
-        }
-
-        // Then reset `$current-breakpoint` to `$default-breakpoint` (root)
-        $current-breakpoint: $default-breakpoint !global;
+    // If `$breakpoint` not exists as a key in `$breakpoints`
+    @if $value == null {
+        @error "`#{$breakpoint}` is not a valid breakpoint.";
     }
 
-    // If `$breakpoint` doesn't exist in `$breakpoints`,
-    // Warn the user and do nothing
-    @else {
-        @warn "Invalid breakpoint `#{$breakpoint}`.";
+    // Update `$current-breakpoint`
+    $current-breakpoint: $breakpoint !global;
+
+    // Open a media query block
+    @media (min-width: $value) {
+        @content;
     }
+
+    // Then reset `$current-breakpoint` to `$default-breakpoint` (root)
+    $current-breakpoint: $default-breakpoint !global;
 }
 
 
@@ -62,44 +58,41 @@ $placeholders: ();
  * @throws      If $name value has already been used
  */
 @mixin _add($name) {
-    // If placeholder doesn't exist yet in `$placeholders` list
-    @if not index($placeholders, $name) {
-        // Store its name
-        $placeholders: append($placeholders, $name) !global;
-
-        // At root level
-        @at-root {
-            // Looping through `$breakpoints`
-            @each $breakpoint, $value in $breakpoints {
-                // Opening a media query block
-                @media (min-width: $value) {
-
-                // set the current-breakpoint so that nested calls to _use can work
-                $current-breakpoint: $breakpoint !global;
-
-                // Generating a placeholder
-                // Called $name-$breakpoint
-                %#{$name}-#{$breakpoint} {
-                    // dump the content
-                    @content;
-                }
-
-                // reset current-breakpoint
-                $current-breakpoint: $default-breakpoint !global;
-                }
-            }
-
-            // And dumping a placeholder out of any media query as well
-            // so basically at root level
-            %#{$name} {
-                @content;
-            }
-        }
+    @if index($placeholders, $name) {
+        // If placeholder already exists
+       @error "Placeholder `#{$name}` already exists.";
     }
 
-    // If placeholder already exists, just warn the user
-    @else {
-       @warn "Placeholder `#{$name}` already exists.";
+    // Store its name
+    $placeholders: append($placeholders, $name) !global;
+
+    // At root level
+    @at-root {
+        // Looping through `$breakpoints`
+        @each $breakpoint, $value in $breakpoints {
+            // Opening a media query block
+            @media (min-width: $value) {
+
+            // set the current-breakpoint so that nested calls to _use can work
+            $current-breakpoint: $breakpoint !global;
+
+            // Generating a placeholder
+            // Called $name-$breakpoint
+            %#{$name}-#{$breakpoint} {
+                // dump the content
+                @content;
+            }
+
+            // reset current-breakpoint
+            $current-breakpoint: $default-breakpoint !global;
+            }
+        }
+
+        // And dumping a placeholder out of any media query as well
+        // so basically at root level
+        %#{$name} {
+            @content;
+        }
     }
 }
 
@@ -139,12 +132,12 @@ $placeholders: ();
     $palette-color: map-get($palettes, $palette);
 
     @if $palette-color == null {
-        @warn "`#{$palette}` does not exist in palettes.";
+        @error "`#{$palette}` does not exist in palettes.";
     }
     $palette-tone: map-get($palette-color, $tone);
 
     @if $palette-tone == null {
-        @warn "`#{$tone}` does not exist in palettes";
+        @error "`#{$tone}` does not exist in palettes";
     }
 
     @return map-get($palette-color, $tone);
@@ -237,7 +230,7 @@ $placeholders: ();
                     @return (($size / ($size * 0 + 1)) / $base-font-size) + rem;
                 }
             } @else {
-                @warn "Font size error: use a value from the size map, a unitless rem value or a px value";
+                @error "Font size error: use a value from the size map, a unitless rem value or a px value";
             }
         }
     }
