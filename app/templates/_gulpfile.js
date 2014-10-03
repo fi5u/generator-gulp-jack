@@ -1,5 +1,6 @@
 var gulp = require('gulp');
-var sass = require('gulp-ruby-sass');<% if (browserify) { %>
+var sass = require('gulp-ruby-sass');
+var sassdoc = require('gulp-sassdoc');<% if (browserify) { %>
 var watchify = require('watchify');
 var browserify = require('browserify');
 var source = require('vinyl-source-stream');
@@ -94,7 +95,7 @@ var onError = function (err) {
 });
 
 
-gulp.task('sass', function () {
+gulp.task('sass', ['sassdoc'], function () {
     return gulp.src(paths.sass)
         .pipe(plumber(onError))
         .pipe(sass({
@@ -103,6 +104,15 @@ gulp.task('sass', function () {
         }))
         .pipe(gulp.dest(paths.destCSS))
         .pipe(refresh(lrserver));
+});
+
+
+gulp.task('sassdoc', function() {
+    return gulp
+        .src(paths.assets + '/sass')
+        .pipe(sassdoc({
+            dest: './documentation/sass'
+        }));
 });
 
 

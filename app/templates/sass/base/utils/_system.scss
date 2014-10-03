@@ -1,3 +1,7 @@
+/**
+ * @author Tommy Fisher
+ **/
+
 // define
 // this mixin makes it possible to have a file imported at multiple place and only be output the first time it is called
 // it is used for placeholders to prevent them from being repeated by each file depending on them
@@ -10,20 +14,24 @@ $modules: () !default;
 }
 
 
-// breakpoint
-// this mixin needs to be used to enter a @media that will let use use cross-media placeholders
-// ex:
-//@include breakpoint(medium) {
-//  .selector {
-//    @include _use(clearfix);
-//  }
-//}
-
-// system variables
+// Breakpoint variables
 $default-breakpoint: root;
 $current-breakpoint: $default-breakpoint;
 $placeholders: ();
 
+/**
+ * Allows use of cross-media query placeholders (when used as `@include _use()`)
+ *
+ * @author DoCSSa
+ * @group Breakpoints
+ * @requires $breakpoints
+ * @requires $default-breakpoint
+ * @requires $current-breakpoint
+ *
+ * @param {String}  $breakpoint Key from the $breakpoints map
+ *
+ * @throws If $breakpoint is not listed in $breakpoints
+ */
 @mixin breakpoint($breakpoint) {
     // Get the width from the keyword `$breakpoint`
     // Or `null` if the keyword doesn't exist in `$breakpoints` map
@@ -36,7 +44,6 @@ $placeholders: ();
 
         // Open a media query block
         @media (min-width: $value) {
-            // Let the user dump content
             @content;
         }
 
@@ -51,7 +58,19 @@ $placeholders: ();
     }
 }
 
-// placeholder
+
+/**
+ * Generate a placeholder that can be used across breakpoints
+ *
+ * @author      DoCSSa
+ * @group       Placeholders
+ * @requires    $placeholders
+ * @requires    $breakpoints
+ * @requires    $current-breakpoint
+ * @requires    $default-breakpoint
+ *
+ * @param       {String}    $name   The name of the placeholder to create
+ */
 @mixin _add($name) {
     // If placeholder doesn't exist yet in `$placeholders` list
     @if not index($placeholders, $name) {
@@ -94,8 +113,17 @@ $placeholders: ();
     //}
 }
 
-// placeholder implementor
 
+/**
+ * Use the generated placeholder in (or out of) breakpoints
+ *
+ * @author      DoCSSa
+ * @group       Placeholders
+ * @requires    $current-breakpoint
+ * @requires    $default-breakpoint
+ *
+ * @param       {String}    $name   Name of placeholder to use
+ */
 @mixin _use($name) {
     @if $current-breakpoint == $default-breakpoint {
         @extend %#{$name} !optional;
@@ -105,6 +133,18 @@ $placeholders: ();
 }
 
 
+/**
+ * Get a palette color and tone from $palettes
+ *
+ * @group       Colors
+ * @requires    $palettes
+ *
+ * @param       {String}    $palette        Name of the color
+ * @param       {String}    $tone ("base")  Name of the tone
+ * @returns     {Color}                     Color value
+ *
+ * @throws If $palette or $tone do not exist in $palettes map
+ */
 @function palette($palette, $tone: "base") {
     $palette-color: map-get($palettes, $palette);
 
@@ -121,6 +161,17 @@ $placeholders: ();
 }
 
 
+/**
+ * Look up font family stack in $font-families map, returns the stack variable
+ *
+ * @group       Typography
+ * @requires    $font-families
+ *
+ * @param       {String}    $name ("f-body")    Name of the key to search for
+ * @returns     {String}                        Font family stack name
+ *
+ * @throws      If $name is not listed in $font-families map
+ */
 @function font-family($name: "f-body") {
     $font-family: map-get($font-families, $name);
 
@@ -136,23 +187,22 @@ $placeholders: ();
 }
 
 
+/**
+ * Converts sizes between px, rem and font size multipliers, can use value from font-size map
+ *
+ * @group       Box-model
+ * @requires    $font-size
+ * @requires    $base-font-size
+ *
+ * @param       {Number | String}    $size              The size to convert (key from $font-size map, unitless value as rem, px value)
+ * @param       {String}             $unit              The size unit to convert to
+ * @param       {Number}             $multiplier ("")   To get a font size multiplier $size should be blank and the multiplication value to be set here
+ * @param       {Bool}               $unitless (false)  When true simply returns size, without a unit
+ * @returns     {Number}                                The converted size
+ *
+ * @throws      If string value is used for size and that key is not listed in $font-size map
+ */
 @function size($size, $unit, $multiplier:'', $unitless:false) {
-    // $size accepts
-    // • a value from font-size map,
-    // • a unitless value (treated as rem)
-    // • a px value
-    // $unit accepts
-    // • px or rem
-    // $multiplier accepts
-    // • int/decimal
-    // (only applicable when no $size is supplied)
-    // $unitless accepts
-    // • bool
-    // Returns
-    // • size in rem or px
-    // or if $unitless
-    // • $size
-
     @if $unitless == true {
         @return $size;
     } @else {

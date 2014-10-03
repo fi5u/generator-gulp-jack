@@ -1,3 +1,19 @@
+/**
+ * @author Tommy Fisher
+ **/
+
+/**
+ * Generate @font-face import
+ *
+ * @author  DoCSSa
+ * @group   Typography
+ *
+ * @param   {String}    $fontname           Name to reference the font by
+ * @param   {String}    $filename           Filename of font (without extension)
+ * @param   {String}    $svgLabel           SVG label to reference font
+ * @param   {Bool}      $isBold (false)     Should the font weight be set to bold
+ * @param   {Bool}      $isItalic (false)   Should the font style be set to italic
+ */
 @mixin importFont($fontname, $filename, $svgLabel, $isBold: false, $isItalic: false) {
     @font-face {
         font-family: $fontname;
@@ -28,35 +44,44 @@
 }
 
 
-@mixin opacity($opacity) {
+/**
+ * Sets opacity with fallback for IE
+ *
+ * @group   Appearance
+ *
+ * @param   {Number}    $opacity (0)    Number between 0 and 1
+ */
+@mixin opacity($opacity: 0) {
     opacity: $opacity;
     $opacity-ie: $opacity * 100;
     filter: alpha(opacity=$opacity-ie); //IE8
 }
 
 
+/**
+ * Sets font-size in rem with a fallback in px
+ *
+ * @group       Typography
+ * @requires    size
+ *
+ * @param       {Number | String}   $size ("")  Accepts value from $font-size map / rem / px / unitless [treated as rem] / empty [base font size]
+ */
 @mixin font-size($size: "") {
-    // Size accepts:
-    // • value from $font-size map
-    // • rem value
-    // • px value
-    // • unitless value (treated as rem)
-    // • empty (a default of base font size will be returned)
-
     font-size: size($size, px);
     font-size: size($size, rem);
 }
 
 
+/**
+ * Sets line-height in rem with a fallback in px or without units sets line height as a multiplier
+ *
+ * @group       Typography
+ * @requires    size
+ * @requires    $line-height-multiplier
+ *
+ * @param {Number | String}    $size ("")  Accepts value from $font-size map / rem / px / unitless [treated as multiplier] / empty [$base-font-size * $line-height-multiplier]
+ */
 @mixin line-height($size: "") {
-    // Size accepts:
-    // • value from $font-size map
-    // • rem value
-    // • px value
-    // • unitless value
-    //   (treated as a line-height multiplier, i.e. $size is returned)
-    // • empty (a default line-height of $base-font-size * $line-height-multiplier will be returned)
-
     $unitless: false;
     @if $size != '' and type-of($size) != string and unit($size) == '' {
         $unitless: true;
@@ -70,6 +95,14 @@
 }
 
 
+/**
+ * Sets the background size property with a fallback for old IE - requires backgroundsize.min.htc
+ *
+ * @group       Appearance
+ * @requires    $htc-dir
+ *
+ * @param       {String}    $type (cover)   The type of background size to use [cover or contain]
+ */
 @mixin bgsize($type: cover) {
     background-size: $type;
 

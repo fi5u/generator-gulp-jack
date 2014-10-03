@@ -1,66 +1,87 @@
-@include define('universal-helpers') {
-
-    // Needed for verticalAlign
-    @include _add(inlineBlock) {
-        display: inline-block;
-        .lt-ie8 & {
-            display: inline;
-        }
+/**
+ * Display inline-block fallback to display inline for old IE
+ */
+@include _add(inlineBlock) {
+    display: inline-block;
+    .lt-ie8 & {
+        display: inline;
     }
+}
 
-    @include _add(verticalAlign) {
-        &:before {
-            @include _use(inlineBlock);
-            vertical-align: middle;
-            content: "";
-            height: 100%;
-            width: 0;
-            margin: 0;
-        }
+
+/**
+ * Vertically align content
+ * @requires %inlineBlock
+ */
+@include _add(verticalAlign) {
+    &:before {
         @include _use(inlineBlock);
         vertical-align: middle;
-    }
-
-    @include _add(verticalAlign2) {
-        position: relative;
-        top: 50%;
-        -webkit-transform: translateY(-50%);
-        -ms-transform: translateY(-50%);
-        transform: translateY(-50%);
-    }
-
-    @include _add(customCheckRadio) {
-        // <input type="checkbox/radio"><label>abc</label>
-        position: absolute;
-        top: 0;
-        left: 0;
-        @include opacity(0);
+        content: "";
+        height: 100%;
         width: 0;
-        height: 0;
-        border: none;
-        -webkit-appearance: none;
-        -moz-appearance: none;
+        margin: 0;
+    }
+    @include _use(inlineBlock);
+    vertical-align: middle;
+}
 
-        + label {
-            position: relative;
-            padding-left: 30px;
-            text-align: center;
-            cursor: pointer;
 
-            &:before {
-                content: "";
-                position: absolute;
-                top: -2px;
-                left: 0;
-            }
+/**
+ * Vertically align content
+ */
+@include _add(verticalAlign2) {
+    position: relative;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+
+
+/**
+ * Allows styling of checkboxes and radio buttons
+ * @example
+ * // <input type="checkbox/radio"><label>abc</label>
+ */
+@include _add(customCheckRadio) {
+    position: absolute;
+    top: 0;
+    left: 0;
+    @include opacity(0);
+    width: 0;
+    height: 0;
+    border: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    + label {
+        position: relative;
+        padding-left: 30px;
+        text-align: center;
+        cursor: pointer;
+
+        &:before {
+            content: "";
+            position: absolute;
+            top: -2px;
+            left: 0;
         }
     }
+}
 
-    @include _add(customCheck) {
-        @include _use(customCheckRadio);
-    }
 
-    @include _add(customRadio) {
-        @include _use(customCheckRadio);
-    }
+/**
+ * Sets the placeholder for the custom checkbox
+ */
+@include _add(customCheck) {
+    @include _use(customCheckRadio);
+}
+
+
+/**
+ * Sets the placeholder for the custom radio
+ */
+@include _add(customRadio) {
+    @include _use(customCheckRadio);
 }
