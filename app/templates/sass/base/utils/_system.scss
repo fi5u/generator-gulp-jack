@@ -58,6 +58,8 @@ $placeholders: ();
  * @requires    $default-breakpoint
  *
  * @param       {String}    $name   The name of the placeholder to create
+ *
+ * @throws      If $name value has already been used
  */
 @mixin _add($name) {
     // If placeholder doesn't exist yet in `$placeholders` list
@@ -96,9 +98,9 @@ $placeholders: ();
     }
 
     // If placeholder already exists, just warn the user
-    //@else {
-    //    @warn "Placeholder `#{$name}` already exists.";
-    //}
+    @else {
+       @warn "Placeholder `#{$name}` already exists.";
+    }
 }
 
 
