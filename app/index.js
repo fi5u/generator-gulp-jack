@@ -52,7 +52,7 @@ var util = require('util'),
                             performReplacement(' _s', ' ' + self._.slugify(self.siteName).charAt(0).toUpperCase() + self._.slugify(self.siteName).slice(1), [appDir]);
                             performReplacement('_s-', self._.slugify(self.siteName) + '-', [appDir]);
 
-                            if (!isWpShared) {
+                            if (!isWpShared && self.ie8 !== 'no') {
                                 moveFile('bower_components/background-size-polyfill/backgroundsize.min.htc', destDir + 'backgroundsize.min.htc');
                             }
 
@@ -69,15 +69,21 @@ var util = require('util'),
 
 
                         } else {
-
-                            moveFile('bower_components/background-size-polyfill/backgroundsize.min.htc', appDir + 'backgroundsize.min.htc');
+                            if (self.ie8 !== 'no') {
+                                moveFile('bower_components/background-size-polyfill/backgroundsize.min.htc', appDir + 'backgroundsize.min.htc');
+                            }
                             moveFile(appDir + assetsDir + 'sass/live.scss', appDir + assetsDir + 'sass/' + self._.slugify(self.siteName) + '.scss');
                             moveFile('bower_components/picturefill/dist/picturefill.min.js', appDir + assetsDir + 'js/lib/picturefill.min.js');
 
                             if (!self.browserify) {
                                 moveFile('bower_components/parsleyjs/dist/parsley.js', appDir + assetsDir + 'js/vendor/parsley.js');
                                 moveFile(appDir + assetsDir + 'js/lib/parsleyfi.js', appDir + assetsDir + 'js/vendor/parsleyfi.js');
-                                moveFile('bower_components/jquery-legacy/dist/jquery.min.js', appDir + assetsDir + 'js/lib/jquery.min.js');
+                                if (self.ie8 !== 'no') {
+                                    moveFile('bower_components/jquery-legacy/dist/jquery.min.js', appDir + assetsDir + 'js/lib/jquery-legacy.min.js');
+                                }
+                                if (self.ie8 !== 'yes') {
+                                    moveFile('bower_components/jquery/dist/jquery.min.js', appDir + assetsDir + 'js/lib/jquery.min.js');
+                                }
                                 moveFile('bower_components/jquery.customSelect/jquery.customSelect.js', appDir + assetsDir + 'js/vendor/jquery.customSelect.js');
                             } else {
                                 moveFile('bower_components/jquery.customSelect/jquery.customSelect.js', appDir + assetsDir + 'js/lib/jquery.customSelect.js');
@@ -109,8 +115,10 @@ var util = require('util'),
                             moveFile('bower_components/knife/_knife.sass', appDir + assetsDir + 'sass/project/_vertical-rhythm.sass');
                         }
 
-                        moveFile('bower_components/respond/dest/respond.min.js', appDir + assetsDir + 'js/lib/respond.min.js');
-                        moveFile('bower_components/selectivizr/selectivizr.js', appDir + assetsDir + 'js/lib/selectivizr.js');
+                        if (self.ie8 !== 'no') {
+                            moveFile('bower_components/respond/dest/respond.min.js', appDir + assetsDir + 'js/lib/respond.min.js');
+                            moveFile('bower_components/selectivizr/selectivizr.js', appDir + assetsDir + 'js/lib/selectivizr.js');
+                        }
                     }
                 });
             }
@@ -158,6 +166,20 @@ var util = require('util'),
             name: 'browserify',
             message: 'Would you like to use Browserify for JS',
             default: true
+        }, {
+            type: 'list',
+            name: 'ie8',
+            message: 'Are you supporting IE8?',
+            choices: [{
+                name: 'Yes',
+                value: 'yes'
+            }, {
+                name: 'No',
+                value: 'no'
+            }, {
+                name: 'Maybe - Initially set to not support, but can be supported by setting options',
+                value: 'maybe'
+            }]
         }, {
             type: 'confirm',
             name: 'wpShared',
@@ -221,6 +243,7 @@ var util = require('util'),
             this.bootstrap = props.bootstrap;
             this.verticalRhythm = props.verticalRhythm;
             this.browserify = props.browserify;
+            this.ie8 = props.ie8;
             this.wpShared = props.wpShared;
             this.localUrl = props.localUrl;
             this.dbName = props.dbName;

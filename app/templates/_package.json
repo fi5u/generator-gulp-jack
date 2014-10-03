@@ -23,13 +23,13 @@
         "gulp-newer": "^0.3.0",
         "gulp-plumber": "^0.6.3",
         "gulp-ruby-sass": "^0.7.1",
-        "gulp-sassdoc": "^1.0.1",
-        "gulp-svg2png": "^0.3.0",
+        "gulp-sassdoc": "^1.0.1",<% if (ie8 != 'no') { %>
+        "gulp-svg2png": "^0.3.0",<% } %>
         "gulp-svg-sprites": "^1.0.3",
         "gulp-util": "^2.2.17",
         "opn": "^0.1.1",
-        "tiny-lr": "^0.0.5",
-        <% if (browserify) { %>"vinyl-buffer": "^1.0.0",
+        "tiny-lr": "^0.0.5"<% if (browserify) { %>,
+        "vinyl-buffer": "^1.0.0",
         "vinyl-source-stream": "^1.0.0",
         "watchify": "^1.0.6"<% } %>
     }

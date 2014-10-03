@@ -6,7 +6,10 @@ $base-font-size: 16;
 // Set the line height multiplier to calculate default line-height (in px and rem)
 $line-height-multiplier: 1.5;
 
-// breakpoints
+<% if (ie8 !== 'no') { %>// Support IE8
+$ie8-support: <% if (ie8 == 'yes') { %>true<% } else { %>false<% } %>;
+
+<% } %>// breakpoints
 $breakpoints: (
     "xs": 20em,
     "s": 30em,

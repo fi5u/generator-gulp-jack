@@ -1,17 +1,17 @@
 {
     "name": "package",
-    "version": "0.0.0",
-    "dependencies": {
-        "background-size-polyfill": "latest",<% if (bootstrap) { %>
+    "version": "0.0.1",
+    "dependencies": {<% if (ie8 != 'no') { %>
+        "background-size-polyfill": "latest",<% } %><% if (bootstrap) { %>
         "bootstrap-sass-official": "latest",<% } %>
-        "jquery.customSelect": "latest",<% if (!browserify) { %>
-        "jquery-legacy": "jquery#1.11.x",<% } %><% if (verticalRhythm) { %>
+        "jquery.customSelect": "latest",<% if (!browserify) { %><% if (ie8 == 'yes' || ie8 == 'maybe') { %>
+        "jquery-legacy": "jquery#1.11.x",<% } %><% } %><% if (verticalRhythm) { %>
         "knife": "latest",<% } %>
         "normalize.css": "latest",<% if (!browserify) { %>
         "parsleyjs": "latest",<% } %>
-        "picturefill": "latest",
+        "picturefill": "latest",<% if (ie8 != 'no') { %>
         "respond": "latest",
-        "selectivizr": "latest",
+        "selectivizr": "latest",<% } %>
         "susy": "latest"
     }
 }

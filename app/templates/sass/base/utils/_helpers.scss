@@ -2,11 +2,11 @@
  * Display inline-block fallback to display inline for old IE
  */
 @include _add(inlineBlock) {
-    display: inline-block;
+    display: inline-block;<% if (ie8 != 'no') { %>
     .lt-ie8 & {
         display: inline;
     }
-}
+<% } %>}
 
 
 /**
