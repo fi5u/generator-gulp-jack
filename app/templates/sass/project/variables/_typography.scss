@@ -23,6 +23,6 @@ $font-size: (
 $body-font-size:    $base-font-size * 1px;
 $body-line-height:  $line-height-multiplier;
 $scale-factor:      $perfect-fourth;
-$ie8compatability:  false;
+$ie8compatability:  <% if (ie8 != 'yes') { %>false<% } else { %>true<% } %>;
 <% } %>
 $em-base: $base-font-size; // for Bourbon functions

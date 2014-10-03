@@ -45,7 +45,7 @@
 
 
 /**
- * Sets opacity with fallback for IE
+ * Sets opacity<% if (ie8 != 'no') { %> with fallback for IE<% } %>
  *
  * @group   Appearance
  *
@@ -53,13 +53,13 @@
  */
 @mixin opacity($opacity: 0) {
     opacity: $opacity;
-    $opacity-ie: $opacity * 100;
+    <% if (ie8 != 'no') { %>$opacity-ie: $opacity * 100;
     filter: alpha(opacity=$opacity-ie); //IE8
-}
+<% } %>}
 
 
 /**
- * Sets font-size in rem with a fallback in px
+ * Sets font-size in rem<% if (ie8 != 'no') { %> with a fallback in px<% } %>
  *
  * @group       Typography
  * @requires    size
@@ -67,13 +67,13 @@
  * @param       {Number | String}   $size ("")  Accepts value from $font-size map / rem / px / unitless [treated as rem] / empty [base font size]
  */
 @mixin font-size($size: "") {
-    font-size: size($size, px);
-    font-size: size($size, rem);
+    <% if (ie8 != 'no') { %>font-size: size($size, px);
+    <% } %>font-size: size($size, rem);
 }
 
 
 /**
- * Sets line-height in rem with a fallback in px or without units sets line height as a multiplier
+ * Sets line-height in rem <% if (ie8 != 'no') { %>with a fallback in px <% } %>or without units sets line height as a multiplier
  *
  * @group       Typography
  * @requires    size
@@ -87,15 +87,15 @@
         $unitless: true;
     }
     @if $unitless == false {
-        line-height: size($size, px, $line-height-multiplier, $unitless);
-        line-height: size($size, rem, $line-height-multiplier, $unitless);
+        <% if (ie8 != 'no') { %>line-height: size($size, px, $line-height-multiplier, $unitless);
+        <% } %>line-height: size($size, rem, $line-height-multiplier, $unitless);
     } @else {
         line-height: size($size, null, null, $unitless);
     }
 }
 
 
-/**
+<% if (ie8 != 'no') { %>/**
  * Sets the background size property with a fallback for old IE - requires backgroundsize.min.htc
  *
  * @group       Appearance
@@ -111,4 +111,4 @@
         // May need to add -> AddType text/x-component .htc <- to htaccess
         -ms-behavior: url(#{$htc-dir}backgroundsize.min.htc);
     }
-}
+}<% } %>

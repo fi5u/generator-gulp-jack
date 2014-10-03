@@ -8,9 +8,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <link rel="stylesheet" href="assets/css/style.css">
+
         <script src="assets/js/lib/modernizr.js"></script>
         <script src="assets/js/lib/picturefill.min.js" async></script>
-        <script>
+        <% if (ie8 != 'no') { %><script>
         Modernizr.load([{
             test: Modernizr.mq('only all'),
             nope: 'assets/js/lib/respond.min.js'
@@ -18,12 +19,13 @@
             test: Modernizr.lastchild,
             nope: ['assets/js/lib/nwmatcher-1.2.5.js', 'assets/js/lib/selectivizr.js']
         }]);
-        </script>
+        </script><% } %>
     </head>
     <body>
 
-        <% if (!browserify) { %><script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-        <script>window.jQuery || document.write('<script src="assets/js/lib/jquery.min.js"><\/script>')</script>
+        <% if (!browserify) { %><% if (ie8 == 'yes') { %><script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="assets/js/lib/jquery-legacy.min.js"><\/script>')</script><% } else { %><script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="assets/js/lib/jquery.min.js"><\/script>')</script><% } %>
 
         <script src="assets/js/vendor.js"></script>
         <% } %><script src="assets/js/script.js"></script>

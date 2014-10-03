@@ -1,14 +1,22 @@
 {#svg}$sprite--{name}: ({relWidth}*10)+px, ({relHeight}*10)+px, ({relPositionX}*10)+px, ({relPositionY}*10)+px;
 {/svg}
 {#common}
+/**
+ * Generates cross-breakpoint sprites
+ *
+ * @author  Tommy Fisher
+ * @group   Images
+ *
+ * @param   {List}    $sprite The list of sprite attributes
+ */
 @mixin sprite-svg($sprite) {
     width: nth($sprite,1);
     height: nth($sprite,2);
     background-position: nth($sprite,3) nth($sprite,4);
     background-image: url(#{~lb}$img-dir{~rb}/sprite.svg);
-    background-repeat: no-repeat;
+    background-repeat: no-repeat;<% if (ie8 != 'no') { %>
 
     .no-svg & {
         background-image: url(#{~lb}$img-dir{~rb}/sprite.png);
-    }
+    }<% } %>
 }{/common}

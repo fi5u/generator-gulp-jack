@@ -8,8 +8,8 @@ var buffer = require('vinyl-buffer');<% } %>
 var minifyCSS = require('gulp-minify-css');
 var imagemin = require('gulp-imagemin');
 var svgSprite = require("gulp-svg-sprites");
-var svg2png = require('gulp-svg2png');
-var gulpif = require('gulp-if');
+<% if (ie8 != 'no') { %>var svg2png = require('gulp-svg2png');
+<% } %>var gulpif = require('gulp-if');
 var filter = require('gulp-filter');
 var plumber = require('gulp-plumber');
 var gutil = require('gulp-util');
@@ -90,7 +90,7 @@ var onError = function (err) {
 
 <% } %><% } %>gulp.task('libScripts', function () {
     return gulp.src([paths.jsLib])
-        <% if (browserify) { %>.pipe(filter(['**/modernizr.js', '**/picturefill.min.js', '**/respond.min.js', '**/selectivizr.js', '**/nwmatcher-1.2.5.js']))
+        <% if (browserify) { %>.pipe(filter(['**/modernizr.js', '**/picturefill.min.js'<% if (ie8 != 'no') { %>, '**/respond.min.js', '**/selectivizr.js', '**/nwmatcher-1.2.5.js'<% } %>]))
         <% } %>.pipe(gulp.dest(paths.destJSLib));
 });
 
@@ -128,12 +128,12 @@ gulp.task('sprites', function () {
         .pipe(svgSprite(spriteConfig))
         .pipe(gulp.dest(paths.assets))
         .pipe(filter('**/*.svg'))
-        .pipe(svg2png())
-        .pipe(gulp.dest(paths.assets))
+        <% if (ie8 != 'no') { %>.pipe(svg2png())
+        <% } %>.pipe(gulp.dest(paths.assets))
 });
 
 
-gulp.task('toPng', function () {
+<% if (ie8 != 'no') { %>gulp.task('toPng', function () {
     gulp.src([paths.assets + '/images/**/*.svg', '!' + paths.assets + '/images/svg-sprite.svg', '!' + paths.assets + '/images/sprites/**'])
         .pipe(svg2png())
         .pipe(imagemin({
@@ -144,7 +144,7 @@ gulp.task('toPng', function () {
 });
 
 
-gulp.task('images', ['toPng'], function () {
+<% } %>gulp.task('images', <% if (ie8 != 'no') { %>['toPng'], <% } %>function () {
     return gulp.src([paths.img, '!' + paths.app + '/**/images/sprites{,/**}'])
         .pipe(newer(paths.destImg))
         .pipe(imagemin({
@@ -187,13 +187,13 @@ gulp.task('images', ['toPng'], function () {
 });<% } /* end not wp && not jekyll */ %><% } /* end not wp */ %>
 
 
-gulp.task('filesCopy', function () {
+<% if (ie8 != 'no') { %>gulp.task('filesCopy', function () {
     gulp.src([paths.app + '/backgroundsize.min.htc'])
         .pipe(gulp.dest(paths.dest));
 });
 
 
-<% if (browserify) { %>gulp.task('watchMain', function() {
+<% } %><% if (browserify) { %>gulp.task('watchMain', function() {
     var bundler = watchify(browserify('./' + paths.assets + '/js/script.js', {debug: !compress}));
     bundler.on('update', rebundle);
 
@@ -242,7 +242,7 @@ gulp.task('visual', ['images'], function() {
 });
 
 <% if (browserify) { %>gulp.task('watchJS', ['watchMain']);
-<% } %>gulp.task('build', ['scripts', 'visual', 'fonts', <% if (wordpress) { %>'php', <% } else if (!jekyll) { %>'html', <% } %><% if (jekyll) { %>'jekyll',<% } %>'filesCopy']);
+<% } %>gulp.task('build', ['scripts', 'visual', 'fonts', <% if (wordpress) { %>'php', <% } else if (!jekyll) { %>'html', <% } %><% if (jekyll) { %>'jekyll',<% } %><% if (ie8 != 'no') { %>'filesCopy'<% } %>]);
 
 
 gulp.task('server', ['build'], function() {
