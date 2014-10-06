@@ -242,7 +242,7 @@ gulp.task('visual', ['images'], function() {
 });
 
 <% if (browserify) { %>gulp.task('watchJS', ['watchMain']);
-<% } %>gulp.task('build', ['scripts', 'visual', 'fonts', <% if (wordpress) { %>'php', <% } else if (!jekyll) { %>'html', <% } %><% if (jekyll) { %>'jekyll',<% } %><% if (ie8 != 'no') { %>'filesCopy'<% } %>]);
+<% } %>gulp.task('build', ['scripts', 'visual', 'fonts'<% if (wordpress) { %>, 'php'<% } else if (!jekyll) { %>, 'html'<% } %><% if (jekyll) { %>, 'jekyll'<% } %><% if (ie8 != 'no') { %>, 'filesCopy'<% } %>]);
 
 
 gulp.task('server', ['build'], function() {
